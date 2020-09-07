@@ -1,5 +1,16 @@
 [[redirects]]
+  from = "/presentations/ar-the-next-big-thing/static/*"
+  to = "https://ar-the-next-big-thing.netlify.app/static/:splat"
+  status = 200
+  force = false
+
+[[redirects]]
   from = "/presentations/ar-the-next-big-thing/*"
   to = "https://ar-the-next-big-thing.netlify.app/:splat"
   status = 200
   force = true
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
