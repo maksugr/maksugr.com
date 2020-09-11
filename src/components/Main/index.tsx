@@ -1,14 +1,22 @@
 import React, { FunctionComponent, useState } from 'react';
 import styled from 'styled-components';
+import { useWindowSize } from 'react-use';
 
 import bladeJpg from './assets/blade.jpg';
 
-const StyledMain = styled.div`
+interface ISlyledMain {
+    readonly height: number;
+}
+
+const StyledMain = styled.div<ISlyledMain>`
     display: flex;
     align-items: center;
     justify-content: center;
     width: 100%;
-    height: 100vh;
+    ${({ height }) => `
+        height: ${height}px;
+        max-height: ${height}px;
+    `}
     background: #0e1111;
 `;
 
@@ -91,9 +99,10 @@ const StyledMenuToggle = styled.div`
 
 const Main: FunctionComponent = () => {
     const [isMenuOpened, setIsMenuOpened] = useState(false);
+    const { height } = useWindowSize();
 
     return (
-        <StyledMain>
+        <StyledMain height={height}>
             <StyledContent>
                 <StyledImage src={bladeJpg} alt='Blade runner poster' />
                 <StyledLink href='https://twitter.com/maksugr' target='_blank'>
