@@ -23,8 +23,15 @@ const StyledMain = styled.div<ISlyledMain>`
 const StyledContent = styled.div`
     display: flex;
     flex-direction: column;
-    align-items: center;
     width: 40%;
+
+    @media (max-width: 800px) {
+        width: 80%;
+    }
+
+    @media (max-height: 400px) {
+        width: 30%;
+    }
 `;
 
 const StyledImage = styled.img`
@@ -35,7 +42,7 @@ const StyledLink = styled.a`
     font-weight: 700;
     color: #ebd100;
     text-decoration: none;
-    margin-top: 10px;
+    margin-top: 40px;
 `;
 
 const StyledMenu = styled.div`
