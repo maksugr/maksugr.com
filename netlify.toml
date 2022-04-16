@@ -1,10 +1,5 @@
-[[redirects]]
-  from = "/presentations/ar-the-next-big-thing/*"
-  to = "https://ar-the-next-big-thing.netlify.app/:splat"
-  status = 200
-  force = false
+[build]
+  command = "npm run build"
 
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
