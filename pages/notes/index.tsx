@@ -5,15 +5,11 @@ import { Container } from '../../components/container';
 import { Notes } from '../../components/notes';
 import { Navigation } from '../../components/navigation';
 import { Layout } from '../../components/layout';
-import { getNotes } from '../../lib/api';
-import { INote } from '../../interfaces/note';
 import { DEFAULT_TITLE } from '../../lib/constants';
 
-interface INotesPage {
-    readonly notes: INote[];
-}
+import { noteMetas } from './notes-meta';
 
-const NotesPage: FC<INotesPage> = ({ notes }) => {
+const NotesPage: FC = () => {
     return (
         <>
             <Layout>
@@ -22,7 +18,7 @@ const NotesPage: FC<INotesPage> = ({ notes }) => {
                 </Head>
                 <Container>
                     <Navigation />
-                    {notes.length > 0 && <Notes notes={notes} />}
+                    {noteMetas.length > 0 && <Notes noteMetas={noteMetas} />}
                 </Container>
             </Layout>
         </>
@@ -30,11 +26,3 @@ const NotesPage: FC<INotesPage> = ({ notes }) => {
 };
 
 export default NotesPage;
-
-export const getStaticProps = async () => {
-    const notes = getNotes(['title', 'slug']);
-
-    return {
-        props: { notes }
-    };
-};

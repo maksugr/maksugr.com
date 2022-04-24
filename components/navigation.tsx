@@ -20,7 +20,7 @@ export const Navigation: FC = () => {
             {navItems.map(({ text, href }) => (
                 <h2 key={text} className='mr-8'>
                     <Link href={href}>
-                        <a className='hover:text-amber-300 transition-colors duration-75'>
+                        <a className='hover:text-amber-300 transition-colors'>
                             {text}
                         </a>
                     </Link>
