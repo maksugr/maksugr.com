@@ -3,15 +3,15 @@ import { join } from 'path';
 
 import matter from 'gray-matter';
 
-const postsDirectory = join(process.cwd(), '_posts');
+const notesDirectory = join(process.cwd(), '_notes');
 
-export const getPostSlugs = () => {
-    return fs.readdirSync(postsDirectory);
+export const getNoteSlugs = () => {
+    return fs.readdirSync(notesDirectory);
 };
 
-export const getPostBySlug = (slug: string, fields: string[] = []) => {
+export const getNoteBySlug = (slug: string, fields: string[] = []) => {
     const realSlug = slug.replace(/\.md$/, '');
-    const fullPath = join(postsDirectory, `${realSlug}.md`);
+    const fullPath = join(notesDirectory, `${realSlug}.md`);
     const fileContents = fs.readFileSync(fullPath, 'utf8');
     const { data, content } = matter(fileContents);
 
@@ -38,11 +38,11 @@ export const getPostBySlug = (slug: string, fields: string[] = []) => {
     return items;
 };
 
-export const getAllPosts = (fields: string[] = []) => {
-    const slugs = getPostSlugs();
-    const posts = slugs
-        .map((slug) => getPostBySlug(slug, fields))
-        // sort posts by date in descending order
-        .sort((post1, post2) => (post1.date > post2.date ? -1 : 1));
-    return posts;
+export const getNotes = (fields: string[] = []) => {
+    const noteSlugs = getNoteSlugs();
+    const notes = noteSlugs
+        .map((noteSlug) => getNoteBySlug(noteSlug, fields))
+        // sort notes by date in descending order
+        .sort((note1, note2) => (note1.date > note2.date ? -1 : 1));
+    return notes;
 };

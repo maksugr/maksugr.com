@@ -1,6 +1,5 @@
 import { FC } from 'react';
 
-import { Footer } from './footer';
 import { Meta } from './meta';
 
 interface ILayoutProps {
@@ -11,10 +10,9 @@ export const Layout: FC<ILayoutProps> = ({ children }) => {
     return (
         <>
             <Meta />
-            <div className='min-h-screen'>
+            <div className='min-h-screen text-gray-800'>
                 <main>{children}</main>
             </div>
-            <Footer />
         </>
     );
 };

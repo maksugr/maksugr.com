@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import { FC } from 'react';
 
-import { DEFAULT_TITLE, HOME_OG_IMAGE_URL } from '../lib/constants';
+import { DEFAULT_TITLE } from '../lib/constants';
 
 export const Meta: FC = () => {
     return (
@@ -38,7 +38,7 @@ export const Meta: FC = () => {
             <meta name='theme-color' content='#000' />
             <link rel='alternate' type='application/rss+xml' href='/feed.xml' />
             <meta name='description' content={`${DEFAULT_TITLE}`} />
-            <meta property='og:image' content={HOME_OG_IMAGE_URL} />
+            <meta property='og:image' content='/og/image.png' />
         </Head>
     );
 };

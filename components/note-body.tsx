@@ -1,12 +1,12 @@
 import { FC } from 'react';
 
-import markdownStyles from './markdown-styles.module.css';
+import markdownStyles from './markdown.module.css';
 
-interface IPostBodyProps {
+interface INoteBodyProps {
     readonly content: string;
 }
 
-export const PostBody: FC<IPostBodyProps> = ({ content }) => {
+export const NoteBody: FC<INoteBodyProps> = ({ content }) => {
     return (
         <div className='max-w-2xl mx-auto'>
             <div
