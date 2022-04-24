@@ -16,7 +16,7 @@ const navItems: INavItem[] = [
 
 export const Navigation: FC = () => {
     return (
-        <nav className='flex text-sm md:text-xl font-bold mb-20 mt-4'>
+        <nav className='flex text-sm md:text-xl font-bold mb-24 mt-4'>
             {navItems.map(({ text, href }) => (
                 <h2 key={text} className='mr-8'>
                     <Link href={href}>
