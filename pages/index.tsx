@@ -7,8 +7,8 @@ import { HeroPost } from '../components/hero-post';
 import { Intro } from '../components/intro';
 import { Layout } from '../components/layout';
 import { getAllPosts } from '../lib/api';
-import { CMS_NAME } from '../lib/constants';
 import { IPost } from '../interfaces/post';
+import { DEFAULT_TITLE } from '../lib/constants';
 
 interface IIndex {
     readonly allPosts: IPost[];
@@ -21,7 +21,7 @@ const Index: FC<IIndex> = ({ allPosts }) => {
         <>
             <Layout>
                 <Head>
-                    <title>Next.js Blog Example with {CMS_NAME}</title>
+                    <title>{DEFAULT_TITLE}</title>
                 </Head>
                 <Container>
                     <Intro />

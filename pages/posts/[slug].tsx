@@ -10,23 +10,23 @@ import { PostHeader } from '../../components/post-header';
 import { Layout } from '../../components/layout';
 import { getPostBySlug, getAllPosts } from '../../lib/api';
 import { PostTitle } from '../../components/post-title';
-import { CMS_NAME } from '../../lib/constants';
+import { DEFAULT_TITLE } from '../../lib/constants';
 import markdownToHtml from '../../lib/markdownToHtml';
 import { IPost } from '../../interfaces/post';
 
 type IPostProps = {
     readonly post: IPost;
     readonly morePosts: IPost[];
-    readonly preview?: boolean;
 };
 
-const Post: FC<IPostProps> = ({ post, preview }) => {
+const Post: FC<IPostProps> = ({ post }) => {
     const router = useRouter();
     if (!router.isFallback && !post?.slug) {
         return <ErrorPage statusCode={404} />;
     }
+
     return (
-        <Layout preview={preview}>
+        <Layout>
             <Container>
                 <Header />
                 {router.isFallback ? (
@@ -36,8 +36,7 @@ const Post: FC<IPostProps> = ({ post, preview }) => {
                         <article className='mb-32'>
                             <Head>
                                 <title>
-                                    {post.title} | Next.js Blog Example with{' '}
-                                    {CMS_NAME}
+                                    {post.title} | {DEFAULT_TITLE}
                                 </title>
                                 <meta
                                     property='og:image'
