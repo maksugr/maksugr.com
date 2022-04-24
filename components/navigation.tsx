@@ -1,19 +1,31 @@
 import Link from 'next/link';
 import { FC } from 'react';
 
+interface INavItem {
+    readonly text: string;
+    readonly href: string;
+}
+
+const navItems: INavItem[] = [
+    {
+        text: 'roman ponomarev',
+        href: '/'
+    },
+    { text: 'notes', href: '/notes' }
+];
+
 export const Navigation: FC = () => {
     return (
         <nav className='flex text-sm md:text-xl font-bold mb-20 mt-4'>
-            <h2 className='mr-8'>
-                <Link href='/'>
-                    <a className='hover:opacity-70'>roman ponomarev</a>
-                </Link>
-            </h2>
-            <h2>
-                <Link href='/notes'>
-                    <a className='hover:opacity-70'>notes</a>
-                </Link>
-            </h2>
+            {navItems.map(({ text, href }) => (
+                <h2 key={text} className='mr-8'>
+                    <Link href={href}>
+                        <a className='hover:text-amber-300 transition-colors duration-75'>
+                            {text}
+                        </a>
+                    </Link>
+                </h2>
+            ))}
         </nav>
     );
 };
