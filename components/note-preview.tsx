@@ -9,7 +9,7 @@ interface INotePreviewProps {
 export const NotePreview: FC<INotePreviewProps> = ({ title, slug }) => {
     return (
         <div className='mb-10'>
-            <h3 className='text-3xl uppercase'>
+            <h3 className='text-xl font-bold lowercase'>
                 <Link as={`/notes/${slug}`} href='/notes/[slug]'>
                     <a className='hover:opacity-70'>{title}</a>
                 </Link>
