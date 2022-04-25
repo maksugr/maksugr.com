@@ -1,27 +1,27 @@
 import { FC } from 'react';
 
-import { INoteMeta } from '../interfaces/note-meta';
+import { IPostMetadata } from '../interfaces/post-metadata';
 
 import { Header } from './header';
 import { NotePreview } from './note-preview';
 import { Title } from './title';
 
 interface INotesProps {
-    readonly noteMetas: INoteMeta[];
+    readonly notesMetadata: IPostMetadata[];
 }
 
-export const Notes: FC<INotesProps> = ({ noteMetas }) => {
+export const Notes: FC<INotesProps> = ({ notesMetadata }) => {
     return (
         <section>
             <Header>
                 <Title>notes</Title>
             </Header>
             <div className='flex flex-col'>
-                {noteMetas.map((noteMeta) => (
+                {notesMetadata.map((noteMetadata) => (
                     <NotePreview
-                        key={noteMeta.slug}
-                        title={noteMeta.title}
-                        slug={noteMeta.slug}
+                        key={noteMetadata.slug}
+                        title={noteMetadata.title}
+                        slug={noteMetadata.slug}
                     />
                 ))}
             </div>

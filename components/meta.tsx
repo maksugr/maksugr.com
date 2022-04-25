@@ -36,9 +36,26 @@ export const Meta: FC = () => {
                 content='/favicon/browserconfig.xml'
             />
             <meta name='theme-color' content='#000' />
-            <link rel='alternate' type='application/rss+xml' href='/feed.xml' />
             <meta name='description' content={`${DEFAULT_TITLE}`} />
             <meta property='og:image' content='/og/image.png' />
+            <link
+                rel='alternate'
+                type='application/rss+xml'
+                title='Roman Ponomarev RSS feed'
+                href='/feeds/feed.xml'
+            />
+            <link
+                rel='alternate'
+                type='application/atom+xml'
+                title='Roman Ponomarev Atom feed'
+                href='/feeds/atom.xml'
+            />
+            <link
+                rel='alternate'
+                type='application/feed+json'
+                title='Roman Ponomarev JSON feed'
+                href='/feeds/feed.json'
+            />
         </Head>
     );
 };

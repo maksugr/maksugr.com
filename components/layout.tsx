@@ -2,11 +2,7 @@ import { FC } from 'react';
 
 import { Meta } from './meta';
 
-interface ILayoutProps {
-    readonly children: React.ReactNode;
-}
-
-export const Layout: FC<ILayoutProps> = ({ children }) => {
+export const Layout: FC = ({ children }) => {
     return (
         <>
             <Meta />

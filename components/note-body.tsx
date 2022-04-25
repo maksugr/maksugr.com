@@ -1,7 +1,12 @@
 import { FC } from 'react';
+import { MDXRemote, MDXRemoteSerializeResult } from 'next-mdx-remote';
 
-import markdownStyles from './markdown.module.css';
+import { MDXComponents } from './mdx-components';
 
-export const NoteBody: FC = ({ children }) => {
-    return <div className={markdownStyles['markdown']}>{children}</div>;
+interface INoteBodyProps {
+    readonly mdxSource: MDXRemoteSerializeResult;
+}
+
+export const NoteBody: FC<INoteBodyProps> = ({ mdxSource }) => {
+    return <MDXRemote {...mdxSource} components={MDXComponents} />;
 };

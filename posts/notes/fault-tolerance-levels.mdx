@@ -1,40 +1,37 @@
-import { NoteLayout } from '../../components/note-layout';
-
-export const meta = {
-    title: 'Fault tolerance levels',
-    slug: 'fault-tolerance-levels'
-};
+---
+title: 'Fault tolerance levels'
+summary: 'Fault tolerance levels: Hardware, Software, System'
+topics: ['fault tolerance']
+publishedAt: '2022-04-25'
+---
 
 There are three levels at which fault tolerance can be applied.
 
-- [Hardware](#Hardware-fault-tolerance)
-- [Software](#Software-fault-tolerance)
-- [System](#System-fault-tolerance)
+- [Hardware](#hardware-fault-tolerance)
+- [Software](#software-fault-tolerance)
+- [System](#system-fault-tolerance)
 
-<h2 id="Hardware-fault-tolerance">Hardware fault tolerance</h2>
+## Hardware fault tolerance
 
 Traditionally, fault tolerance has been used to compensate for faults in computing resources. By managing extra hardware resources, the computer subsystem increases its ability to continue operation. Hardware fault tolerance measures include:
 
-- redundant communications
-- replicated processors
-- additional memory
-- redundant power/energy supplies.
+* redundant communications
+* replicated processors
+* additional memory
+* redundant power/energy supplies.
 
 Hardware fault tolerance was particularly important in the early days of computing when the time between machine failures was measured in minutes.
 
-<h2 id="Software-fault-tolerance">Software fault tolerance</h2>
+## Software fault tolerance
 
 The second level of fault tolerance recognizes that a fault-tolerant hardware platform does not, in itself, guarantee high availability to the system user. It is still important to structure the computer software to compensate for faults such as changes in programs or data structures due to transients or design errors. This is software fault tolerance. Mechanisms such as
 
-- checkpoint/restart
-- recovery blocks
-- multiple-version programs
+* checkpoint/restart
+* recovery blocks
+* multiple-version programs
 
 are often used at this level.
 
-<h2 id="System-fault-tolerance">System fault tolerance</h2>
+## System fault tolerance
 
 At a third level, the computer subsystem may provide functions that compensate for failures in other system facilities that are not computer-based. This is system fault tolerance. For example, software can detect and compensate for failures in sensors. Measures at this level are usually application-specific. It is important that fault tolerance measures at all levels be compatible.
-
-
-export default ({ children }) => <NoteLayout meta={meta}>{children}</NoteLayout>
