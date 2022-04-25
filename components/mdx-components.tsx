@@ -21,7 +21,6 @@ import {
 } from '@chakra-ui/react';
 import { HTMLChakraProps } from '@chakra-ui/system';
 import { FC, ReactNode } from 'react';
-import Image from 'next/image';
 
 import { StylishLink } from './stylish-link';
 import { Small } from './typography';
@@ -121,7 +120,8 @@ export const MDXComponents = {
     hr: Hr,
     inlineCode: (props: any): ReactNode => <InlineCode {...props} />,
     blockquote: Blockquote,
-    img: (props: any): ReactNode => <Image alt={props.alt} {...props} />,
+    // eslint-disable-next-line @next/next/no-img-element
+    img: (props: any): ReactNode => <img alt={props.alt} {...props} />,
     Small,
     SideNote,
     Asterisk
