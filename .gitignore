@@ -34,5 +34,9 @@ tsconfig.tsbuildinfo
 # vercel
 .vercel
 
-# Feeds
+# feeds
 public/feeds/*
+
+# sitemap and robots
+public/sitemap*.xml
+public/robots.txt
