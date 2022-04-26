@@ -6,7 +6,7 @@ import { parseISO } from 'date-fns';
 import { MDXRemote } from 'next-mdx-remote';
 import { stripHtml } from 'string-strip-html';
 
-import { MDXComponents } from '../components/mdx-components';
+import { MDXComponents } from '../components/markdown';
 import { IPost } from '../interfaces/post';
 
 import {
