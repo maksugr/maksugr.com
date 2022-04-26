@@ -6,7 +6,8 @@ import {
     AUTHOR_NAME,
     BASE_URL,
     DEFAULT_DESCRIPTION,
-    DEFAULT_TITLE
+    DEFAULT_TITLE,
+    DOMAIN
 } from '../lib/constants';
 
 export interface IMetaProps {
@@ -65,7 +66,7 @@ export const Meta: FC<IMetaProps> = (props) => {
             <meta property='og:image' content='/og/image.png' />
             <meta property='og:url' content={`${BASE_URL}${router.asPath}`} />
             <meta property='og:type' content={meta.type} />
-            <meta property='og:site_name' content={meta.title} />
+            <meta property='og:site_name' content={DOMAIN} />
             <meta property='og:description' content={meta.description} />
             <meta property='og:title' content={meta.title} />
             <meta name='twitter:title' content={meta.title} />
@@ -73,6 +74,7 @@ export const Meta: FC<IMetaProps> = (props) => {
             <meta name='twitter:site' content='@maksugr' />
             <meta name='twitter:description' content={meta.description} />
             <meta name='twitter:image' content='/og/image.png' />
+            <meta name='key' content={DOMAIN} />
             <title>{meta.title}</title>
             <link
                 rel='alternate'

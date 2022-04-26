@@ -4,6 +4,6 @@ export const DEFAULT_TITLE = AUTHOR_NAME;
 export const DEFAULT_DESCRIPTION = `Personal site of ${AUTHOR_NAME}`;
 
 export const DOMAIN = 'maksugr.com';
-export const BASE_URL = `https://${DOMAIN}/`;
+export const BASE_URL = `https://${DOMAIN}`;
 
 export const COPYRIGHT = `Copyright ${new Date().getFullYear()} - ${AUTHOR_NAME}`;
