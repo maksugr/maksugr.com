@@ -1,9 +1,34 @@
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 import { FC } from 'react';
 
-import { AUTHOR_NAME, DEFAULT_DESCRIPTION } from '../lib/constants';
+import {
+    AUTHOR_NAME,
+    BASE_URL,
+    DEFAULT_DESCRIPTION,
+    DEFAULT_TITLE
+} from '../lib/constants';
 
-export const Meta: FC = () => {
+export interface IMetaProps {
+    readonly title?: string;
+    readonly description?: string;
+    readonly type?: 'website' | 'article';
+}
+
+const defaultProps: IMetaProps = {
+    title: DEFAULT_TITLE,
+    description: DEFAULT_DESCRIPTION,
+    type: 'website'
+};
+
+export const Meta: FC<IMetaProps> = (props) => {
+    const router = useRouter();
+
+    const meta = {
+        ...defaultProps,
+        ...props
+    };
+
     return (
         <Head>
             <link
@@ -33,24 +58,38 @@ export const Meta: FC = () => {
             <meta name='msapplication-config' content='browserconfig.xml' />
             <meta name='msapplication-TileColor' content='#ffffff' />
             <meta name='theme-color' content='#ffffff' />
-            <meta name='description' content={DEFAULT_DESCRIPTION} />
+            <meta name='description' content={meta.description} />
+            <meta name='author' content={AUTHOR_NAME} />
+            <meta name='robots' content='follow, index' />
+            <link rel='canonical' href={`${BASE_URL}${router.asPath}`} />
             <meta property='og:image' content='/og/image.png' />
+            <meta property='og:url' content={`${BASE_URL}${router.asPath}`} />
+            <meta property='og:type' content={meta.type} />
+            <meta property='og:site_name' content={meta.title} />
+            <meta property='og:description' content={meta.description} />
+            <meta property='og:title' content={meta.title} />
+            <meta name='twitter:title' content={meta.title} />
+            <meta name='twitter:card' content='summary_large_image' />
+            <meta name='twitter:site' content='@maksugr' />
+            <meta name='twitter:description' content={meta.description} />
+            <meta name='twitter:image' content='/og/image.png' />
+            <title>{meta.title}</title>
             <link
                 rel='alternate'
                 type='application/rss+xml'
-                title={`${AUTHOR_NAME} RSS feed`}
+                title={`${meta.title} RSS feed`}
                 href='/feeds/feed.xml'
             />
             <link
                 rel='alternate'
                 type='application/atom+xml'
-                title={`${AUTHOR_NAME} Atom feed`}
+                title={`${meta.title} Atom feed`}
                 href='/feeds/atom.xml'
             />
             <link
                 rel='alternate'
                 type='application/feed+json'
-                title={`${AUTHOR_NAME} JSON feed`}
+                title={`${meta.title} JSON feed`}
                 href='/feeds/feed.json'
             />
         </Head>

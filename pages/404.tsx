@@ -1,4 +1,3 @@
-import Head from 'next/head';
 import { FC } from 'react';
 
 import { Container } from '../components/container';
@@ -10,10 +9,7 @@ import { DEFAULT_TITLE } from '../lib/constants';
 
 const Page404: FC = () => {
     return (
-        <Layout>
-            <Head>
-                <title>404 | {DEFAULT_TITLE}</title>
-            </Head>
+        <Layout meta={{ title: `404 | ${DEFAULT_TITLE}` }}>
             <Container>
                 <Navigation />
                 <Header>

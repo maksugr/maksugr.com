@@ -1,5 +1,4 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
-import Head from 'next/head';
 import { FC } from 'react';
 
 import { Container } from '../../components/container';
@@ -13,12 +12,13 @@ import { getPost, getPostFiles } from '../../lib/posts';
 
 const NotePage: FC<IPost> = ({ mdxSource, metadata }) => {
     return (
-        <Layout>
-            <Head>
-                <title>
-                    {metadata.title} | {DEFAULT_TITLE}
-                </title>
-            </Head>
+        <Layout
+            meta={{
+                title: `${metadata.title} | ${DEFAULT_TITLE}`,
+                description: metadata.summary,
+                type: 'article'
+            }}
+        >
             <Container>
                 <Navigation />
                 <NoteHeader title={metadata.title} />

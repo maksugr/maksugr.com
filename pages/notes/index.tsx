@@ -1,4 +1,3 @@
-import Head from 'next/head';
 import { FC } from 'react';
 import { GetStaticProps } from 'next';
 
@@ -16,10 +15,7 @@ interface INotesPageProps {
 
 const NotesPage: FC<INotesPageProps> = ({ notesMetadata }) => {
     return (
-        <Layout>
-            <Head>
-                <title>Notes | {DEFAULT_TITLE}</title>
-            </Head>
+        <Layout meta={{ title: `Notes | ${DEFAULT_TITLE}` }}>
             <Container>
                 <Navigation />
                 {notesMetadata.length > 0 && (
