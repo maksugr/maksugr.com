@@ -20,8 +20,8 @@ const buildFeed = (): Feed => {
         id: 'https://maksugr.com/',
         link: 'https://maksugr.com/',
         language: 'en',
-        image: `${BASE_URL}/images/banner.png`,
-        favicon: `${BASE_URL}/favicons/banner.png`,
+        image: `${BASE_URL}/og/image.png`,
+        favicon: `${BASE_URL}/favicons/favicon.ico`,
         copyright: COPYRIGHT,
         generator: 'NextJS + feed package',
         feedLinks: {
@@ -38,7 +38,7 @@ const buildFeed = (): Feed => {
 };
 
 const makeFeedItem = (post: IPost): Item => {
-    const url = `${BASE_URL}/writings/${post.metadata.slug}`;
+    const url = `${BASE_URL}/notes/${post.metadata.slug}`;
     const htmlContent = ReactDOMServer.renderToStaticMarkup(
         <MDXRemote {...post.mdxSource} components={MDXComponents} />
     )
