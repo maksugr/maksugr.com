@@ -14,6 +14,7 @@ import {
     AUTHOR_NAME,
     BASE_URL,
     COPYRIGHT,
+    DEFAULT_DESCRIPTION,
     DEFAULT_TITLE
 } from './constants';
 import { getPosts } from './posts';
@@ -21,7 +22,7 @@ import { getPosts } from './posts';
 const buildFeed = (): Feed => {
     return new Feed({
         title: DEFAULT_TITLE,
-        description: `Personal site of ${AUTHOR_NAME}`,
+        description: DEFAULT_DESCRIPTION,
         id: BASE_URL,
         link: BASE_URL,
         language: 'en',

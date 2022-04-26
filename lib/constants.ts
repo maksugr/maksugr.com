@@ -1,6 +1,7 @@
 export const AUTHOR_NAME = 'Roman Ponomarev';
 export const AUTHOR_EMAIL = 'maksugr@gmail.com';
 export const DEFAULT_TITLE = AUTHOR_NAME;
+export const DEFAULT_DESCRIPTION = `Personal site of ${AUTHOR_NAME}`;
 
 export const DOMAIN = 'maksugr.com';
 export const BASE_URL = `https://${DOMAIN}/`;

@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import { FC } from 'react';
 
-import { DEFAULT_TITLE } from '../lib/constants';
+import { AUTHOR_NAME, DEFAULT_DESCRIPTION } from '../lib/constants';
 
 export const Meta: FC = () => {
     return (
@@ -23,37 +23,34 @@ export const Meta: FC = () => {
                 sizes='16x16'
                 href='/favicon/favicon-16x16.png'
             />
-            <link rel='manifest' href='/favicon/site.webmanifest' />
             <link
                 rel='mask-icon'
                 href='/favicon/safari-pinned-tab.svg'
                 color='#000000'
             />
             <link rel='shortcut icon' href='/favicon/favicon.ico' />
-            <meta name='msapplication-TileColor' content='#000000' />
-            <meta
-                name='msapplication-config'
-                content='/favicon/browserconfig.xml'
-            />
-            <meta name='theme-color' content='#000' />
-            <meta name='description' content={`${DEFAULT_TITLE}`} />
+            <link rel='manifest' href='site.webmanifest' />
+            <meta name='msapplication-config' content='browserconfig.xml' />
+            <meta name='msapplication-TileColor' content='#ffffff' />
+            <meta name='theme-color' content='#ffffff' />
+            <meta name='description' content={DEFAULT_DESCRIPTION} />
             <meta property='og:image' content='/og/image.png' />
             <link
                 rel='alternate'
                 type='application/rss+xml'
-                title='Roman Ponomarev RSS feed'
+                title={`${AUTHOR_NAME} RSS feed`}
                 href='/feeds/feed.xml'
             />
             <link
                 rel='alternate'
                 type='application/atom+xml'
-                title='Roman Ponomarev Atom feed'
+                title={`${AUTHOR_NAME} Atom feed`}
                 href='/feeds/atom.xml'
             />
             <link
                 rel='alternate'
                 type='application/feed+json'
-                title='Roman Ponomarev JSON feed'
+                title={`${AUTHOR_NAME} JSON feed`}
                 href='/feeds/feed.json'
             />
         </Head>
