@@ -14,7 +14,7 @@ export const Notes: FC<INotesProps> = ({ notesMetadata }) => {
     return (
         <section>
             <Header>
-                <Title>notes</Title>
+                <Title>Notes</Title>
             </Header>
             <div className='flex flex-col'>
                 {notesMetadata.map((noteMetadata) => (

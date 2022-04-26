@@ -1,14 +1,14 @@
-const domain = 'maksugr.com';
+const DOMAIN = 'maksugr.com';
 
-const policy = {
+const POLICY = {
     userAgent: '*',
 };
 
 module.exports = {
-    siteUrl: `https://${domain}`,
+    siteUrl: `https://${DOMAIN}`,
     changefreq: 'monthly',
     generateRobotsTxt: true,
     robotsTxtOptions: {
-        policies: [policy],
+        policies: [POLICY],
     },
 };

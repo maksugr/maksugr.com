@@ -3,7 +3,6 @@ import mdxPrism from 'mdx-prism';
 import rehypeSlug from 'rehype-slug';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import remarkCodeTitles from 'remark-code-titles';
-import remarkCapitalize from 'remark-capitalize';
 import { MDXRemoteSerializeResult } from 'next-mdx-remote';
 import remarkTextr from 'remark-textr';
 import apostrophes from 'typographic-apostrophes';
@@ -21,8 +20,6 @@ import trademark from 'typographic-trademark';
 import imageSize from 'rehype-img-size';
 import remarkUnwrapImages from 'remark-unwrap-images';
 
-import { TITLE_OPTIONS } from './title-case';
-
 const serializePost = async (
     content: string
 ): Promise<MDXRemoteSerializeResult> => {
@@ -31,7 +28,6 @@ const serializePost = async (
             remarkPlugins: [
                 remarkUnwrapImages,
                 remarkCodeTitles,
-                [remarkCapitalize, TITLE_OPTIONS],
                 [
                     remarkTextr,
                     {

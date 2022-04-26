@@ -8,7 +8,6 @@ import { parseISO } from 'date-fns';
 import { IPost } from '../interfaces/post';
 import { IPostFile } from '../interfaces/post-file';
 
-import { titleCase } from './title-case';
 import serializePost from './mdx';
 
 const root = process.cwd();
@@ -42,7 +41,7 @@ export const getPost = async (type: PostType, slug: string): Promise<IPost> => {
         mdxSource,
         metadata: {
             slug,
-            title: titleCase(title),
+            title,
             summary,
             topics,
             publishedAt,
