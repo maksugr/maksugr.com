@@ -13,16 +13,32 @@
     @apply font-semibold;
 }
 
-.markdown h2, .markdown h3 {
-    @apply text-amber-300;
-}
-
 .markdown h2 {
-    @apply text-3xl mt-12 mb-4;
+    @apply text-3xl mt-12 mb-6;
 }
 
 .markdown h3 {
-    @apply text-2xl mt-8 mb-4;
+    @apply text-2xl mt-8 mb-6;
+}
+
+.markdown h4 {
+    @apply text-xl my-6;
+}
+
+.markdown h2, .markdown h3, .markdown h4 {
+    @apply relative text-amber-300 scroll-mt-6 hover:opacity-70 transition-opacity;
+}
+
+.markdown h2:hover > a, .markdown h3:hover > a, .markdown h4:hover > a {
+    @apply opacity-100;
+}
+
+.markdown h2 a, .markdown h3 a, .markdown h4 a {
+    @apply absolute cursor-pointer opacity-0 w-full border-none text-amber-300 hover:opacity-100 hover:no-underline transition-opacity;
+}
+
+.markdown h2 a span, .markdown h3 a span, .markdown h4 a span {
+    @apply after:content-['#'] after:-ml-8;
 }
 
 .markdown li {
@@ -36,7 +52,7 @@
 
 .markdown blockquote {
     @apply relative pl-5;
-    @apply before:absolute before:top-0 before:left-0 before:w-1 before:h-full before:bg-amber-300;
+    @apply before:absolute before:top-0 before:left-0 before:w-1.5 before:h-full before:bg-amber-300;
 }
 
 .markdown blockquote p {

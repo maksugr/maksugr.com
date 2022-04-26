@@ -7,13 +7,18 @@ export interface IImageProps {
 
 export const Image: FC<IImageProps> = (props) => {
     return (
-        <div className='my-6 image-container'>
+        <a
+            href={props.src}
+            target='_blank'
+            className='block my-6 hover:opacity-70 no-underline border-none transition-opacity'
+            rel='noreferrer'
+        >
             {/*eslint-disable-next-line @next/next/no-img-element */}
             <img
                 src={props.src}
                 alt={props.alt || ''}
                 className='w-auto h-auto max-w-full'
             />
-        </div>
+        </a>
     );
 };
