@@ -1,6 +1,7 @@
 declare module 'mdx-prism';
 declare module 'remark-code-titles';
 declare module 'remark-capitalize';
+declare module 'rehype-img-size';
 declare module 'typographic-apostrophes';
 declare module 'typographic-quotes';
 declare module 'typographic-apostrophes-for-possessive-plurals';
@@ -13,4 +14,3 @@ declare module 'typographic-math-symbols';
 declare module 'typographic-registered-trademark';
 declare module 'typographic-single-spaces';
 declare module 'typographic-trademark';
-declare module 'rehype-img-size';

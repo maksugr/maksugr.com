@@ -5,10 +5,8 @@ import ReactDOMServer from 'react-dom/server';
 import makeTitle from 'title';
 import { parseISO } from 'date-fns';
 import { MDXRemote } from 'next-mdx-remote';
-import { ChakraProvider } from '@chakra-ui/react';
 import { stripHtml } from 'string-strip-html';
 
-import theme from '../styles/theme';
 import { MDXComponents } from '../components/mdx-components';
 import { IPost } from '../interfaces/post';
 
@@ -42,9 +40,7 @@ const buildFeed = (): Feed => {
 const makeFeedItem = (post: IPost): Item => {
     const url = `${BASE_URL}/writings/${post.metadata.slug}`;
     const htmlContent = ReactDOMServer.renderToStaticMarkup(
-        <ChakraProvider resetCSS theme={theme}>
-            <MDXRemote {...post.mdxSource} components={MDXComponents} />
-        </ChakraProvider>
+        <MDXRemote {...post.mdxSource} components={MDXComponents} />
     )
         .replace(/href="\/#/g, `href="${url}#`)
         .replace(/href="\//g, `href="${BASE_URL}/`)
