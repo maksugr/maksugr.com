@@ -10,8 +10,8 @@ interface INoteBodyProps {
 
 export const NoteBody: FC<INoteBodyProps> = ({ mdxSource }) => {
     return (
-        <div className={markdownStyles['markdown']}>
+        <article className={markdownStyles['markdown']}>
             <MDXRemote {...mdxSource} components={MDXComponents} />
-        </div>
+        </article>
     );
 };

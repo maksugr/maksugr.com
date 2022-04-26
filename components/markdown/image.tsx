@@ -6,7 +6,6 @@ export interface IImageProps {
 }
 
 export const Image: FC<IImageProps> = (props) => {
-    console.log(props);
     return (
         <div className='my-6 image-container'>
             {/*eslint-disable-next-line @next/next/no-img-element */}

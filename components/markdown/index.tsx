@@ -1,11 +1,7 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { ReactNode } from 'react';
-
-import { Figcaption, IFigcaptionProps } from './figcaption';
 import { IImageProps, Image } from './image';
+import { ILinkProps, Link } from './link';
 
 export const MDXComponents = {
-    a: (props: any): ReactNode => <a {...props} />,
-    img: (props: IImageProps) => <Image {...props} alt={props.alt} />,
-    figcaption: (props: IFigcaptionProps) => <Figcaption {...props} />
+    a: (props: ILinkProps) => <Link {...props} />,
+    img: (props: IImageProps) => <Image {...props} alt={props.alt} />
 };

@@ -6,7 +6,11 @@
 .markdown ul,
 .markdown ol,
 .markdown blockquote {
-    @apply my-6;
+    @apply my-6 font-light;
+}
+
+.markdown p strong {
+    @apply font-semibold;
 }
 
 .markdown h2, .markdown h3 {
@@ -19,4 +23,26 @@
 
 .markdown h3 {
     @apply text-2xl mt-8 mb-4;
+}
+
+.markdown li {
+    @apply relative pl-5;
+    @apply before:absolute before:top-0 before:bottom-0 before:left-0 before:m-auto before:w-1.5 before:h-1.5 before:bg-amber-300 before:rounded-full;
+}
+
+.markdown figcaption {
+    @apply -mt-6 mb-6 text-center italic text-sm text-gray-500;
+}
+
+.markdown blockquote {
+    @apply relative pl-5;
+    @apply before:absolute before:top-0 before:left-0 before:w-1 before:h-full before:bg-amber-300;
+}
+
+.markdown blockquote p {
+    @apply text-base text-gray-500;
+}
+
+.markdown a {
+    @apply text-amber-300 border-b-2 border-b-amber-300 hover:opacity-70 transition-all duration-75;
 }

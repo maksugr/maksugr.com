@@ -20,8 +20,7 @@ export const Notes: FC<INotesProps> = ({ notesMetadata }) => {
                 {notesMetadata.map((noteMetadata) => (
                     <NotePreview
                         key={noteMetadata.slug}
-                        title={noteMetadata.title}
-                        slug={noteMetadata.slug}
+                        noteMetadata={noteMetadata}
                     />
                 ))}
             </div>
