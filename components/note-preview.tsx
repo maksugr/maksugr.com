@@ -11,8 +11,6 @@ interface INotePreviewProps {
 export const NotePreview: FC<INotePreviewProps> = ({ noteMetadata }) => {
     const { title, readingTime, publishedAt, slug } = noteMetadata;
 
-    console.log(readingTime, publishedAt);
-
     return (
         <div className='mb-10'>
             <h3 className='text-2xl lowercase'>

@@ -19,7 +19,7 @@
     "npm": ">=8"
   },
   "scripts": {
-    "dev": "next-remote-watch ./content/**/*.mdx",
+    "dev": "next-remote-watch ./posts/**/*.mdx",
     "build": "next build",
     "postbuild": "next-sitemap",
     "start": "next start",

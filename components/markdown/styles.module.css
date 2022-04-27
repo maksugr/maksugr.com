@@ -44,7 +44,7 @@
 
 .markdown li {
     @apply relative pl-5;
-    @apply before:absolute before:top-0 before:bottom-0 before:left-0 before:m-auto before:w-1.5 before:h-1.5 before:bg-amber-300 before:rounded-full;
+    @apply before:absolute before:top-3 before:left-0 before:m-auto before:w-1.5 before:h-1.5 before:bg-amber-300 before:rounded-full;
 }
 
 .markdown figcaption {
@@ -71,4 +71,16 @@
 .markdown code,
 .markdown pre {
     @apply bg-gray-100 text-base;
+}
+
+.markdown [id='references'] {
+    @apply text-gray-800  hover:opacity-100;
+}
+
+.markdown [id='references'] a span {
+    @apply after:content-none;
+}
+
+.markdown hr {
+    @apply border-t border-gray-100;
 }

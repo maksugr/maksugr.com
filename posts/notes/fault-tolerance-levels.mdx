@@ -26,12 +26,19 @@ Hardware fault tolerance was particularly important in the early days of computi
 
 The second level of fault tolerance recognizes that a fault-tolerant hardware platform does not, in itself, guarantee high availability to the system user. It is still important to structure the computer software to compensate for faults such as changes in programs or data structures due to transients or design errors. This is software fault tolerance. Mechanisms such as
 
-* checkpoint/restart
-* recovery blocks
-* multiple-version programs
+* [checkpoint](/notes/fault-tolerance-checkpoint)
+* [restart](/notes/fault-tolerance-restart)
+* [recovery blocks](/notes/fault-tolerance-recovery-blocks)
+* [multiple-version programs](/notes/fault-tolerance-multiple-version-programs)
 
 are often used at this level.
 
 ## System fault tolerance
 
 At a third level, the computer subsystem may provide functions that compensate for failures in other system facilities that are not computer-based. This is system fault tolerance. For example, software can detect and compensate for failures in sensors. Measures at this level are usually application-specific. It is important that fault tolerance measures at all levels be compatible.
+
+---
+
+#### References
+
+* Walter L. Heimerdinger, Charles B. Weinstock, "A Conceptual Framework for System Fault Tolerance".

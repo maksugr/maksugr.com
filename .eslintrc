@@ -14,6 +14,7 @@
                 "groups": ["builtin", "external", "parent", "sibling", "index", "type"],
                 "newlines-between": "always"
             }
-        ]
+        ],
+        "no-console": ["warn", { "allow": ["warn"] }]
     }
 }
