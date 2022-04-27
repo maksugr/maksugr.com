@@ -5,7 +5,8 @@
 .markdown p,
 .markdown ul,
 .markdown ol,
-.markdown blockquote {
+.markdown blockquote,
+.markdown pre {
     @apply my-6 font-light;
 }
 
@@ -65,4 +66,9 @@
 
 .markdown p code, .markdown ul code, .markdown ol code {
     @apply bg-gray-100 py-0.5 px-1 leading-none rounded-sm text-base;
+}
+
+.markdown code,
+.markdown pre {
+    @apply bg-gray-100 text-base;
 }
