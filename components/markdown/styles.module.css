@@ -62,3 +62,7 @@
 .markdown a {
     @apply text-amber-300 border-b-2 border-b-amber-300 hover:opacity-70 transition-all duration-75;
 }
+
+.markdown p code, .markdown ul code, .markdown ol code {
+    @apply bg-gray-100 py-0.5 px-1 leading-none rounded-sm text-base;
+}
