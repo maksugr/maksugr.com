@@ -1,0 +1,61 @@
+---
+title: 'Dependable System Approaches'
+summary: 'Dependable System Approaches: Fault Avoidance, Fault Removal, Fault Tolerance, Fault Evasion'
+topics: ['system', 'dependable system', 'fault tolerance']
+publishedAt: '2022-04-28'
+---
+
+Achieving the goal of [dependability](/notes/dependable-system) requires effort at all phases of a system's development. Steps must be taken at:
+
+* design time ([fault avoidance techniques](#fault-avoidance))
+* implementation time ([fault removal techniques](#fault-removal))
+* execution time ([fault tolerance techniques](#fault-tolerance), [fault evasion techniques](#fault-evasion))
+
+## Fault Avoidance
+
+Fault avoidance uses various tools and techniques to design the system in such a manner that the introduction of faults is minimized. A **fault avoided** is one that does not have to be dealt with at a later time. Techniques:
+
+* design
+* verification
+* validation
+* modelling
+* code inspections
+
+## Fault Removal
+
+Fault removal uses:
+
+* verification
+* testing
+
+techniques to locate faults enabling the necessary changes to be made to the system. The range of techniques used for fault removal includes:
+
+* [unit testing](/notes/testing-unit)
+* [integration testing](/notes/testing-integration)
+* [regression testing](/notes/testing-regression)
+* [back-to-back testing](/notes/testing-back-to-back)
+* [end-to-end testing](/notes/testing-end-to-end)
+
+**It is generally much more expensive to remove a fault than to avoid a fault.**
+
+## Fault Tolerance
+
+In spite of the best efforts to avoid or remove them, there are bound to be faults in any operational system. A system built with fault tolerance capabilities will manage to keep operating, perhaps at a degraded level, in the presence of these faults. For a system to be fault tolerant, it must be able to:
+
+* detect
+* diagnose
+* confine
+* mask
+* compensate
+* recover
+
+## Fault Evasion
+
+It is possible to observe the behavior of a system and use this information to take action to
+compensate for faults before they occur. Often, systems exhibit a characteristic or normal behavior. When a system deviates from its normal behavior, even if the behavior continues to meet system specifications, it may be appropriate to reconfigure the system to reduce the stress on a component with a high failure potential. We have coined the term fault evasion to describe this practice. A [computer system](/notes/system) that suddenly begins to respond sluggishly often prompts a prudent user to backup any work in progress, even though overall system performance may be within specification.
+
+---
+
+#### References
+
+* Walter L. Heimerdinger, Charles B. Weinstock, "A Conceptual Framework for System Fault Tolerance";

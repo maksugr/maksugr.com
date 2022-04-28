@@ -62,8 +62,8 @@ export const getPosts = async (
 
     const sortedPosts = posts.sort(
         (a, b) =>
-            parseISO(a.metadata.publishedAt).getTime() -
-            parseISO(b.metadata.publishedAt).getTime()
+            parseISO(b.metadata.publishedAt).getTime() -
+            parseISO(a.metadata.publishedAt).getTime()
     );
 
     return limit ? sortedPosts.slice(0, limit) : sortedPosts;

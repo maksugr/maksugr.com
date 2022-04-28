@@ -5,7 +5,7 @@ topics: ['fault tolerance']
 publishedAt: '2022-04-25'
 ---
 
-There are three levels at which fault tolerance can be applied.
+There are three levels at which fault tolerance can be applied:
 
 - [Hardware](#hardware-fault-tolerance)
 - [Software](#software-fault-tolerance)
@@ -24,12 +24,12 @@ Hardware fault tolerance was particularly important in the early days of computi
 
 ## Software fault tolerance
 
-The second level of fault tolerance recognizes that a fault-tolerant hardware platform does not, in itself, guarantee high availability to the system user. It is still important to structure the computer software to compensate for faults such as changes in programs or data structures due to transients or design errors. This is software fault tolerance. Mechanisms such as
+The second level of fault tolerance recognizes that a fault-tolerant hardware platform does not, in itself, guarantee high availability to the system user. It is still important to structure the computer software to compensate for faults such as changes in programs or data structures due to transients or design errors. This is software fault tolerance. Mechanisms such as:
 
-* [checkpoint](/notes/fault-tolerance-checkpoint)
-* [restart](/notes/fault-tolerance-restart)
-* [recovery blocks](/notes/fault-tolerance-recovery-blocks)
-* [multiple-version programs](/notes/fault-tolerance-multiple-version-programs)
+* [checkpoint](/notes/software-fault-tolerance-checkpoint)
+* [restart](/notes/software-fault-tolerance-restart)
+* [recovery blocks](/notes/software-fault-tolerance-recovery-blocks)
+* [multiple-version programs](/notes/software-fault-tolerance-multiple-version-programs)
 
 are often used at this level.
 
@@ -41,4 +41,4 @@ At a third level, the computer subsystem may provide functions that compensate f
 
 #### References
 
-* Walter L. Heimerdinger, Charles B. Weinstock, "A Conceptual Framework for System Fault Tolerance".
+* Walter L. Heimerdinger, Charles B. Weinstock, "A Conceptual Framework for System Fault Tolerance";
