@@ -1,18 +1,81 @@
 ---
 title: 'Dependable System'
-summary: 'Dependable System definition'
+summary: 'Dependable System summary'
 topics: ['system', 'dependable system', 'fault tolerance']
 publishedAt: '2022-04-28'
 ---
 
+## Definition
+
 A system is **dependable** when it is trustworthy enough that reliance can be placed on the service that it delivers. For a system to be dependable, it must be:
 
-* [available](/notes/dependable-system-attributes-available) (ready for use when we need it)
-* [reliable](/notes/dependable-system-attributes-reliable) (able to provide continuity of service while we are using it)
-* [safe](/notes/dependable-system-attributes-safe) (does not have a catastrophic consequence on the environment)
-* [secure](/notes/dependable-system-attributes-secure) (able to preserve confidentiality)
+* [available](#available) (ready for use when we need it)
+* [reliable](#reliable) (able to provide continuity of service while we are using it)
+* [safe](#safe) (does not have a catastrophic consequence on the environment)
+* [secure](#secure) (able to preserve confidentiality)
 
-Although these system attributes can be considered in isolation, in fact they are **interdependent**. For instance, a system that is not reliable is also not available (at least when it is not operating correctly). A secure system that doesn't allow an authorized access is also not available. An unreliable system to control nuclear reactors is probably not a safe one either.
+Although these system [attributes](#attributes) can be considered in isolation, in fact they are **interdependent**. For instance, a system that is not reliable is also not available (at least when it is not operating correctly). A secure system that doesn't allow an authorized access is also not available. An unreliable system to control nuclear reactors is probably not a safe one either.
+
+## Attributes
+
+### Available
+
+### Reliable
+
+### Safe
+
+### Secure
+
+## Approaches
+
+Achieving the goal of dependability requires effort at all phases of a system's development. Steps must be taken at:
+
+* design time ([fault avoidance techniques](#fault-avoidance))
+* implementation time ([fault removal techniques](#fault-removal))
+* execution time ([fault tolerance techniques](#fault-tolerance), [fault evasion techniques](#fault-evasion))
+
+### Fault Avoidance
+
+Fault avoidance uses various tools and techniques to design the system in such a manner that the introduction of faults is minimized. A **fault avoided** is one that does not have to be dealt with at a later time. Techniques:
+
+* design
+* verification
+* validation
+* modelling
+* code inspections
+
+### Fault Removal
+
+Fault removal uses:
+
+* verification
+* testing
+
+techniques to locate faults enabling the necessary changes to be made to the system. The range of techniques used for fault removal includes:
+
+* [unit testing](/notes/testing#unit)
+* [integration testing](/notes/testing#integration)
+* [regression testing](/notes/testing#regression)
+* [back-to-back testing](/notes/testing#back-to-back)
+* [end-to-end testing](/notes/testing#end-to-end)
+
+**It is generally much more expensive to remove a fault than to avoid a fault.**
+
+### Fault Tolerance
+
+In spite of the best efforts to avoid or remove them, there are bound to be faults in any operational system. A system built with fault tolerance capabilities will manage to keep operating, perhaps at a degraded level, in the presence of these faults. For a system to be fault tolerant, it must be able to:
+
+* detect
+* diagnose
+* confine
+* mask
+* compensate
+* recover
+
+### Fault Evasion
+
+It is possible to observe the behavior of a system and use this information to take action to
+compensate for faults before they occur. Often, systems exhibit a characteristic or normal behavior. When a system deviates from its normal behavior, even if the behavior continues to meet system specifications, it may be appropriate to reconfigure the system to reduce the stress on a component with a high failure potential. We have coined the term fault evasion to describe this practice. A [computer system](/notes/system) that suddenly begins to respond sluggishly often prompts a prudent user to backup any work in progress, even though overall system performance may be within specification.
 
 ---
 
