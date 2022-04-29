@@ -5,6 +5,48 @@ topics: ['fault tolerance']
 publishedAt: '2022-04-25'
 ---
 
+## Definitions
+
+The terms *failure* and *fault* are key to any understanding of system reliability. Yet they are often misused.
+
+Over time, failure has come to be defined in terms of specified service delivered by a system. This avoids circular definitions involving essentially synonymous terms such as *defect*. A system to have a **failure** if the service it delivers to the user deviates from compliance with the system specification for a specified period of time. While it may be difficult to arrive at an unambiguous specification of the service to be delivered by any system, the concept of an agreed-to specification is the most reasonable of the options for defining satisfactory service and the absence of satisfactory service, failure.
+
+It is important to have some reference for the definition of failure, and the specification is a logical choice. The specification can be considered as a boundary to the system's [region of concern](#region-of-concern). It is important to recognize that every system has an *explicit specification*, which is written, and an *implicit specification* that the system should at least behave as well as a reasonable person could expect based on experience with similar systems and with the world in general. Clearly, it is important to make as much of the specification as explicit as possible.
+
+It has become the practice to define faults in terms of failures. The concept closest to the common understanding of the word fault is one that defines a **fault** as the adjudged cause of a failure. This fits with a common application of the verb form of the word fault, which involves determining cause or affixing blame. However, this requires an understanding of how failures are caused.
+
+An alternate view of faults is to consider them failures in other systems that interact with the system under consideration:
+
+* a subsystem internal to the system under consideration
+* a component of the system under consideration
+* an external system that interacts with the system under consideration
+* the environment
+
+In the first instance, the link between faults and failures is cause; in the second case it is level of abstraction or location.
+
+The advantages of defining faults as failures of component/interacting systems are:
+
+* one can consider faults without the need to establish a direct connection with a failure, so we can
+discuss faults that do not cause failures, i.e., the system is naturally fault tolerant
+* the definition of a fault is the same as the definition of a failure with only the boundary of the relevant
+system or subsystem being different
+
+This means that we can consider an obvious internal defect to be a fault without having to establish a causal relationship between the defect and a failure at the system boundary.
+
+A fault can lead to:
+
+* other faults
+* failure
+* nothing
+
+A system with faults may continue to provide its service, that is, not fail. Such a system is said to be **fault tolerant**. Thus, an important motivation for differentiating between faults and failures is the need to describe the fault tolerance of a system. An observer inspecting the internals of the system would say that the faulty component had failed, because the observer's viewpoint is now at a lower level of detail.
+
+The observable effect of a fault at the system boundary is called a **symptom**. The most extreme symptom of a fault is a failure.
+
+The term **error** often is used in addition to the terms fault and failure. Often, errors are defined to be the result of faults, leading to failures. Informally, errors seem to be a passive concept associated with incorrect values in the system state. However, it is extremely difficult to develop unambiguous criteria for differentiating between faults and errors. Many researchers refer to value faults, which are also clearly erroneous values. The connection between error and failure is even more difficult to describe.
+
+As we have seen, differentiation between failures and faults is essential for fault tolerant systems. A third term, error, adds little to this distinction and can be a source of confusion.
+
 ## Requirements
 
 To be fault tolerant, [a system](/notes/system) must be able to:
