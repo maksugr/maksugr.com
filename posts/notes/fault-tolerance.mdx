@@ -5,6 +5,45 @@ topics: ['fault tolerance']
 publishedAt: '2022-04-25'
 ---
 
+## Requirements
+
+To be fault tolerant, [a system](/notes/system) must be able to:
+
+* detect
+* diagnose
+* confine
+* mask
+* compensate
+* recover
+
+## Degree
+
+The degree of fault tolerance a system requires can be specified [quantitatively](#quantitative-goals) or [qualitatively](#qualitative-goals).
+
+### Quantitative Goals
+
+A quantitative reliability goal is usually expressed as the maximum allowed failure-rate. For example, the reliability figure usually stated as a goal for computer systems in commercial aircraft is less than 10<sup>-9</sup> failures per hour. The problem with stating reliability requirements in this manner is that it is difficult to know when it has been achieved. Standard statistical methods cannot be used to show such reliability with either standard or fault tolerant software. It is also clear that there is no way to achieve confidence that a system meets such a reliability goal through random testing. Nevertheless, reliability goals are often expressed in this manner.
+
+### Qualitative Goals
+
+An alternative method of specifying a system's reliability characteristics is to specify them qualitatively. Typical specifications would include next goals.
+
+#### Fail-safe
+
+Design the system so that, when it sustains a specified number of faults, it fails in a safe mode. For instance, railway signalling systems are designed to fail so that all trains stop.
+
+#### Fail-op
+
+Design the system so that, when it sustains a specified number of faults, it still provides a subset of its specified behavior.
+
+#### No single point of failure
+
+Design the system so that the failure of any single component will not cause the system to fail. Such systems are often designed so that the failed component can be replaced or repaired before another failure occurs.
+
+#### Consistency
+
+Design the system so that all information delivered by the system is equivalent to the information that would be delivered by an instance of a non-faulty system.
+
 ## Levels
 
 There are three levels at which fault tolerance can be applied:
