@@ -18,7 +18,22 @@ import registeredTrademark from 'typographic-registered-trademark';
 import singleSpaces from 'typographic-single-spaces';
 import trademark from 'typographic-trademark';
 import imageSize from 'rehype-img-size';
+import toc, { ListItemNode, HtmlElementNode } from '@jsdevtools/rehype-toc';
 import remarkUnwrapImages from 'remark-unwrap-images';
+
+const customizeTOCItem = (tocItem: ListItemNode, heading: HtmlElementNode) => {
+    if (
+        heading.children?.some(
+            (child) =>
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                (child as any)?.value === 'References'
+        )
+    ) {
+        return false;
+    }
+
+    return tocItem;
+};
 
 const serializePost = async (
     content: string
@@ -51,6 +66,12 @@ const serializePost = async (
             rehypePlugins: [
                 mdxPrism,
                 rehypeSlug,
+                [
+                    toc,
+                    {
+                        customizeTOCItem
+                    }
+                ],
                 rehypeAutolinkHeadings,
                 [imageSize, { dir: 'public' }]
             ]
