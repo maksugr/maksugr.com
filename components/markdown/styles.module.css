@@ -35,7 +35,7 @@
 }
 
 .markdown h2 a, .markdown h3 a, .markdown h4 a {
-    @apply absolute cursor-pointer opacity-0 w-full border-none text-amber-300 hover:opacity-100 hover:no-underline transition-opacity;
+    @apply absolute cursor-pointer opacity-100 md:opacity-0 w-full border-none text-amber-300 hover:opacity-100 hover:no-underline transition-opacity;
 }
 
 .markdown h2 a span, .markdown h3 a span, .markdown h4 a span {
