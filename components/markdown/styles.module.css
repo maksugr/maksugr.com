@@ -39,7 +39,7 @@
 }
 
 .markdown h2 a span, .markdown h3 a span, .markdown h4 a span {
-    @apply after:content-['#'] after:-ml-8;
+    @apply after:content-['#'] after:-ml-8 after:opacity-0 md:after:opacity-100;
 }
 
 .markdown li {
