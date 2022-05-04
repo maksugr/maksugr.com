@@ -15,7 +15,7 @@ export const NotePreview: FC<INotePreviewProps> = ({ noteMetadata }) => {
         <div className='mb-10'>
             <h3 className='text-2xl lowercase'>
                 <Link as={`/notes/${slug}`} href='/notes/[slug]'>
-                    <a className='hover:text-amber-300 transition-colors'>
+                    <a className='hover:text-cyan-800 transition-colors'>
                         {title}
                     </a>
                 </Link>

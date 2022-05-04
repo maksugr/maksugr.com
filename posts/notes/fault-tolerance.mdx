@@ -11,7 +11,7 @@ The terms *failure* and *fault* are key to any understanding of system reliabili
 
 Over time, failure has come to be defined in terms of specified service delivered by a system. This avoids circular definitions involving essentially synonymous terms such as *defect*. A system to have a **failure** if the service it delivers to the user deviates from compliance with the system specification for a specified period of time. While it may be difficult to arrive at an unambiguous specification of the service to be delivered by any system, the concept of an agreed-to specification is the most reasonable of the options for defining satisfactory service and the absence of satisfactory service, failure.
 
-It is important to have some reference for the definition of failure, and the specification is a logical choice. The specification can be considered as a boundary to the system's [region of concern](#region-of-concern). It is important to recognize that every system has an *explicit specification*, which is written, and an *implicit specification* that the system should at least behave as well as a reasonable person could expect based on experience with similar systems and with the world in general. Clearly, it is important to make as much of the specification as explicit as possible.
+It is important to have some reference for the definition of failure, and the specification is a logical choice. The specification can be considered as a boundary to the system's [region of concern](#failure-regions). It is important to recognize that every system has an *explicit specification*, which is written, and an *implicit specification* that the system should at least behave as well as a reasonable person could expect based on experience with similar systems and with the world in general. Clearly, it is important to make as much of the specification as explicit as possible.
 
 It has become the practice to define faults in terms of failures. The concept closest to the common understanding of the word fault is one that defines a **fault** as the adjudged cause of a failure. This fits with a common application of the verb form of the word fault, which involves determining cause or affixing blame. However, this requires an understanding of how failures are caused.
 
@@ -26,10 +26,8 @@ In the first instance, the link between faults and failures is cause; in the sec
 
 The advantages of defining faults as failures of component/interacting systems are:
 
-* one can consider faults without the need to establish a direct connection with a failure, so we can
-discuss faults that do not cause failures, i.e., the system is naturally fault tolerant
-* the definition of a fault is the same as the definition of a failure with only the boundary of the relevant
-system or subsystem being different
+* one can consider faults without the need to establish a direct connection with a failure, so we can discuss faults that do not cause failures, i.e., the system is naturally fault tolerant
+* the definition of a fault is the same as the definition of a failure with only the boundary of the relevant system or subsystem being different
 
 This means that we can consider an obvious internal defect to be a fault without having to establish a causal relationship between the defect and a failure at the system boundary.
 
@@ -43,9 +41,11 @@ A system with faults may continue to provide its service, that is, not fail. Suc
 
 The observable effect of a fault at the system boundary is called a **symptom**. The most extreme symptom of a fault is a failure.
 
+Note that a fault does not lead to a failure unless the result is observable by the user. This means that one person's fault is another person's failure.
+
 The term **error** often is used in addition to the terms fault and failure. Often, errors are defined to be the result of faults, leading to failures. Informally, errors seem to be a passive concept associated with incorrect values in the system state. However, it is extremely difficult to develop unambiguous criteria for differentiating between faults and errors. Many researchers refer to value faults, which are also clearly erroneous values. The connection between error and failure is even more difficult to describe.
 
-As we have seen, differentiation between failures and faults is essential for fault tolerant systems. A third term, error, adds little to this distinction and can be a source of confusion.
+As we have seen, differentiation between failures and faults is essential for fault tolerant systems. A third term error, adds little to this distinction and can be a source of confusion.
 
 ## Requirements
 
@@ -101,7 +101,7 @@ Traditionally, fault tolerance has been used to compensate for faults in computi
 * redundant communications
 * replicated processors
 * additional memory
-* redundant power/energy supplies.
+* redundant power supplies.
 
 Hardware fault tolerance was particularly important in the early days of computing when the time between machine failures was measured in minutes.
 
@@ -127,6 +127,140 @@ are often used at this level.
 ### System fault tolerance
 
 At a third level, the computer subsystem may provide functions that compensate for failures in other system facilities that are not computer-based. This is system fault tolerance. For example, software can detect and compensate for failures in sensors. Measures at this level are usually application-specific. It is important that fault tolerance measures at all levels be compatible.
+
+## Dependency relations
+
+### Acyclic / Cyclic
+
+A component of a system is said to **depend on another** component if the correctness of the first component's behavior requires the correct operation of the second component. Traditionally, the set of possible dependencies in a system are considered to form an acyclic graph. The term **fault tree** analysis seems to imply this, among other things. Indeed many systems exhibit this behavior, in which one fault leads to another which leads to another until eventually a failure occurs. It is possible, however, for a dependency relationship to cycle back upon itself. A dependency relationship is said to be **acyclic** if it forms part of a tree. A **cyclic** dependency relationship is one that cannot be described as part of a tree, but rather must be described as part of a directed cyclic graph.
+
+### Failure regions
+
+Defining a **failure region** limits the consideration of faults and failures to a portion of a system and its environment. This is necessary to insure that system specification, analysis and design efforts are concentrated on the portions of a system that can be observed and controlled by the designer and user. It helps to simplify an otherwise overwhelming task.
+
+A system is typically made up of lots of components parts. These components are, in turn, made up of sub-components This continues arbitrarily until an **atomic component** (a component that is not divisible or that we choose not to divide into sub-components) is reached. Although all components are theoretically capable of having faults, for any system there is a level beyond which the faults are "not interesting". This level is called the **fault floor**. Atomic
+components lie at the fault floor. **We are concerned with faults emerging from atomic components, but not faults that lie within these components**.
+
+Similarly, as components are aggregated into a system, eventually the system is complete. Everything else (the user, the environment) is not a part of the system. This is the **system boundary**. **Failures occur when faults reach the system boundary**.
+
+The **span of concern** begins at the boundaries between the system and the user and between the system and the environment, and ends at the fault floor. Faults below the fault floor are indistinguishable, either because they are not fully understood, or because they are too numerous. Informally, **the span of concern is the area within which faults are of interest**.
+
+![](/images/fault-tolerance/span-of-concern.png)
+
+## Fault classes
+
+No system can be made to tolerate all possible faults, so it is essential that the faults be considered throughout the requirements definition and system design process. However, it is impractical to enumerate all of the faults to be tolerated; faults must be aggregated into manageable **fault classes**.
+
+Faults may be classified based on:
+
+* [Locality](#locality)
+* [Effect](#effect)
+* [Cause](#immediate-cause)
+* [Duration](#duration)
+* Effect on System State
+
+### Locality
+
+#### Atomic Component Faults
+
+A atomic component fault is a fault at the fault floor, that is, in a component that cannot be subdivided for analysis purposes.
+
+#### Composite Component Faults
+
+A composite component fault is one that arises within an aggregation of atomic components rather than in an atomic component. It may be the result of one or more atomic component faults.
+
+#### System Level Faults
+
+A system level fault is one that arises in the structure of a system rather than in the system's components. Such faults are usually interaction or integration faults, that is, they occur because of the way the system is assembled rather than because of the integrity of any individual component. Note that an inconsistency in the operating rules for a system may lead to a system level fault. System level faults also include operator faults, in which an operator does not correctly perform his or her role in system operation.
+
+Systems that distribute objects or information are prone to a special kind of system fault: **replication faults**. Replication faults occur when replicated information in a system becomes inconsistent, either because replicates that
+are supposed to provide identical results no longer do so, or because the aggregate of the data from the various replicates is no longer consistent with system specifications.
+
+Replication faults can be caused by **malicious faults**, in which components such as processors "lie" by providing conflicting versions of the same information to other components in the system. Malicious faults are sometimes called **[Byzantine faults](https://en.wikipedia.org/wiki/Byzantine_fault)** after an early formulation of the problem in terms of Byzantine generals trying to reach a consensus on attacking when one of the generals is a traitor.
+
+#### External Faults
+
+External faults arise from outside the system boundary, the environment, or the user. **Environmental faults** include phenomena that directly affect the operation of the system, such as temperature, vibration, or nuclear or electromagnetic radiation or that affect the inputs provided to the system. **User faults** are created by the user in employing the system. Note that the roles of user and operator are considered separately; the user is considered to be external to the system while the operator is considered to be a part of the system.
+
+### Effect
+
+Faults may also be classified according to their effect on the user of the system or service. Since computer system components interact by exchanging data values in a specified time and/or sequence, fault effects can be cleanly separated into timing faults and value faults. Timing faults occur when a value is delivered before or after the specified time. Value faults occur when the data differs in value from the specification.
+
+#### Value Faults
+
+Computer systems communicate by providing values. A value fault occurs when a computation returns a result that does not meet the system's specification. Value faults are usually detected using knowledge of the allowable values of the data, possibly determined at run time.
+
+#### Timing Faults
+
+A timing fault occurs when a process or service is not delivered or completed within the specified time interval. Timing faults cannot occur if there is no explicit or implicit specification of a deadline. Timing faults can be detected by observing the time at which a required interaction takes place; no knowledge of the data involved is usually needed.
+
+Since time increases monotonically, it is possible to further classify timing faults into:
+
+* early
+* late
+* "never" (omission)
+
+Since it is practically impossible to determine if "never" occurs, omission faults are really late timing faults that exceed an arbitrary limit. Systems that never produce value faults, but only fail by omission are called **fail-silent systems**. If all failures require system restart, the system is a **fail-stop system**.
+
+### Duration
+
+#### Persistent faults
+
+Persistent faults remain active for a significant period of time. These faults are sometimes termed hard faults. Persistent faults usually are the easiest to detect and diagnose, but may be difficult to contain and mask unless redundant hardware is available. Persistent faults can be effectively detected by test routines that are interleaved with normal processing.
+
+#### Transient faults
+
+Transient faults remain active for a short period of time. Because of their short duration, transient faults are often detected through the faults that result from their propagation.
+
+#### Periodic faults
+
+A transient fault that becomes active periodically is a periodic fault (sometimes referred to as an *intermittent fault*).
+
+### Immediate (*direct*) Cause
+
+Faults can be classified according to the operational condition that causes them.
+
+#### Resource depletion faults
+
+Resource depletion faults occur when a portion of the system is unable to obtain the resources required to perform its task. Resources may include time on a processing or communications device, storage, power, logical structures such as a data structure, or a physical item such as a processor.
+
+#### Logic faults
+
+Logic faults occur when adequate resources are available, but the system does not behave according to specification. Logic faults may be the result of improper design or implementation. Logic faults may occur in hardware or software.
+
+#### Physical faults
+
+Physical faults occur when hardware breaks or a mutation occurs in executable software. Most common fault tolerance mechanisms deal with hardware faults.
+
+### Ultimate (*original*) Cause
+
+Faults can also be classified as to their ultimate cause. Ultimate causes are the things that must be fixed to eliminate a fault. These faults occur during the development process and are most effectively dealt with using [fault avoidance](/notes/dependable-system#fault-avoidance) and [fault removal](/notes/dependable-system#fault-removal) techniques.
+
+#### Specification fault
+
+A common ultimate cause of a fault is an improper requirements specification which leads to a specification fault. Technically this is not a fault, since a fault is defined to be the failure of a component/interacting systems and a failure is the deviation of the system from specification. However, it can be the reason a system deviates from the behavior expected by the user. An especially insidious instance of this arises when the requirements ignore aspects of the environment in which the system operates. For instance, radiation causing a bit to flip in a memory location would be a *value fault* which would be considered an *external fault*. However, if the fault propagates inside the system boundary the ultimate cause is a *specification fault* because the system specification did not foresee the problem.
+
+#### Design fault
+
+Flowing down the waterfall, a design fault results when the system design does not correctly match the requirements. The validation process is specifically designed to detect these faults.
+
+#### Implementation fault
+
+Flowing down the waterfall, an implementation fault arises when the system implementation does not adequately implement the design. The validation process is specifically designed to detect these faults.
+
+#### Documentation fault
+
+A documentation fault occurs when the documented system does not match the real system.
+
+### Effect on System State
+
+#### Crash
+
+#### Amnesia
+
+#### Partial amnesia
+
+## Fault Attributes
 
 ---
 
