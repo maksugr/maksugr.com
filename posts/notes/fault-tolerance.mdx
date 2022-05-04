@@ -282,6 +282,67 @@ A fault that propagates to other faults or failures is said to be **active**. A 
 
 ![](/images/fault-tolerance/fault-attributes.png)
 
+## Mechanisms
+
+Digital computer systems have special characteristics that determine how these systems fail and what fault tolerance mechanisms are appropriate:
+
+* digital systems are discrete systems: Unlike continuous systems, such as analog control systems, they operate in discontinuous steps
+* digital systems encode information: unlike continuous systems, values are represented by a series of encoded symbols * digital systems can modify their behavior based on the information they process
+
+Since digital systems are discrete systems, results may be tested or compared before they are released to the outside world. While analog systems must continuously apply redundant or limiting values, a digital system may substitute an alternative result before sending an output value. While it is possible to build digital computers that operate asynchronously (without a master clock to sequence internal operations), in practice all digital computers are sequenced from a clock signal. This dependency on a clock makes an accurate clock source as important as a source of power, but it also means that identical sequences of instructions take essentially the same amount of time. One of the most common fault tolerance mechanisms, the *time-out*, uses this property to measure program activity (or lack of activity).
+
+The fact that digital systems encode information is extremely important. The most important implication of information encoding is that digital systems can accurately store information for a long period of time, a capability not available in analog systems, which are subject to value drift. This also means that digital systems can store identical copies of information and expect the stored copies to still be identical after a substantial period of time.
+
+Information encoding in digital systems may be redundant, with several codes representing the same value. Redundant encoding is the most powerful tool available to ensure that information in a digital system has not been changed during storage or transmission. Redundant encoding may be implemented at several levels in a digital system. At the lowest levels, carefully designed code patterns attached to blocks of digital information can allow special-purpose hardware to correct for a number of different communication or storage faults, including changes to single bits or changes to several adjacent bits.
+
+### Redundancy Management
+
+Fault tolerance is sometimes called redundancy management. For our purposes, **redundancy is the provision of functional capabilities that would be unnecessary in a fault-free environment**. Redundancy is necessary, but not sufficient for fault tolerance. For example, a computer system may provide redundant functions or outputs such that at least one result is correct in the presence of a fault, but if the user must somehow examine the results and select the correct one, then the only fault tolerance is being performed by the user. However, if the computer system correctly selects the correct redundant result for the user, then the computer system is not only redundant, but also fault tolerant. Redundancy management marshals the nonfaulty resources to provide the correct result.
+
+Redundancy management or fault tolerance involves the following actions:
+
+* **Fault Detection** - The process of determining that a fault has occurred
+* **Fault Diagnosis** - The process of determining what caused the fault, or exactly which subsystem or component is faulty
+* **Fault Containment** - The process that prevents the propagation of faults from their origin at one point in a system to a point where it can have an effect on the service to the user
+* **Fault Masking** - The process of insuring that only correct values get passed to the system boundary in spite of a failed component.
+* **Fault Compensation** - If a fault occurs and is confined to a subsystem, it may be necessary for the system to provide a response to compensate for output of the faulty subsystem.
+* **Fault Repair** - The process in which faults are removed from a system. In welldesigned fault tolerant systems, faults are contained before they propagate to the extent that the delivery of system service is affected. This leaves a portion of the system unusable because of residual faults. If subsequent faults occur, the system may be unable to cope because of this loss of resources, unless these resources are reclaimed through a recovery process which insures that no faults remain in system resources or in the system state.
+
+**The measure of success of redundancy management or fault tolerance is coverage**. Informally, coverage is the probability of a system failure given that a fault occurs. Simplistic estimates of coverage merely measure redundancy by accounting for the number of redundant success paths in a system. More sophisticated estimates of coverage account for the fact that each fault potentially alters a systems ability to resist further faults. The usual model is a [Markov process](https://en.wikipedia.org/wiki/Markov_model) in which each fault or repair action transitions the system into a new state, some of which are failure states. Because a distinct state is generated for each stage in each possible failure and repair process, Markov models for even simple systems can consist of thousands of states. Sophisticated analysis tools are available to analyze these models and to create the Markov models from more compact system descriptions such as [Petri Nets](https://en.wikipedia.org/wiki/Petri_net).
+
+The implementation of the actions described above depend upon the form of redundancy employed such as **space redundancy** or **time redundancy**.
+
+#### Space Redundancy
+
+Space redundancy provides separate physical copies of a resource, function, or data item. Since it has been relatively easy to predict and detect faults in individual hardware units, such as processors, memories, and communications links, space redundancy is the approach most commonly associated with fault tolerance. It is effective when dealing with persistent faults, such as permanent component failures. Space redundancy is also the approach of choice when fault masking is required, since the redundant results are available simultaneously. The major concern in managing space redundancy is the elimination of failures caused by a fault to a function or resource that is common to all of the space-redundant units.
+
+##### Time Redundancy
+
+Digital systems have two unique advantages over other types of systems, including analog electrical systems. First, they can shift functions in time by storing information and programs for manipulating information. This means that if the expected faults are transient, a function can be rerun with a stored copy of the input data at a time sufficiently
+removed from the first execution of the function that a transient fault would not affect both. Second, since digital systems encode information as symbols, they can include redundancy in the coding scheme for the symbols. This means that information shifted in time can be checked for unwanted changes, and in many cases, the information can be corrected to its original value.
+
+![](/images/fault-tolerance/time-and-space-redundancy.png)
+<figcaption>The two sets of resources represent space redundancy and the sequential computations represent time redundancy. In the figure, time redundancy is not capable of tolerating the permanent fault in the top processing resource, but is adequate to tolerate the transient fault in the lower resource. In this simple example, there is still the problem of recognizing the correct output.</figcaption>
+
+#### Clocks
+
+Many fault tolerance mechanisms, employing either space redundancy or time redundancy, rely on an accurate source of time. Probably no hardware feature has a greater effect on fault tolerance mechanisms than a clock. An early decision in the development of a fault tolerant system should be the decision to provide a reliable time service throughout the system. Such a service can be used as a foundation for fault detection and repair protocols. If the time service is not fault tolerant, then additional interval timers must be added or complex asynchronous protocols must be implemented that rely on the progress of certain computations to provide an estimate of time. Multiple-processor system designers must decide to provide a fault tolerant global clock service that maintains a consistent source of time throughout the
+system, or to resolve time conflicts on an ad-hoc basis.
+
+#### Fault Containment Regions
+
+Although it is possible to tailor fault containment policies to individual faults, it is common to divide a system into fault containment regions with few or no common dependencies between regions.
+
+Fault containment regions attempt to prevent the propagation of data faults by limiting the amount of communication between regions to carefully monitored messages and the propagation of resource faults by eliminating shared resources. In some ultra-dependable designs, each fault containment region contains one or more physically and electrically isolated processors, memories, power supplies, clocks, and communication links. The only resources that are tightly coordinated in such architectures are clocks, and extensive precautions are taken to insure that clock synchronization mechanisms do not allow faults to propagate between regions. Data fault propagation is inhibited by locating redundant copies of critical programs in different fault containment regions and by accepting data from other copies only if multiple copies independently produce the same result.
+
+#### Common Mode Failures
+
+System failures occur when faults propagate to the outer boundary of the system. The goal of fault tolerance is to intercept the propagation of faults so that failure does not occur, usually by substituting redundant functions for functions affected by a particular fault. Occasionally, a fault may affect enough redundant functions that it is not possible to reliably select a non-faulty result, and the system will sustain a **common-mode failure**. A common-mode failure results from a single fault (or fault set). Computer systems are vulnerable to common-mode resource failures if they rely on a single source of power, cooling, or I/O. A more insidious source of common-mode failures is a design fault that causes redundant copies of the same software process to fail under identical conditions.
+
+#### Encoding
+
+Encoding is the primary weapon in the fault tolerance arsenal. Low-level encoding decisions are made by memory and processor designers when they select the error detection and correction mechanisms for memories and data buses. Communications protocols provide a variety of detection and correction options, including the encoding of large blocks of data to withstand multiple contiguous faults and provisions for multiple retries in case error correcting facilities cannot cope with faults. Long-haul communication facilities even provide for a negotiated fall-back in transmission speed to cope with noisy environments. These facilities should be supplemented with high-level encoding techniques that record critical system values using unique patterns that are unlikely to be randomly created.
+
 ---
 
 #### References
