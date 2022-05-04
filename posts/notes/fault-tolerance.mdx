@@ -262,6 +262,26 @@ A documentation fault occurs when the documented system does not match the real 
 
 ## Fault Attributes
 
+### Observability
+
+Faults originate in a system component or subsystem, in the system's environment, or in an interaction between the system and a user, operator, or another subsystem. A fault may ultimately have one of several effects:
+
+* It may disappear with no perceptible effect
+* It may remain in place with no perceptible effect
+* It may lead to a sequence of additional faults that result in a failure in the system's delivered service (propagation to failure)
+* It may lead to a sequence of additional faults with no perceptible effect on the system (undetected propagation)
+* It may lead to a sequence of additional faults that have a perceptible effect on the system but do not result in a failure in the system's delivered service (detected propagation without failure)
+
+Fault detection is usually the first step in fault tolerance. Even if other elements of a system prevent a failure by compensating for a fault, it is important to detect and remove faults to avoid the exhaustion of a systems fault tolerance resources.
+
+A fault is **observable** if there is information about its existence available at the system interface. The information that indicates the existence of a fault is a **symptom**. A symptom may be a directly observed fault or failure, or it may be a change in system behavior such that the system still meets its specifications. A fault that a fault tolerance mechanism of a system has found is said to be **detected**. Otherwise it is **latent**, whether it is observable or not. The definition of detected is independent of whether or not the fault tolerance mechanism is able to successfully deal with the fault condition. For a fault to be detected, it is sufficient that it be known about.
+
+### Propagation
+
+A fault that propagates to other faults or failures is said to be **active**. A non-propagating fault is said to be **dormant**. When a previously dormant fault becomes active it is said to be **triggered**. An active fault may again become dormant, awaiting a new trigger. The sequence of faults, each successive one triggered by the preceding one and possibly ending in a failure, is known as a **fault trajectory**. Because of the ways faults trigger successive faults, a fault trajectory could be viewed as a chain reaction.
+
+![](/images/fault-tolerance/fault-attributes.png)
+
 ---
 
 #### References
