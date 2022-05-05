@@ -1,0 +1,76 @@
+---
+title: 'DBMS'
+summary: 'Database management systems summary'
+topics: ['DBMS']
+publishedAt: '2022-05-05'
+---
+
+## History
+
+Relational [DBMSs](#definition) arrived on the scene as research prototypes in the 1970's, in the form of [System R](https://en.wikipedia.org/wiki/IBM_System_R) and INGRES. The main thrust of both prototypes was to surpass IMS in value to customers on the applications that IMS was used for, namely "business data processing". Hence, both systems were architected for online transaction processing ([OLTP](#oltp)) applications, and their commercial counterparts (i.e., [DB2](https://en.wikipedia.org/wiki/IBM_Db2) and INGRES, respectively) found acceptance in this arena in the 1980's. Other vendors (e.g., Sybase, Oracle, and Informix) followed the same basic DBMS model, which:
+
+* stores relational tables row-by-row
+* uses B-trees for indexing
+* uses a [cost-based optimizer](#cost-based-optimizer)
+* provides [ACID](#acid) transaction properties
+
+Since the early 1980's, the major DBMS vendors have steadfastly stuck to a "one size fits all" strategy, whereby they maintain a single code line with all DBMS services. The reasons for this choice are straightforward ― the use of multiple code lines causes various practical problems, including:
+
+* a cost problem, because maintenance costs increase at least linearly with the number of code lines
+* a compatibility problem, because all applications have to run against every code line
+* a sales problem, because salespeople get confused about which product to try to sell to a customer
+* a marketing problem, because multiple code lines need to be positioned correctly in the marketplace.
+
+To avoid these problems, all the major DBMS vendors have followed the adage "put all wood behind one arrowhead".
+
+In the early 1990's, a new trend appeared: enterprises wanted to gather together data from multiple operational databases into a [data warehouse](#data-warehouse) for [business intelligence purposes](/notes/bi). A typical large enterprise has 50 or so operational systems, each with an online user community who expect fast response time. System administrators were (and still are) reluctant to allow businessintelligence users onto the same systems:
+
+* fearing that the complex ad-hoc queries from these users will degrade response time for the online community
+* business-intelligence users often want to see historical trends, as well as correlate data from multiple operational databases.
+
+These features are very different from those required by online users.
+
+For these reasons, essentially every enterprise created a large data warehouse, and periodically "scraped" the data from operational systems into it. Business-intelligence users could then run their complex ad-hoc queries against the data in the warehouse, without affecting the online users. Although most warehouse projects were dramatically over budget and ended up delivering only a subset of promised functionality, they still delivered a reasonable return on investment. In fact, it is widely acknowledged that historical warehouses of retail transactions pay for themselves within a year, primarily as a result of more informed stock rotation and buying decisions.
+
+## Data warehouse
+
+Data warehouses are very different from [OLTP](#oltp) systems. OLTP systems have been optimized for updates, as the main business activity is typically to sell a good or service. In contrast, the main activity in data warehouses is ad-hoc queries, which are often quite complex. Hence, periodic load of new data interspersed with ad-hoc query activity is what a typical warehouse experiences.
+
+The standard wisdom in data warehouse schemas is to create a [fact table](#fact-table), containing the "**who**, **what**, **when**, **where**" about each operational transaction.
+
+![](/images/dbms/typical-retailer-star-schema.png)
+<figcaption>The schema for a typical retailer</figcaption>
+
+Note the central fact table, which holds an entry for each item that is scanned by a cashier in each store in its chain. In addition, the warehouse contains dimension tables, with information on each store, each customer, each product, and each time period. In effect, the fact table contains a foreign key for each of these dimensions, and a [star schema](#star-schema) is the natural result. Such star schemas are omnipresent in warehouse environments, but are virtually nonexistent in OLTP environments.
+
+It is a well known homily that warehouse applications run much better using *bit-map indexes* while OLTP users prefer *B-tree indexes*. The reasons are straightforward: bit-map indexes are faster and more compact on warehouse workloads, while failing to work well in OLTP environments. As a result, many vendors support both B-tree indexes and bit-map indexes in their DBMS products.
+
+In addition, materialized views are a useful optimization tactic in warehouse worlds, but never in OLTP worlds. In contrast, normal ("virtual") views find acceptance in OLTP environments.
+
+To a first approximation, most vendors have a warehouse DBMS (bit-map indexes, materialized views, star schemas and optimizer tactics for star schema queries) and an OLTP DBMS (B-tree indexes and a standard cost-based optimizer), which are united by a common parser.
+
+![](/images/dbms/common-parser.png)
+
+Although this configuration allows such a vendor to market his DBMS product as a single system, because of the single user interface, in effect, she is selling multiple systems.
+
+The illusion of "one size fits all" can be preserved as a marketing fiction for the two different systems because of the common user interface. In the stream processing market, to which we now turn, such a common front end is impractical. Hence, not only will there be different engines but also different front ends. The marketing fiction of "one size fits all" will not fly in this world.
+
+## Definition
+
+## Fact table
+
+## Star schema
+
+## ACID
+
+## OLTP
+
+## OLAP
+
+## Cost-based optimizer
+
+---
+
+#### References
+
+* Michael Stonebraker, Uğur Çetintemel, "'One Size Fits All': An Idea Whose Time Has Come and Gone";
