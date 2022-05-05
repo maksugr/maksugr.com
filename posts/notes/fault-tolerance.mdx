@@ -343,6 +343,116 @@ System failures occur when faults propagate to the outer boundary of the system.
 
 Encoding is the primary weapon in the fault tolerance arsenal. Low-level encoding decisions are made by memory and processor designers when they select the error detection and correction mechanisms for memories and data buses. Communications protocols provide a variety of detection and correction options, including the encoding of large blocks of data to withstand multiple contiguous faults and provisions for multiple retries in case error correcting facilities cannot cope with faults. Long-haul communication facilities even provide for a negotiated fall-back in transmission speed to cope with noisy environments. These facilities should be supplemented with high-level encoding techniques that record critical system values using unique patterns that are unlikely to be randomly created.
 
+### Acceptance Test Techniques
+
+The **fault detection** mechanism used influences the remainder of the *other* fault tolerance activities (diagnosis, containment, masking, compensation, and recovery). The two common mechanisms for fault detection are acceptance tests and comparison.
+
+#### Fault Detection
+
+Acceptance tests are the more general fault detection mechanism in that they can be used even if the system is composed of a single (non-redundant) processor. The program or subprogram is executed and the result is subjected to a test. If the result passes the test, execution continues normally. A failed acceptance test is a symptom of a fault.
+
+#### Fault Diagnosis
+
+An acceptance test cannot generally be used to determine what has gone wrong. It can only tell that something has gone wrong.
+
+#### Fault Containment
+
+An acceptance test provides a barrier to the continued propagation of a fault. Further execution of the program being tested is not allowed until some form of retry successfully passes the acceptance test. If no alternatives pass the acceptance test, the subsystem fails, preferably silently. The silent failure of faulty components allows the rest of the system to continue in operation (where possible) without having to worry about erroneous output from the faulty component.
+
+#### Fault Masking
+
+An acceptance test successfully masks a bad value if a retry or alternate results in a new, correct result within the time limit set for declaring failure.
+
+#### Fault Compensation
+
+A program that fails an acceptance test can be replaced by an alternate. If the alternate passes the acceptance test, its result may be used to compensate for the original result. Notice that the alternate program run during a retry may be a very simple one that just outputs a "safe" value to compensate for the faulty subsystem. A common approach in control systems is to "coast" the result by providing the value calculated from the last known good cycle.
+
+#### Fault Repair
+
+Acceptance tests are usually used in a construct known as a recovery block. A recovery block provides backward fault recovery by rolling program execution back to the state before the faulty function was executed. This repairs the faulty state and the result. When a result fails an acceptance test, the program can be executed again before leaving the recovery block. If the new result passes the acceptance test, it can be assumed that the fault originally detected
+was transient. If the software is suspect, an alternative can be executed in place of the original program fragment. If a single processor is used, the state of the processor must be reset to the beginning of the function in question. A mechanism called the *recovery cache* has been proposed to accomplish this. A recovery cache records the state of the processor at the entrance to each recovery block.
+
+### Comparison Techniques
+
+#### Fault Detection
+
+Comparison is an alternative to acceptance tests for detecting faults. If the principal fault source is processor hardware, then multiple processors are used to execute the same program. As results are calculated, they are compared across processors. A mismatch indicates the presence of a fault. This comparison can be **pair-wise**, or it may involve three or more processors simultaneously. In the latter case the mechanism used is generally referred to as **voting**. If software design faults are a major consideration, then a comparison is made between the results from multiple versions of the software in question, a mechanism known as [n-version programming](https://en.wikipedia.org/wiki/N-version_programming).
+
+#### Fault Diagnosis
+
+Fault diagnosis with comparison is dependent upon whether pair-wise or voting comparison is used:
+
+* **pair-wise** - when a mismatch occurs for a pair it is impossible to tell which of the processors has failed, the entire pair must be declared faulty
+* **voting** - when three or more processors are running the same program, the processor whose values do not match the others is easily diagnosed as the faulty one
+
+Voting may be **centralized** or **decentralized**.
+
+Centralized voting is easy to mechanize, either in software or hardware, but results in a single point of failure, a violation of many qualitative requirements specifications. It is possible to compensate for total voter failure using a *chief and worker* approach that replaces a silent voter with a standby voter, as in the *pair and spare approach*.
+
+Decentralized voting avoids the single point of failure, but requires a consensus among multiple voting agents, either hardware or software in order to avoid replication faults. In order to reach consensus, the distributed voters must synchronize to exchange several rounds of messages. In the worst case, where up to faulty processors are allowed to send misleading results to other processors participating in the consensus process, distributed voters must be provided to reach a state known as interactive consistency. Interactive consistency requires that each non-faulty processor provides a value, that all non-faulty processors agree on the same set of values, and that the values are correct for each of the non-faulty processors. Similar processes are required to maintain a consensus as to the number of members remaining in a group of distributed processors.
+
+#### Fault Containment
+
+When pair-wise comparison is used, containment is achieved by stopping all activity in the mismatching pair. Any other pairs in operation can continue executing the application, undisturbed. They detect the failure of the miscomparing pair through time-outs. When voting is used, containment is achieved by ignoring the failed processor and reconfiguring it out of the system.
+
+#### Fault Masking
+
+In a comparison based system, fault masking is achievable in two ways. When voting is used the voter only allows the correct value to pass on. If hardware voters are used, this usually occurs quickly enough to meet any response deadlines. If the voting is done by software voters that must reach a consensus, adequate time may not be available.
+
+Pair-wise comparison requires the existence of multiple pairs of processors to mask faults. In this case the faulty pair of processors is halted, and values are obtained from the functional, good pairs.
+
+#### Fault Compensation
+
+The value provided by a voter may be the majority value, the median value, a plurality value, or some other predetermined satisfactory value. While this choice is application dependent, the most common choice is the median value. This guarantees that the value selected was calculated by at least one of the participating processors and that it is not an extreme value.
+
+#### Fault Repair
+
+In a comparison-based system with a single pair of processors, there is no recovery from a fault. With multiple pairs of pairs, recovery consists of using the values from the "good" pair. Some systems provide mechanisms to restart the miscomparing pair with data from a "good" pair. If the miscomparing pair subsequently produces results that compare for an adequate period of time, it may be configured back into the system.
+
+When voting is used, recovery from a failed processor is accomplished by utilizing the "good" values from the other processors. A processor that is outvoted may be allowed to continue execution and may be configured back into the system if it successfully matches in a specified number of subsequent votes.
+
+### Diversity
+
+The only fault tolerance approach for combating common-mode design errors is design diversity — the implementation of more than one variant of the function to be performed. For computer-based applications, it is generally accepted that it is more effective to vary a design at higher levels of abstraction (i.e., by varying the algorithm or physical principles used to obtain a result) than to vary implementation details of a design (i.e. by using different programming languages or low level coding techniques). Since diverse designs must implement a common system specification, the possibility for dependencies always arises in the process of refining the specification to reflect difficulties uncovered in the implementation process. Truly diverse designs would eliminate dependencies on common design teams, design philosophies, software tools and languages, and even test philosophies. Many approaches attempt to achieve the necessary independence through randomness, by creating separate design teams that remain physically separate throughout the design, implementation, and test process. Recently, some projects have attempted to create diversity by enforcing differing design rules for the multiple teams.
+
+## Rules
+
+### Rule 1
+
+A system is said to have a failure if the service it delivers to the user deviates from compliance with the system specification. A fault is the adjudged cause of a failure. The significance of this is that, in the absence of precise requirements, it is impossible to tell whether a system has failed, and therefore whether a fault has occurred.
+
+Know precisely what the system is supposed to do. Part of this process should be determining how long a system can be allowed to deviate from its specification before the deviation is declared a failure.
+
+### Rule 2
+
+However, it is not sufficient to know what the system is supposed to do under normal circumstances. It is also necessary to know what abnormal conditions the system must accommodate. It is virtually impossible to enumerate the set of all possible faults that a system might encounter. It is much more manageable to deal with classes of faults.
+
+Look at what can go wrong, and try to group the causes into classes for easier manageability. This involves defining a fault floor based on your ability to diagnose and repair faults.
+
+### Rule 3
+
+The goal of fault tolerance is to prevent faults from propagating to the system boundary, where it becomes observable and, hence, a failure. In general, the further a fault has propagated, the harder it is to deal with. Since fault tolerance is redundancy management, however, it becomes a matter of the degree of redundancy desired. For instance, it is almost certainly cheaper to deal with memory faults by using error correcting memory (that is, redundant bits in a memory location) than by providing a "shadow" memory. Note, however, that dealing with faults earlier rather than later may go counter to the advice given above regarding dealing with classes of faults rather than individual faults.
+
+Study your application and determine appropriate fault containment regions and the earliest feasible time to deal with potential faults.
+
+### Rule 4
+
+In general, the price paid for a fault tolerant system is additional resources, both in terms of time, and in terms of space, (*and in terms of human resourses?*). As with most things these two can be traded off against each other. In some applications (e.g., flight control), timing is everything, even at the cost of extra processors. In general, the comparison approach to fault detection works best in these situations. In other applications (e.g., a space probe), weight and power consumption is an overriding issue—arguing for a higher reliance on time redundancy and suggesting the use of acceptance tests.
+
+Completely understand the requirements of your application and use them to make appropriate time / space trade-offs.
+
+### Rule 5
+
+Protecting a system from every conceivable fault can exhaust another resource — money. This is true even if a rational set of fault classes is defined. The trade-off here is fault coverage versus the cost of that coverage. In all systems it is possible to classify faults by the likelihood of occurrence.
+
+Whenever possible, concentrate on the credible faults and ignore those less likely to occur unless they can be dealt with at little or no additional cost.
+
+### Rule 6
+
+Time is an essential element in any digital computer system, even in systems that do not claim to be real-time. It is important to define the minimum period of time a system can fail to provide its defined service before a failure is declared. Unnecessarily short failure margins force the system designer to resort to expensive fault tolerance mechanisms, such as real-time fault masking.
+
+Carefully determine application failure margins and use the information to balance the degree of fault tolerance needed with the cost of implementation.
+
 ---
 
 #### References
