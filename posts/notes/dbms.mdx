@@ -55,6 +55,25 @@ Although this configuration allows such a vendor to market his DBMS product as a
 
 The illusion of "one size fits all" can be preserved as a marketing fiction for the two different systems because of the common user interface. In the stream processing market, to which we now turn, such a common front end is impractical. Hence, not only will there be different engines but also different front ends. The marketing fiction of "one size fits all" will not fly in this world.
 
+### High Availability
+
+It is a requirement of many stream-based applications to have high availability (HA) and stay up 7x24. Standard
+DBMS logging and crash recovery mechanisms are ill-suited for the streaming world as they introduce several key problems.
+
+First, log-based recovery may take large number of seconds to small numbers of minutes. During this period, the application would be "down". Such behavior is clearly undesirable in many real-time streaming domains (e.g., financial services). Second, in case of a crash, some effort must be made to buffer the incoming data streams, as otherwise this data will be irretrievably lost during the recovery process. Third, DBMS recovery will only deal with tabular state and will thus ignore operator states. For example, in the feed alarm application, the counters are not in stored in tables; therefore their state would be lost in a crash. One straightforward fix would be to force all operator state into tables to use DBMS-style recovery; however, this solution would significantly slow down the application.
+
+The obvious alternative to achieve high availability is to use techniques that rely on [Tandem-style process pairs](https://en.wikipedia.org/wiki/Tandem_Computers). The basic idea is that, in the case of a crash, the application performs failover to a backup machine, which typically operates as a "hot standby", and keeps going with small delay. This approach eliminates the overhead of logging.
+
+Unlike traditional data-processing applications that require precise recovery for correctness, many streamprocessing applications can tolerate and benefit from weaker notions of recovery. In other words, failover does not always need to be “perfect”. Consider monitoring applications that operate on data streams whose values are periodically refreshed. Such applications can often tolerate tuple losses when a failure occurs, as long as such interruptions are short. Similarly, if one loses a couple of ticks in the feed alarm application during failover, the correctness would probably still be preserved. In contrast, applications that trigger alerts when certain combinations of events happen, require that no tuples be lost, but may tolerate temporary duplication. For example, a patient monitoring application may be able to tolerate duplicate tuples ("heart rate is 79") but not lost tuples ("heart rate has changed to zero"). Of course, there will always be a class of applications that require strong, precise recovery guarantees. A financial application that performs portfolio management based on individual stock transactions falls into this category.
+
+As a result, there is an opportunity to devise simplified and low overhead failover schemes, when weaker correctness notions are sufficient.
+
+### Synchronization
+
+Many stream-based applications rely on shared data and computation. Shared data is typically contained in a table that one query updates and another one reads. For example, the Linear Road application requires that vehicle-position data be used to update statistics on highway usage, which in turn are read to determine tolls for each segment on the highway. Thus, there is a basic need to provide isolation between messages.
+
+Traditional DBMSs use ACID transactions to provide isolation (among others things) between concurrent transactions submitted by multiple users. In streaming systems, which are not multi-user, such isolation can be effectively achieved through simple critical sections, which can be implemented through light-weight semaphores. Since full-fledged transactions are not required, there is no need to use heavy-weight lockingbased mechanisms anymore. In summary, ACID properties are not required in most stream processing applications, and simpler, specialized performance constructs can be used to advantage.
+
 ## Definition
 
 ## Fact table
