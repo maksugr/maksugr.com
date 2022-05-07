@@ -284,6 +284,87 @@ A fault that propagates to other faults or failures is said to be **active**. A 
 
 ![](/images/fault-tolerance/fault-attributes.png)
 
+## Conditions for a failure
+
+### Number of inputs
+
+Minimum number of input events required to trigger the failures:
+
+* `1` - 23%
+* `2` - 50%
+* `3` - 17%
+* `4` - 5%
+* `>4` - 5%
+
+Of the 23% of failures that require only a single event to manifest, the event often involves rarely used or newly introduced features, or are caused by concurrency bugs.
+
+### Types of input
+
+Input events that led to failures. The `%` reports the percentage of failure where the input event is required to trigger the failure. Most failures require multiple preceding events, so the sum of the `%` is greater than 100%.
+
+* [Starting a service](#starting-up-services) - 58%
+* File/database write from client - 32%
+* [Unreachable node](#unreachable-nodes) (network error, crash, etc.) - 24%
+* [Configuration change](#configuration-changes) - 23%
+* Adding a node to the running system - 15%
+* File/database read from client - 13%
+* Node restart (intentional) - 9%
+* Data corruption - 3%
+* Other - 4%
+
+We consider these events to be "input events" from a testing and diagnostic point of view — some of the events (e.g., "unreachable node", "data corruption") are not strictly user inputs but can easily be emulated by a tester or testing tools. Note that many of the events have specific requirements for a failure to manifest (e.g., a "file write" event needs to occur on a particular data block), making the input event space to explore for testing immensely large.
+
+#### Starting up services
+
+More than half of the failures require the start of some services. This suggests that the starting of services — especially more obscure ones — should be more heavily tested. About a quarter of the failures triggered by starting a service occurred on systems that have been running for a long time; e.g., the HBase "Region Split" service is started only when a table grows larger than a threshold. While such a failure may seem hard to test since it requires a long running system, it can be exposed intentionally by forcing a start of the service during testing.
+
+#### Unreachable nodes
+
+24% of the failures occur because a node is unreachable. This is somewhat surprising given that network errors and individual node crashes are expected to occur regularly in large data centers. This suggests that tools capable of injecting network errors systematically should be used more extensively when inputing other events during testing.
+
+#### Configuration changes
+
+23% of the failures are caused by configuration changes. Of those, 30% involve misconfigurations. The remaining majority involve valid changes to enable certain features that may be rarelyused. While the importance of misconfigurations have been observed in previous studies, only a few techniques exist to automatically explore configurations changes and test the resulting reaction of the system. This suggests that testing tools should be extended to combine (both valid and invalid) configuration changes with other operations.
+
+### Number of nodes
+
+The production failures typically manifested themselves on configurations with a large number of nodes. This raises the question of how many nodes are required for an effective testing and debugging system.
+
+Minimum number of nodes needed to trigger the failures:
+
+* `1` - 37%
+* `2` - 84%
+* `3` - 98%
+* `>3` - 100%
+
+## Findings
+
+### Finding 1
+
+> A majority (77%) of the failures require more than one input event to manifest, but most of the failures (90%) require no more than 3.
+
+### Finding 2
+
+> The specific order of events is important in 88% of the failures that require multiple input events.
+
+In most cases, a specific combination and sequence of multiple events is needed to transition the system into a failed state. Finding 1 and 2 show the complexity of failures in large distributed system. To expose the failures in testing, we need to not only explore the *combination* of multiple input events from an exceedingly large event space, we also need to explore different *permutations*.
+
+### Finding 3
+
+> Almost all (98%) of the failures are guaranteed to manifest on no more than 3 nodes. 84% will manifest on no more than 2 nodes.
+
+Finding 3 implies that it is not necessary to have a large cluster to test for and reproduce failures.
+
+Note that Finding 3 does not contradict the conventional wisdom that distributed system failures are more likely to manifest on large clusters. In the end, testing is a probabilistic exercise. A large cluster usually involves more diverse workloads and fault modes, thus increasing the chances for failures to manifest. However, what our finding suggests is that it is not necessary to have a large cluster of machines to expose bugs, as long as the specific sequence of input events occurs.
+
+### Finding 4
+
+A key question for testing and diagnosis is whether the failures are guaranteed to manifest if the required sequence of input events occur (i.e., **deterministic failures**), or not (i.e., **non-deterministic failures**)?
+
+> 74% of the failures are deterministic — they are guaranteed to manifest given the right input event sequences.
+
+This means that for a majority of the failures, we only need to explore the combination and permutation of input events, but no additional timing relationship. This is particularly meaningful for testing those failures that require long-running systems to manifest. As long as we can simulate those events which typically only occur on long running systems (e.g., region split in HBase typically only occurs when the region size grows too large), we can expose these deterministic failures. Moreover, the failures can still be reproduced after inserting additional log output, enabling tracing, or using debuggers.
+
 ## Symptoms
 
 ### Unexpected termination
