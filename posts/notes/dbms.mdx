@@ -34,7 +34,7 @@ For these reasons, essentially every enterprise created a large data warehouse, 
 
 ## Data warehouse
 
-Data warehouses are very different from [OLTP](#oltp) systems. OLTP systems have been optimized for updates, as the main business activity is typically to sell a good or service. In contrast, the main activity in data warehouses is ad-hoc queries, which are often quite complex. Hence, periodic load of new data interspersed with ad-hoc query activity is what a typical warehouse experiences.
+Data warehouses are very different from [OLTP](#oltp) systems. OLTP systems have been optimized for updates, as the main business activity is typically to sell a good or service. In contrast, the main activity in data warehouses is ad-hoc queries, which are often quite complex. Hence, periodic load of new data interspersed with ad-hoc query activity is what a typical warehouse experiences. (*data-storage vs analytical systems [2]*)
 
 The standard wisdom in data warehouse schemas is to create a [fact table](#fact-table), containing the "**who**, **what**, **when**, **where**" about each operational transaction.
 
@@ -54,6 +54,16 @@ To a first approximation, most vendors have a warehouse DBMS (bit-map indexes, m
 Although this configuration allows such a vendor to market his DBMS product as a single system, because of the single user interface, in effect, she is selling multiple systems.
 
 The illusion of "one size fits all" can be preserved as a marketing fiction for the two different systems because of the common user interface. In the stream processing market, to which we now turn, such a common front end is impractical. Hence, not only will there be different engines but also different front ends. The marketing fiction of "one size fits all" will not fly in this world.
+
+### Row vs Column
+
+All major DBMS vendors implement record-oriented storage systems, where the attributes of a record are placed contiguously in storage. Using this "**row-store**" architecture, a single disk write is all that is required to push all of the attributes of a single record out to disk. Hence, such a system is "**write-optimized**" because high performance on record writes is easily achievable. It is easy to see that write-optimized systems are especially effective on OLTP-style applications, the primary reason why most commercial DBMSs employ this architecture.
+
+In contrast, warehouse systems need to be "**readoptimized**" as most workload consists of ad-hoc queries that touch large amounts of historical data. In such systems, a "**column-store**" model where the values for all of the rows of a single attribute are stored contiguously is drastically more efficient.
+
+With a column-store architecture, a DBMS need only read the attributes required for processing a given query, and can avoid bringing into memory any other irrelevant attributes. Given that records with hundreds of attributes (with many null values) are becoming increasingly common, this approach results in a sizeable performance advantage for warehouse workloads where typical queries involve aggregates that are computed on a small number of attributes over large data sets.
+
+> HBase and Cassandra are the top two most popular wide column store system [2].
 
 ### High Availability
 
@@ -92,4 +102,6 @@ Traditional DBMSs use ACID transactions to provide isolation (among others thing
 
 #### References
 
-* Michael Stonebraker, Uğur Çetintemel, "'One Size Fits All': An Idea Whose Time Has Come and Gone";
+[1] Michael Stonebraker, Uğur Çetintemel, "'One Size Fits All': An Idea Whose Time Has Come and Gone";
+
+[2] Ding Yuan, Yu Luo, Xin Zhuang, Guilherme Renna Rodrigues, Xu Zhao, Yongle Zhang, Pranay U. Jain, Michael Stumm, "Simple Testing Can Prevent Most Critical Failures: An Analysis of Production Failures in Distributed Data-Intensive Systems";

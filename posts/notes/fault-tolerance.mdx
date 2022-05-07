@@ -39,13 +39,15 @@ A fault can lead to:
 
 A system with faults may continue to provide its service, that is, not fail. Such a system is said to be **fault tolerant**. Thus, an important motivation for differentiating between faults and failures is the need to describe the fault tolerance of a system. An observer inspecting the internals of the system would say that the faulty component had failed, because the observer's viewpoint is now at a lower level of detail.
 
-The observable effect of a fault at the system boundary is called a **symptom**. The most extreme symptom of a fault is a failure.
+The observable effect of a fault at the system boundary is called a [**symptom**](#symptoms). The most extreme symptom of a fault is a failure.
 
 Note that a fault does not lead to a failure unless the result is observable by the user. This means that one person's fault is another person's failure.
 
 The term **error** often is used in addition to the terms fault and failure. Often, errors are defined to be the result of faults, leading to failures. Informally, errors seem to be a passive concept associated with incorrect values in the system state. However, it is extremely difficult to develop unambiguous criteria for differentiating between faults and errors. Many researchers refer to value faults, which are also clearly erroneous values. The connection between error and failure is even more difficult to describe.
 
 As we have seen, differentiation between failures and faults is essential for fault tolerant systems. A third term error, adds little to this distinction and can be a source of confusion.
+
+> A fault is the initial root cause, which could be a hardware malfunction, a software bug, or a misconfiguration. A fault can produce abnormal behaviors referred to as errors (synonym of symptoms?), such as system call error return or Java exceptions. Some of the errors will have no user-visible side-effects or may be appropriately handled by software; other errors manifest into a failure, where the system malfunction is noticed by end users or operators [2].
 
 ## Requirements
 
@@ -282,6 +284,20 @@ A fault that propagates to other faults or failures is said to be **active**. A 
 
 ![](/images/fault-tolerance/fault-attributes.png)
 
+## Symptoms
+
+### Unexpected termination
+
+### Incorrect result
+
+### Data loss or potential data loss
+
+### Hung System
+
+### Severe performance degradation
+
+### Resource leak/exhaustion
+
 ## Mechanisms
 
 Digital computer systems have special characteristics that determine how these systems fail and what fault tolerance mechanisms are appropriate:
@@ -457,4 +473,6 @@ Carefully determine application failure margins and use the information to balan
 
 #### References
 
-* Walter L. Heimerdinger, Charles B. Weinstock, "A Conceptual Framework for System Fault Tolerance";
+[1] Walter L. Heimerdinger, Charles B. Weinstock, "A Conceptual Framework for System Fault Tolerance";
+
+[2] Ding Yuan, Yu Luo, Xin Zhuang, Guilherme Renna Rodrigues, Xu Zhao, Yongle Zhang, Pranay U. Jain, Michael Stumm, "Simple Testing Can Prevent Most Critical Failures: An Analysis of Production Failures in Distributed Data-Intensive Systems";

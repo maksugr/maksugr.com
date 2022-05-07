@@ -81,6 +81,10 @@
     @apply after:content-none;
 }
 
+.markdown [id='references'] ~ * {
+    @apply text-sm my-0;
+}
+
 .markdown hr {
     @apply border-t border-gray-100;
 }
