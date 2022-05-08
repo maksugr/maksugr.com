@@ -365,6 +365,108 @@ A key question for testing and diagnosis is whether the failures are guaranteed 
 
 This means that for a majority of the failures, we only need to explore the combination and permutation of input events, but no additional timing relationship. This is particularly meaningful for testing those failures that require long-running systems to manifest. As long as we can simulate those events which typically only occur on long running systems (e.g., region split in HBase typically only occurs when the region size grows too large), we can expose these deterministic failures. Moreover, the failures can still be reproduced after inserting additional log output, enabling tracing, or using debuggers.
 
+### Finding 5
+
+> Among the 51 non-deterministic failures, 53% have timing constraints only on the input events.
+
+These constraints require an input event to occur either before or after some software internal execution event such as a procedure call.
+
+### Finding 6
+
+> 76% of the failures print explicit failurerelated error messages.
+
+This finding somewhat contradicts the findings of our previous study on failures in non-distributed systems, including Apache httpd, PostgreSQL, SVN, squid, and GNU Coreutils, where only 43% of failures had explicit failure-related error messages logged. We surmise there are three possible reasons why developers output log messages more extensively for the distributed systems we studied:
+
+* since distributed systems are more complex, and harder to debug, developers likely pay more attention to logging
+* the horizontal scalability of these systems makes the performance overhead of outputing log message less critical
+* communicating through message-passing provides natural points to log messages; for example, if two nodes cannot communicate with each other because of a network problem, both have the opportunity to log the error
+
+### Finding 7
+
+> For a majority (84%) of the failures, all of their triggering events are logged.
+
+This suggests that it is possible to deterministically replay the majority of failures based on the existing log messages alone. Deterministic replay has been widely explored by the research community. However, these approaches are based on intrusive tracing with significant runtime overhead and the need to modify software/hardware.
+
+### Finding 8
+
+> Logs are noisy: the median of the number of log messages printed by each failure is 824.
+
+This number was obtained when reproducing 73 of the 198 failures with a minimal configuration and using a minimal workload that is just sufficient to reproduce the failure. Moreover, we did not count the messages printed during the start-up and shut-down phases.
+
+This suggests that manual examination of the log files could be tedious. If a user only cares about the error symptoms, a selective grep on the error verbosity levels will reduce noise since a vast majority of the printed log messages are at INFO level. However, the input events that triggered the failure are often logged at INFO level. Therefore to further infer the input events one has to examine almost every log message. It would be helpful if existing log analysis techniques and tools were extended so they can infer the relevant error and input event messages by filtering out the irrelevant ones.
+
+### Finding 9
+
+Conventional wisdom has it that failures which occur on large, distributed system in production are extremely hard to reproduce off-line. The users' input may be unavailable due to privacy concerns, the difficulty in setting up an environment that mirrors the one in production, and the cost of third-party libraries, are often reasons cited as to why it is difficult for vendors to reproduce production failures. Our finding below indicates that failure reproduction might not be as hard as it is thought to be.
+
+> A majority of the production failures (77%) can be reproduced by a unit test.
+
+While this finding might sound counter-intuitive, it is not surprising given our previous findings because:
+
+* in Finding 4 we show that 74% of the failures are deterministic, which means the failures can be reproduced with the same operation sequence
+* among the remaining non-deterministic failures, in 53% of the cases the timing can be controlled through unit tests
+
+Specific data values are not typically required to reproduce the failures; in fact, *none* of the studied failures required specific values of user's data contents. Instead, only the required input sequences (e.g., file write, disconnect a node, etc.) are needed.
+
+Figure 6 shows how a unit test can simulate the non-deterministic failure of Figure 2. It simulates a mini-cluster by starting three processes running as three nodes. It further simulates the key input events, including HMaster's log split, Region Server's log rolling, and the write requests. The required dependency where the client must send write requests before the master re-assigns the recovered region is also controlled by this unit test.
+
+The failures that cannot be reproduced easily either depend on a particular execution environment (such as OS version or third party libraries), or were caused by nondeterministic thread interleavings.
+
+### Finding 10
+
+We classify a failure to be **catastrophic** when it prevents all or a majority of the users from their normal access to the system. In practice, these failures result in cluster-wide outage, a hung cluster, or a loss to all or a majority of the user data. Note that a bug resulting in under-replicated data blocks is not considered as catastrophic, even when it affect all data blocks, because it does not prevent users from their normal read and write to their data yet. We specifically study the catastrophic failures because they are the ones with the largest business impact to the vendors.
+
+The fact that there are so many catastrophic failures is perhaps surprising given that the systems considered all have [**High Availability (HA) mechanisms**](#high-availability-mechanism) designed to prevent component failures from taking down the entire service. For example, all of the four systems with a chief and worker design — namely HBase, HDFS, MapReduce, and Redis — are designed to, on a chief node failure, automatically elect a new chief node and fail over to it. Cassandra is a peer-to-peer system, thus by design it avoids single points of failure. Then why do catastrophic failures still occur?
+
+> Almost all catastrophic failures (92%) are the result of incorrect handling of non-fatal errors explicitly signaled in software.
+
+![](/images/fault-tolerance/catastrophic-failures.png)
+
+These catastrophic failures are the result of more than one fault triggering, where the initial fault, whether due to a hardware fault, a misconfiguration, or a bug, first manifests itself explicitly as a non-fatal error — for example by throwing an exception or having a system call return an error. This error need not be catastrophic; however in the vast majority of cases, the handling of the explicit error was faulty, resulting in an error manifesting itself as a catastrophic failure.
+
+This prevalence of incorrect error handling is unique to catastrophic failures. In comparison, only 25% of the non-catastrophic failures in our study involve incorrect error handling, indicating that in non-catastrophic failures, error handling was mostly effective in preventing the errors from taking down the entire service.
+
+Overall, we found that the developers are good at anticipating possible errors. In all but one case, the errors were checked by the developers. The only case where developers did not check the error was an unchecked error system call return in Redis. This is different from the characteristics observed in previous studies on file system bugs, where many errors weren't even checked. This difference is likely because:
+
+* the Java compiler forces developers to catch all the checked exceptions
+* a variety of errors are expected to occur in large distributed systems, and the developers program more defensively
+
+However, we found they were often simply sloppy in handling these errors. This is further corroborated in Findings 11 and 12 below. To be fair, we should point out that our findings are skewed in the sense that our study did not expose the many errors that are correctly caught and handled.
+
+Nevertheless, the correctness of error handling code is particularly important given their impact. Previous studies show that the initial faults in distributed system failures are highly diversified (e.g., bugs, misconfigurations, node crashes, hardware faults), and in practice it is simply impossible to eliminate them all in large data centers. It is therefore unavoidable that some of these faults will manifest themselves into errors, and error handling then becomes the last line of defense.
+
+Of the catastrophic failures we studied, only four were not triggered by incorrect error handling. Three of them were because the servers mistakenly threw fatal exceptions that terminated all the clients, i.e., the clients' error handling was correct. The other one was a massive performance degradation when a bug disabled DNS look-up result caching.
+
+### Finding 11
+
+> 35% of the catastrophic failures are caused by trivial mistakes in error handling logic — ones that simply violate best programming practices; and that can be detected without system specific knowledge.
+
+Trivial mistakes can be broken into three categories:
+
+* the error handler ignores explicit errors
+* the error handler over-catches an exception and aborts the system
+* the error handler contains "TODO" or "FIXME" in the comment
+
+25% of the catastrophic failures were caused by ignoring explicit errors (an error handler that only logs the error is also considered as ignoring the error). For systems written in Java, the exceptions were all explicitly thrown, whereas in Redis they were system call error returns. Ignoring errors and allowing them to propagate is known to be bad programming practice, yet we observed this lead to many catastrophic failures. At least the developers were careful at logging the errors: all the errors were logged except for one case where the Redis developers did not log the error system call return.
+
+Another 8% of the catastrophic failures were caused by developers prematurely aborting the entire cluster on a non-fatal exception. The safe practice is to catch the precise exception. An even more obvious mistake, where the developers only left a comment "TODO" in the handler logic in addition to a logging statement. While this error would only occur rarely, it took down a production cluster of 4,000 nodes.
+
+### Finding 12
+
+The other 57% of the catastrophic failures are caused by incorrect error handling where system-specific knowledge is required to detect the bugs.
+
+> In 23% of the catastrophic failures, while the mistakes in error handling were system specific, they are still easily detectable. More formally, the incorrect error handling in these cases would be exposed by 100% statement coverage testing on the error handling logic.
+
+In other words, once the problematic basic block in the error handling code is triggered, the failure is guaranteed to be exposed. This suggests that these basic blocks were completely faulty and simply never properly tested. Hence, a good strategy to prevent these failures is to start from existing error handling logic and try to reverse
+engineer test cases that trigger them. For example, [symbolic execution techniques](https://en.wikipedia.org/wiki/Symbolic_execution) could be extended to purposefully reconstruct an execution path that can reach the error handling code block, instead of blindly exploring every execution path from the system entry points. While high statement coverage on error handling code might seem difficult to achieve, aiming for higher statement coverage in testing might still be a better strategy than a strategy of applying random fault injections.
+
+Existing testing techniques for error handling logic primarily use a "top-down" approach: start the system using testing inputs or model-checking, and actively inject errors at different stages. Tools like LFI and Fate&Destini are intelligent to inject errors only at appropriate points and avoid duplicated injections. Such techniques inevitably have greatly improved the reliability of software systems. In fact, Hadoop developers have their own error injection framework to test their systems, and the production failures we studied are likely the ones missed by such tools.
+
+However, our findings suggest that it could be challenging for such "top-down" approaches to further expose these remaining production failures. They require rare sequence of input events to first take the system to
+a rare state, before the injected error can take down the service. In addition, 38% of the failures only occur in long-running systems. Therfore, the possible space of input events would simply be untractable.
+
+The remaining 34% of catastrophic failures involve complex bugs in the error handling logic. These are the cases where developers did not anticipate certain error scenarios. These type of errors — which are almost byzantine — are indeed the hardest to test for. Detecting them require both understanding how the system works and anticipating all possible real-world failure modes. While our study cannot provide constructive suggestions on how to identify such bugs, we found they only account for one third of the catastrophic failures.
+
 ## Symptoms
 
 ### Unexpected termination
@@ -549,6 +651,8 @@ Whenever possible, concentrate on the credible faults and ignore those less like
 Time is an essential element in any digital computer system, even in systems that do not claim to be real-time. It is important to define the minimum period of time a system can fail to provide its defined service before a failure is declared. Unnecessarily short failure margins force the system designer to resort to expensive fault tolerance mechanisms, such as real-time fault masking.
 
 Carefully determine application failure margins and use the information to balance the degree of fault tolerance needed with the cost of implementation.
+
+## High availability mechanism
 
 ---
 
