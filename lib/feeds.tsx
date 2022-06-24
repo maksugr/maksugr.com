@@ -28,9 +28,8 @@ const buildFeed = (): Feed => {
         link: BASE_URL,
         language: 'en',
         image: `${BASE_URL}/og/image.png`,
-        favicon: `${BASE_URL}/favicons/favicon.ico`,
+        favicon: `${BASE_URL}/favicon/favicon.ico`,
         copyright: COPYRIGHT,
-        generator: 'NextJS + feed package',
         feedLinks: {
             json: `${BASE_URL}/feeds/feed.json`,
             atom: `${BASE_URL}/feeds/atom.xml`,
