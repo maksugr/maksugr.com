@@ -55,7 +55,7 @@ export const Meta: FC<IMetaProps> = (props) => {
                 color='#000000'
             />
             <link rel='shortcut icon' href='/favicon/favicon.ico' />
-            <link rel='manifest' href='site.webmanifest' />
+            <link rel='manifest' href='/site.webmanifest' />
             <meta name='msapplication-config' content='browserconfig.xml' />
             <meta name='msapplication-TileColor' content='#ffffff' />
             <meta name='theme-color' content='#ffffff' />
@@ -69,11 +69,11 @@ export const Meta: FC<IMetaProps> = (props) => {
             <meta property='og:site_name' content={DOMAIN} />
             <meta property='og:description' content={meta.description} />
             <meta property='og:title' content={meta.title} />
-            <meta name='twitter:title' content={meta.title} />
-            <meta name='twitter:card' content='summary_large_image' />
-            <meta name='twitter:site' content='@maksugr' />
-            <meta name='twitter:description' content={meta.description} />
-            <meta name='twitter:image' content='/og/image.png' />
+            <meta property='twitter:title' content={meta.title} />
+            <meta property='twitter:card' content='summary_large_image' />
+            <meta property='twitter:site' content='@maksugr' />
+            <meta property='twitter:description' content={meta.description} />
+            <meta property='twitter:image' content='/og/image.png' />
             <meta name='key' content={DOMAIN} />
             <title>{meta.title}</title>
             <link

@@ -4,28 +4,44 @@ import { GetStaticProps } from 'next';
 import { Container } from '../components/container';
 import { Navigation } from '../components/navigation';
 import { Layout } from '../components/layout';
-import { Header } from '../components/header';
-import { Title } from '../components/title';
 import { generateMainFeeds } from '../lib/feeds';
+import { getContents } from '../lib/content';
+import { ContentTypeEnum } from '../enums/content-type';
+import { IContentMetadata } from '../interfaces/content-metadata';
+import { Content } from '../components/content';
+import { Footer } from '../components/footer';
 
-const IndexPage: FC = () => {
+interface IIndexPageProps {
+    readonly postsMetadatas: IContentMetadata[];
+}
+
+const IndexPage: FC<IIndexPageProps> = ({ postsMetadatas }) => {
     return (
         <Layout>
             <Container>
                 <Navigation />
-                <Header>
-                    <Title>Hey 👋</Title>
-                </Header>
+                {postsMetadatas.length > 0 && (
+                    <Content
+                        type={ContentTypeEnum.POSTS}
+                        metadatas={postsMetadatas}
+                    />
+                )}
+                <Footer />
             </Container>
         </Layout>
     );
 };
 
-export const getStaticProps: GetStaticProps = () => {
+export const getStaticProps: GetStaticProps = async () => {
     generateMainFeeds();
 
+    const posts = await getContents(ContentTypeEnum.POSTS);
+    const postsMetadatas = posts.map((post) => post.metadata);
+
     return {
-        props: {}
+        props: {
+            postsMetadatas
+        }
     };
 };
 

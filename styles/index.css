@@ -5,3 +5,7 @@
 html {
     @apply scroll-smooth;
 }
+
+a {
+    @apply text-red border-red border-b-[1px] md:hover:bg-red md:hover:text-white;
+}

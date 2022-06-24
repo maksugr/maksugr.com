@@ -1,7 +1,6 @@
 ---
 title: 'DBMS'
 summary: 'Database management systems summary'
-topics: ['DBMS']
 publishedAt: '2022-05-05'
 ---
 
@@ -38,7 +37,7 @@ Data warehouses are very different from [OLTP](#oltp) systems. OLTP systems have
 
 The standard wisdom in data warehouse schemas is to create a [fact table](#fact-table), containing the "**who**, **what**, **when**, **where**" about each operational transaction.
 
-![](/images/dbms/typical-retailer-star-schema.png)
+![](/images/notes/dbms/typical-retailer-star-schema.png)
 <figcaption>The schema for a typical retailer</figcaption>
 
 Note the central fact table, which holds an entry for each item that is scanned by a cashier in each store in its chain. In addition, the warehouse contains dimension tables, with information on each store, each customer, each product, and each time period. In effect, the fact table contains a foreign key for each of these dimensions, and a [star schema](#star-schema) is the natural result. Such star schemas are omnipresent in warehouse environments, but are virtually nonexistent in OLTP environments.
@@ -49,7 +48,7 @@ In addition, materialized views are a useful optimization tactic in warehouse wo
 
 To a first approximation, most vendors have a warehouse DBMS (bit-map indexes, materialized views, star schemas and optimizer tactics for star schema queries) and an OLTP DBMS (B-tree indexes and a standard cost-based optimizer), which are united by a common parser.
 
-![](/images/dbms/common-parser.png)
+![](/images/notes/dbms/common-parser.png)
 
 Although this configuration allows such a vendor to market his DBMS product as a single system, because of the single user interface, in effect, she is selling multiple systems.
 

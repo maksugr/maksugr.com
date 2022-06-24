@@ -1,10 +1,9 @@
 import { FC } from 'react';
 
 import { Container } from '../components/container';
-import { Header } from '../components/header';
+import { Footer } from '../components/footer';
 import { Layout } from '../components/layout';
 import { Navigation } from '../components/navigation';
-import { Title } from '../components/title';
 import { DEFAULT_TITLE } from '../lib/constants';
 
 const Page404: FC = () => {
@@ -12,9 +11,8 @@ const Page404: FC = () => {
         <Layout meta={{ title: `404 | ${DEFAULT_TITLE}` }}>
             <Container>
                 <Navigation />
-                <Header>
-                    <Title>404 🤷</Title>
-                </Header>
+                <h1 className='text-7xl md:text-9xl'>Got lost?</h1>
+                <Footer />
             </Container>
         </Layout>
     );

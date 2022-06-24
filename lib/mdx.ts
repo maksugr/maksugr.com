@@ -35,7 +35,7 @@ const customizeTOCItem = (tocItem: ListItemNode, heading: HtmlElementNode) => {
     return tocItem;
 };
 
-const serializePost = async (
+const serializeContent = async (
     content: string
 ): Promise<MDXRemoteSerializeResult> => {
     return await serialize(content, {
@@ -79,4 +79,4 @@ const serializePost = async (
     });
 };
 
-export default serializePost;
+export default serializeContent;

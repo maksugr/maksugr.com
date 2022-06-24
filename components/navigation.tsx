@@ -1,31 +1,16 @@
 import Link from 'next/link';
 import { FC } from 'react';
 
-interface INavItem {
-    readonly text: string;
-    readonly href: string;
-}
-
-const navItems: INavItem[] = [
-    {
-        text: 'roman ponomarev',
-        href: '/'
-    },
-    { text: 'notes', href: '/notes' }
-];
+import { AUTHOR_NAME } from '../lib/constants';
 
 export const Navigation: FC = () => {
     return (
-        <nav className='flex text-sm md:text-xl font-bold mb-24 mt-4'>
-            {navItems.map(({ text, href }) => (
-                <h2 key={text} className='mr-8'>
-                    <Link href={href}>
-                        <a className='hover:text-cyan-800 transition-colors'>
-                            {text}
-                        </a>
-                    </Link>
-                </h2>
-            ))}
+        <nav className='relative flex text-xl mt-6 mb-24 before:w-5 before:h-5 before:bg-black before:mr-2'>
+            <Link href='/'>
+                <a className='text-black border-b-0 hover:bg-transparent hover:text-black leading-none font-bold'>
+                    {AUTHOR_NAME.toLowerCase()}
+                </a>
+            </Link>
         </nav>
     );
 };

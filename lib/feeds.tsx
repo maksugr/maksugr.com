@@ -7,7 +7,8 @@ import { MDXRemote } from 'next-mdx-remote';
 import { stripHtml } from 'string-strip-html';
 
 import { MDXComponents } from '../components/markdown';
-import { IPost } from '../interfaces/post';
+import { IContent } from '../interfaces/content';
+import { ContentTypeEnum } from '../enums/content-type';
 
 import {
     AUTHOR_EMAIL,
@@ -17,7 +18,7 @@ import {
     DEFAULT_DESCRIPTION,
     DEFAULT_TITLE
 } from './constants';
-import { getPosts } from './posts';
+import { getContents } from './content';
 
 const buildFeed = (): Feed => {
     return new Feed({
@@ -43,13 +44,14 @@ const buildFeed = (): Feed => {
     });
 };
 
-const makeFeedItem = (post: IPost): Item => {
-    const url = `${BASE_URL}/notes/${post.metadata.slug}`;
+const makeFeedItem = (content: IContent): Item => {
+    const url = `${BASE_URL}/${ContentTypeEnum.POSTS}/${content.metadata.slug}`;
 
     const htmlContent = ReactDOMServer.renderToStaticMarkup(
-        <MDXRemote {...post.mdxSource} components={MDXComponents} />
+        <MDXRemote {...content.mdxSource} components={MDXComponents} />
     )
         .replace(/href="\/#/g, `href="${url}#`)
+        .replace(/href="\#/g, `href="${url}#`)
         .replace(/href="\//g, `href="${BASE_URL}/`)
         .replace(/src="\//g, `src="${BASE_URL}/`);
 
@@ -59,18 +61,18 @@ const makeFeedItem = (post: IPost): Item => {
     }).result;
 
     return {
-        title: post.metadata.title,
+        title: content.metadata.title,
         id: url,
         link: url,
-        description: post.metadata.summary,
-        date: parseISO(post.metadata.publishedAt),
+        description: content.metadata.summary,
+        date: parseISO(content.metadata.publishedAt),
         content: cleanHtmlContent
     };
 };
 
 export const generateMainFeeds = async (): Promise<void> => {
     const feed = buildFeed();
-    const posts = await getPosts('notes');
+    const posts = await getContents(ContentTypeEnum.POSTS);
 
     posts.forEach((post) => feed.addItem(makeFeedItem(post)));
 

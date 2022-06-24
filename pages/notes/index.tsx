@@ -2,37 +2,43 @@ import { FC } from 'react';
 import { GetStaticProps } from 'next';
 
 import { Container } from '../../components/container';
-import { Notes } from '../../components/notes';
+import { Content } from '../../components/content';
 import { Navigation } from '../../components/navigation';
 import { Layout } from '../../components/layout';
 import { DEFAULT_TITLE } from '../../lib/constants';
-import { getPosts } from '../../lib/posts';
-import { IPostMetadata } from '../../interfaces/post-metadata';
+import { getContents } from '../../lib/content';
+import { IContentMetadata } from '../../interfaces/content-metadata';
+import { ContentTypeEnum } from '../../enums/content-type';
+import { Footer } from '../../components/footer';
 
 interface INotesPageProps {
-    readonly notesMetadata: IPostMetadata[];
+    readonly notesMetadatas: IContentMetadata[];
 }
 
-const NotesPage: FC<INotesPageProps> = ({ notesMetadata }) => {
+const NotesPage: FC<INotesPageProps> = ({ notesMetadatas }) => {
     return (
         <Layout meta={{ title: `Notes | ${DEFAULT_TITLE}` }}>
             <Container>
                 <Navigation />
-                {notesMetadata.length > 0 && (
-                    <Notes notesMetadata={notesMetadata} />
+                {notesMetadatas.length > 0 && (
+                    <Content
+                        type={ContentTypeEnum.NOTES}
+                        metadatas={notesMetadatas}
+                    />
                 )}
+                <Footer />
             </Container>
         </Layout>
     );
 };
 
 export const getStaticProps: GetStaticProps = async () => {
-    const notes = await getPosts('notes');
-    const notesMetadata = notes.map((note) => note.metadata);
+    const notes = await getContents(ContentTypeEnum.NOTES);
+    const notesMetadatas = notes.map((note) => note.metadata);
 
     return {
         props: {
-            notesMetadata
+            notesMetadatas
         }
     };
 };

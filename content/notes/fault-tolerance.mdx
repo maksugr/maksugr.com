@@ -1,7 +1,6 @@
 ---
 title: 'Fault tolerance'
 summary: 'Fault tolerance summary'
-topics: ['fault tolerance']
 publishedAt: '2022-04-25'
 ---
 
@@ -147,7 +146,7 @@ Similarly, as components are aggregated into a system, eventually the system is 
 
 The **span of concern** begins at the boundaries between the system and the user and between the system and the environment, and ends at the fault floor. Faults below the fault floor are indistinguishable, either because they are not fully understood, or because they are too numerous. Informally, **the span of concern is the area within which faults are of interest**.
 
-![](/images/fault-tolerance/span-of-concern.png)
+![](/images/notes/fault-tolerance/span-of-concern.png)
 
 ## Fault classes
 
@@ -282,7 +281,7 @@ A fault is **observable** if there is information about its existence available 
 
 A fault that propagates to other faults or failures is said to be **active**. A non-propagating fault is said to be **dormant**. When a previously dormant fault becomes active it is said to be **triggered**. An active fault may again become dormant, awaiting a new trigger. The sequence of faults, each successive one triggered by the preceding one and possibly ending in a failure, is known as a **fault trajectory**. Because of the ways faults trigger successive faults, a fault trajectory could be viewed as a chain reaction.
 
-![](/images/fault-tolerance/fault-attributes.png)
+![](/images/notes/fault-tolerance/fault-attributes.png)
 
 ## Conditions for a failure
 
@@ -420,7 +419,7 @@ The fact that there are so many catastrophic failures is perhaps surprising give
 
 > Almost all catastrophic failures (92%) are the result of incorrect handling of non-fatal errors explicitly signaled in software.
 
-![](/images/fault-tolerance/catastrophic-failures.png)
+![](/images/notes/fault-tolerance/catastrophic-failures.png)
 
 These catastrophic failures are the result of more than one fault triggering, where the initial fault, whether due to a hardware fault, a misconfiguration, or a bug, first manifests itself explicitly as a non-fatal error — for example by throwing an exception or having a system call return an error. This error need not be catastrophic; however in the vast majority of cases, the handling of the explicit error was faulty, resulting in an error manifesting itself as a catastrophic failure.
 
@@ -520,7 +519,7 @@ Space redundancy provides separate physical copies of a resource, function, or d
 Digital systems have two unique advantages over other types of systems, including analog electrical systems. First, they can shift functions in time by storing information and programs for manipulating information. This means that if the expected faults are transient, a function can be rerun with a stored copy of the input data at a time sufficiently
 removed from the first execution of the function that a transient fault would not affect both. Second, since digital systems encode information as symbols, they can include redundancy in the coding scheme for the symbols. This means that information shifted in time can be checked for unwanted changes, and in many cases, the information can be corrected to its original value.
 
-![](/images/fault-tolerance/time-and-space-redundancy.png)
+![](/images/notes/fault-tolerance/time-and-space-redundancy.png)
 <figcaption>The two sets of resources represent space redundancy and the sequential computations represent time redundancy. In the figure, time redundancy is not capable of tolerating the permanent fault in the top processing resource, but is adequate to tolerate the transient fault in the lower resource. In this simple example, there is still the problem of recognizing the correct output.</figcaption>
 
 #### Clocks

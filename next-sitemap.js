@@ -2,6 +2,7 @@ const DOMAIN = 'maksugr.com';
 
 const POLICY = {
     userAgent: '*',
+    disallow: '/notes/'
 };
 
 module.exports = {
@@ -11,4 +12,5 @@ module.exports = {
     robotsTxtOptions: {
         policies: [POLICY],
     },
+    exclude: ['/notes*']
 };

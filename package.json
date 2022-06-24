@@ -1,6 +1,6 @@
 {
   "name": "maksugr.com",
-  "description": "Personal site of Roman Ponomarev",
+  "description": "Roman Ponomarev's developer blog",
   "version": "1.0.0",
   "author": {
     "name": "Roman Ponomarev",
@@ -19,7 +19,7 @@
     "npm": ">=8"
   },
   "scripts": {
-    "dev": "next-remote-watch ./posts/**/*.mdx",
+    "dev": "next-remote-watch ./content/**/*.mdx",
     "build": "next build",
     "postbuild": "next-sitemap",
     "start": "next start",

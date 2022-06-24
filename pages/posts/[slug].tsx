@@ -12,7 +12,7 @@ import { getContent, getContentFiles } from '../../lib/content';
 import { ContentTypeEnum } from '../../enums/content-type';
 import { Footer } from '../../components/footer';
 
-const NotePage: FC<IContent> = ({ mdxSource, metadata }) => {
+const PostPage: FC<IContent> = ({ mdxSource, metadata }) => {
     return (
         <Layout
             meta={{
@@ -33,7 +33,7 @@ const NotePage: FC<IContent> = ({ mdxSource, metadata }) => {
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
     const { mdxSource, metadata } = await getContent(
-        ContentTypeEnum.NOTES,
+        ContentTypeEnum.POSTS,
         params?.slug as string
     );
     return {
@@ -45,16 +45,16 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-    const notes = getContentFiles(ContentTypeEnum.NOTES);
+    const posts = getContentFiles(ContentTypeEnum.POSTS);
 
     return {
-        paths: notes.map((note) => ({
+        paths: posts.map((post) => ({
             params: {
-                slug: note.slug
+                slug: post.slug
             }
         })),
         fallback: false
     };
 };
 
-export default NotePage;
+export default PostPage;
