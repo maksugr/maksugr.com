@@ -63,7 +63,7 @@ export const Meta: FC<IMetaProps> = (props) => {
             <meta name='author' content={AUTHOR_NAME} />
             <meta name='robots' content='follow, index' />
             <link rel='canonical' href={`${BASE_URL}${router.asPath}`} />
-            <meta property='og:image' content='/og/image.png' />
+            <meta property='og:image' content='/og/image.png?2' />
             <meta property='og:url' content={`${BASE_URL}${router.asPath}`} />
             <meta property='og:type' content={meta.type} />
             <meta property='og:site_name' content={DOMAIN} />
@@ -73,7 +73,7 @@ export const Meta: FC<IMetaProps> = (props) => {
             <meta property='twitter:card' content='summary_large_image' />
             <meta property='twitter:site' content='@maksugr' />
             <meta property='twitter:description' content={meta.description} />
-            <meta property='twitter:image' content='/og/image.png' />
+            <meta property='twitter:image' content='/og/image.png?2' />
             <meta name='key' content={DOMAIN} />
             <title>{meta.title}</title>
             <link

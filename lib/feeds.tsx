@@ -27,7 +27,7 @@ const buildFeed = (): Feed => {
         id: BASE_URL,
         link: BASE_URL,
         language: 'en',
-        image: `${BASE_URL}/og/image.png`,
+        image: `${BASE_URL}/og/image.png?2`,
         favicon: `${BASE_URL}/favicon/favicon.ico`,
         copyright: COPYRIGHT,
         feedLinks: {
