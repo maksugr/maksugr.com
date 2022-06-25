@@ -80,19 +80,7 @@ export const Meta: FC<IMetaProps> = (props) => {
                 rel='alternate'
                 type='application/rss+xml'
                 title={`${meta.title} RSS feed`}
-                href='/feeds/feed.xml'
-            />
-            <link
-                rel='alternate'
-                type='application/atom+xml'
-                title={`${meta.title} Atom feed`}
-                href='/feeds/atom.xml'
-            />
-            <link
-                rel='alternate'
-                type='application/feed+json'
-                title={`${meta.title} JSON feed`}
-                href='/feeds/feed.json'
+                href='/feeds/rss.xml'
             />
         </Head>
     );

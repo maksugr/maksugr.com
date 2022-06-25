@@ -8,7 +8,7 @@ interface INavItem {
 const navItems: INavItem[] = [
     {
         text: 'rss',
-        href: '/feeds/atom.xml'
+        href: '/feeds/rss.xml'
     },
     { text: 'github', href: 'https://github.com/maksugr' },
     { text: 'twitter', href: 'https://twitter.com/maksugr' }
