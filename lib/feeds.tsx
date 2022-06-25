@@ -11,7 +11,8 @@ import {
     BASE_URL,
     COPYRIGHT,
     DEFAULT_DESCRIPTION,
-    DEFAULT_TITLE
+    DEFAULT_TITLE,
+    KEYWORDS
 } from './constants';
 import { getContents } from './content';
 
@@ -26,13 +27,7 @@ const buildFeed = () => {
         webMaster: AUTHOR_NAME,
         copyright: COPYRIGHT,
         language: 'en',
-        categories: [
-            'tech',
-            'software development',
-            'web development',
-            'programming',
-            'programming languages'
-        ]
+        categories: KEYWORDS
     });
 };
 

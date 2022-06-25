@@ -7,7 +7,8 @@ import {
     BASE_URL,
     DEFAULT_DESCRIPTION,
     DEFAULT_TITLE,
-    DOMAIN
+    DOMAIN,
+    KEYWORDS
 } from '../lib/constants';
 
 export interface IMetaProps {
@@ -55,30 +56,41 @@ export const Meta: FC<IMetaProps> = (props) => {
                 color='#000000'
             />
             <link rel='shortcut icon' href='/favicon/favicon.ico' />
-            <link rel='manifest' href='/site.webmanifest' />
-            <meta name='msapplication-config' content='browserconfig.xml' />
-            <meta name='msapplication-TileColor' content='#ffffff' />
-            <meta name='theme-color' content='#ffffff' />
+
+            <title>{meta.title}</title>
             <meta name='description' content={meta.description} />
+            <meta name='keywords' content={KEYWORDS.join(',')} />
             <meta name='author' content={AUTHOR_NAME} />
             <meta name='robots' content='follow, index' />
             <link rel='canonical' href={`${BASE_URL}${router.asPath}`} />
+            <link rel='manifest' href='/site.webmanifest' />
+
+            <meta name='msapplication-config' content='browserconfig.xml' />
+            <meta name='msapplication-TileColor' content='#ffffff' />
+            <meta name='theme-color' content='#ffffff' />
+
+            <meta property='og:title' content={meta.title} />
+            <meta property='og:description' content={meta.description} />
             <meta property='og:image' content={`${BASE_URL}/og/image.png?2`} />
             <meta property='og:url' content={`${BASE_URL}${router.asPath}`} />
-            <meta property='og:type' content={meta.type} />
             <meta property='og:site_name' content={DOMAIN} />
-            <meta property='og:description' content={meta.description} />
-            <meta property='og:title' content={meta.title} />
+            <meta property='og:type' content={meta.type} />
+
             <meta property='twitter:title' content={meta.title} />
-            <meta property='twitter:card' content='summary_large_image' />
-            <meta property='twitter:site' content='@maksugr' />
             <meta property='twitter:description' content={meta.description} />
             <meta
                 property='twitter:image'
                 content={`${BASE_URL}/og/image.png?2`}
             />
+            <meta
+                property='twitter:url'
+                content={`${BASE_URL}${router.asPath}`}
+            />
+            <meta property='twitter:card' content='summary_large_image' />
+            <meta property='twitter:site' content='@maksugr' />
+
             <meta name='key' content={DOMAIN} />
-            <title>{meta.title}</title>
+
             <link
                 rel='alternate'
                 type='application/rss+xml'

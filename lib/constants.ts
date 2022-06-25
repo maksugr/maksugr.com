@@ -7,3 +7,11 @@ export const DOMAIN = 'maksugr.com';
 export const BASE_URL = `https://${DOMAIN}`;
 
 export const COPYRIGHT = `Copyright ${new Date().getFullYear()} - ${AUTHOR_NAME}`;
+
+export const KEYWORDS = [
+    'tech',
+    'software development',
+    'web development',
+    'programming',
+    'programming languages'
+];
