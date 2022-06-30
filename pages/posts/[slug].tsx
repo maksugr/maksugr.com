@@ -13,17 +13,19 @@ import { ContentTypeEnum } from '../../enums/content-type';
 import { Footer } from '../../components/footer';
 
 const PostPage: FC<IContent> = ({ mdxSource, metadata }) => {
+    const { title, summary } = metadata;
+
     return (
         <Layout
             meta={{
-                title: `${metadata.title} | ${DEFAULT_TITLE}`,
-                description: metadata.summary,
+                title: `${title} | ${DEFAULT_TITLE}`,
+                description: summary,
                 type: 'article'
             }}
         >
             <Container>
                 <Navigation />
-                <ContentHeader title={metadata.title} />
+                <ContentHeader title={title} summary={summary} />
                 <ContentBody mdxSource={mdxSource} />
                 <Footer />
             </Container>

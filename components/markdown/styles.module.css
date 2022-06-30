@@ -1,5 +1,5 @@
 .markdown {
-    @apply text-lg;
+    @apply text-xl leading-relaxed text-justify break-words;
 }
 
 .markdown p,
@@ -15,7 +15,7 @@
 }
 
 .markdown h2 {
-    @apply text-3xl mt-12 mb-6;
+    @apply text-4xl mt-12 mb-6;
 }
 
 .markdown h3 {
@@ -44,7 +44,7 @@
 
 .markdown li {
     @apply relative pl-5;
-    @apply before:absolute before:top-[13px] before:left-0 before:m-auto before:w-1 before:h-1 before:bg-black;
+    @apply before:absolute before:top-[16px] before:left-0 before:m-auto before:w-1 before:h-1 before:bg-black;
 }
 
 .markdown figcaption {
@@ -61,12 +61,12 @@
 }
 
 .markdown p code, .markdown ul code, .markdown ol code {
-    @apply bg-gray-50 py-0.5 px-1 leading-none rounded-sm text-base;
+    @apply bg-gray-100 py-0.5 px-1 leading-none rounded-sm text-base;
 }
 
 .markdown code,
 .markdown pre {
-    @apply bg-gray-50 text-base font-normal;
+    @apply bg-gray-100 text-base font-normal;
 }
 
 .markdown [id='references'] {

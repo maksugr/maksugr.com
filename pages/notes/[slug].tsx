@@ -23,7 +23,10 @@ const NotePage: FC<IContent> = ({ mdxSource, metadata }) => {
         >
             <Container>
                 <Navigation />
-                <ContentHeader title={metadata.title} />
+                <ContentHeader
+                    title={metadata.title}
+                    summary={metadata.summary}
+                />
                 <ContentBody mdxSource={mdxSource} />
                 <Footer />
             </Container>
