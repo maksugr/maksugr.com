@@ -94,7 +94,7 @@ export const Meta: FC<IMetaProps> = (props) => {
             <link
                 rel='alternate'
                 type='application/rss+xml'
-                title={`${meta.title} RSS feed`}
+                title="maksugr's blog (@maksugr)"
                 href='/feeds/rss.xml'
             />
         </Head>
