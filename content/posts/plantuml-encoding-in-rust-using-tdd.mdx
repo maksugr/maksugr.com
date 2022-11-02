@@ -222,7 +222,7 @@ error[E0308]: mismatched types
    |                                 help: consider borrowing here: `&"@startuml\nPUML -> RUST: HELLO \n@enduml".to_string()`
 ```
 
-To fix that we can use [AsRef](https://doc.rust-lang.org/std/convert/trait.AsRef.html) train to add type conversion and convert functions to generic functions:
+To fix that we can use [AsRef](https://doc.rust-lang.org/std/convert/trait.AsRef.html) trait to add type conversion and convert functions to generic functions:
 
 ```rust
 pub fn encode_plantuml_hex<T: AsRef<str>>(plantuml: T) -> String {
