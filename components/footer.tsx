@@ -26,7 +26,7 @@ export const Footer: FC = () => {
                 >
                     Open an issue
                 </a>{' '}
-                to discuss the post. Subscribe to be in touch 🖤
+                to discuss the post. Subscribe 🖤
             </span>
             <hr className='h-0 border-t-4 border-black mb-6' />
             <div className='flex'>

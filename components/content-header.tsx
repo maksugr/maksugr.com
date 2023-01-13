@@ -9,9 +9,7 @@ export const ContentHeader: FC<IContentHeaderProps> = ({ title, summary }) => {
     return (
         <section className='mb-12'>
             <h1 className='text-5xl sm:text-6xl md:text-8xl'>{title}</h1>
-            <span className='block mt-4 italic text-gray-500 text-justify'>
-                {summary}
-            </span>
+            <span className='text-2xl block mt-4 text-gray-500'>{summary}</span>
         </section>
     );
 };

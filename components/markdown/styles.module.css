@@ -1,5 +1,5 @@
 .markdown {
-    @apply text-xl leading-relaxed text-justify break-words;
+    @apply text-lg leading-relaxed break-words;
 }
 
 .markdown p,
@@ -7,7 +7,7 @@
 .markdown ol,
 .markdown blockquote,
 .markdown pre {
-    @apply my-6 font-light;
+    @apply my-6;
 }
 
 .markdown p strong {
@@ -66,7 +66,7 @@
 
 .markdown code,
 .markdown pre {
-    @apply bg-gray-100 text-base font-normal;
+    @apply bg-zinc-800 font-normal text-sm;
 }
 
 .markdown [id='references'] {

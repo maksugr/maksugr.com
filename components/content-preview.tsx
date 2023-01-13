@@ -22,7 +22,7 @@ export const ContentPreview: FC<IContentPreviewProps> = ({
                     {title}
                 </Link>
             </h3>
-            <p className='text-xs text-gray-500 font-light hidden md:group-hover:block'>
+            <p className='text-xs text-gray-500 hidden md:group-hover:block'>
                 [{publishedAt} • {readingTime}]
             </p>
         </div>
