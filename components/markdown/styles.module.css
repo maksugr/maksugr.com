@@ -35,7 +35,7 @@
 }
 
 .markdown h2 a, .markdown h3 a, .markdown h4 a {
-    @apply absolute cursor-pointer opacity-100 md:opacity-0 w-full border-none text-primary hover:opacity-100 hover:no-underline transition-opacity;
+    @apply absolute cursor-pointer opacity-100 md:opacity-0 w-full border-none text-black hover:opacity-100 hover:no-underline transition-opacity;
 }
 
 .markdown h2 a span, .markdown h3 a span, .markdown h4 a span {
@@ -44,24 +44,24 @@
 
 .markdown li {
     @apply relative pl-5;
-    @apply before:absolute before:top-[16px] before:left-0 before:m-auto before:w-1 before:h-1 before:bg-primary;
+    @apply before:absolute before:top-[16px] before:left-0 before:m-auto before:w-1 before:h-1 before:bg-black;
 }
 
 .markdown figcaption {
-    @apply -mt-6 mb-6 text-center italic text-sm text-secondary;
+    @apply -mt-6 mb-6 text-center italic text-sm text-gray;
 }
 
 .markdown blockquote {
     @apply relative pl-5;
-    @apply before:absolute before:top-0 before:left-0 before:w-1.5 before:h-full before:bg-primary;
+    @apply before:absolute before:top-0 before:left-0 before:w-1.5 before:h-full before:bg-black;
 }
 
 .markdown blockquote p {
-    @apply text-base text-secondary;
+    @apply text-base text-gray;
 }
 
 .markdown p code, .markdown ul code, .markdown ol code {
-    @apply bg-gray-100 py-0.5 px-1 leading-none rounded-sm text-base;
+    @apply bg-gray py-0.5 px-1 leading-none rounded-sm text-base;
 }
 
 .markdown code,
@@ -82,7 +82,7 @@
 }
 
 .markdown hr {
-    @apply border-t border-gray-100;
+    @apply border-t border-gray;
 }
 
 .markdown nav {

@@ -16,7 +16,7 @@ export const Content: FC<IContentProps> = ({ type, metadatas }) => {
             <ul>
                 {metadatas.map((metadata) => (
                     <li
-                        className='relative pl-5 mb-1 flex before:absolute before:top-0 before:left-0 before:w-1.5 before:h-full before:bg-primary'
+                        className='relative pl-5 mb-1 flex before:absolute before:top-0 before:left-0 before:w-1.5 before:h-full before:bg-black'
                         key={metadata.title}
                     >
                         <ContentPreview

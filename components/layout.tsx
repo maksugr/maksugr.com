@@ -10,7 +10,7 @@ export const Layout: FC<ILayoutProps> = ({ meta, children }) => {
     return (
         <>
             <Meta {...meta} />
-            <div className='pb-16'>
+            <div className='pb-16 min-h-screen bg-white'>
                 <main>{children}</main>
             </div>
         </>
