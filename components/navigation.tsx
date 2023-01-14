@@ -22,7 +22,10 @@ export const Navigation: FC = () => {
     const preparedNavigationItems = useMemo(() => {
         return navigationItems.map((navigationItem) => ({
             ...navigationItem,
-            isActive: navigationItem.href === pathname
+            isActive:
+                navigationItem.href === '/'
+                    ? navigationItem.href === pathname
+                    : pathname.includes(navigationItem.href)
         }));
     }, [pathname]);
 

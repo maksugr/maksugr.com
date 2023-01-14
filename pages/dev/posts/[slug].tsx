@@ -11,6 +11,7 @@ import { DEFAULT_TITLE } from '../../../lib/constants';
 import { getContent, getContentFiles } from '../../../lib/content';
 import { ContentTypeEnum } from '../../../enums/content-type';
 import { Footer } from '../../../components/footer';
+import { ScrollProgress } from '../../../components/scroll-progress';
 
 const DevPostPage: FC<IContent> = ({ mdxSource, metadata }) => {
     const { title, summary } = metadata;
@@ -23,6 +24,7 @@ const DevPostPage: FC<IContent> = ({ mdxSource, metadata }) => {
                 type: 'article'
             }}
         >
+            <ScrollProgress />
             <Container>
                 <Navigation />
                 <ContentHeader title={title} summary={summary} />
