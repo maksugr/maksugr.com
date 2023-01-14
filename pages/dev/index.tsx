@@ -2,7 +2,7 @@ import { FC } from 'react';
 import { GetStaticProps } from 'next';
 
 import { Container } from '../../components/container';
-import { Navigation } from '../../components/navigation';
+import { Header } from '../../components/header';
 import { Layout } from '../../components/layout';
 import { generateMainFeeds } from '../../lib/feeds';
 import { getContents } from '../../lib/content';
@@ -20,7 +20,7 @@ const DevPage: FC<IDevPageProps> = ({ devPostsMetadatas }) => {
     return (
         <Layout meta={{ title: `Dev | ${DEFAULT_TITLE}` }}>
             <Container>
-                <Navigation />
+                <Header />
                 {devPostsMetadatas.length > 0 && (
                     <Content
                         type={ContentTypeEnum.DEV}

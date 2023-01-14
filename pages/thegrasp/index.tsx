@@ -3,7 +3,7 @@ import { GetStaticProps } from 'next';
 
 import { Container } from '../../components/container';
 import { Content } from '../../components/content';
-import { Navigation } from '../../components/navigation';
+import { Header } from '../../components/header';
 import { Layout } from '../../components/layout';
 import { DEFAULT_TITLE } from '../../lib/constants';
 import { getContents } from '../../lib/content';
@@ -19,7 +19,7 @@ const TheGraspPage: FC<ITheGraspPageProps> = ({ theGraspMetadatas }) => {
     return (
         <Layout meta={{ title: `The Grasp | ${DEFAULT_TITLE}` }}>
             <Container>
-                <Navigation />
+                <Header />
                 {theGraspMetadatas.length > 0 && (
                     <Content
                         type={ContentTypeEnum.THE_GRASP}

@@ -2,7 +2,7 @@ import { FC } from 'react';
 import { GetStaticProps } from 'next';
 
 import { Container } from '../components/container';
-import { Navigation } from '../components/navigation';
+import { Header } from '../components/header';
 import { Layout } from '../components/layout';
 import { generateMainFeeds } from '../lib/feeds';
 import { getContents } from '../lib/content';
@@ -19,7 +19,7 @@ const IndexPage: FC<IIndexPageProps> = ({ postsMetadatas }) => {
     return (
         <Layout>
             <Container>
-                <Navigation />
+                <Header />
                 {/* {postsMetadatas.length > 0 && (
                     <Content
                         type={ContentTypeEnum.POSTS}

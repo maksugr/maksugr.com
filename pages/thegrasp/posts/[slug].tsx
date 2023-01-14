@@ -3,7 +3,7 @@ import { FC } from 'react';
 
 import { Container } from '../../../components/container';
 import { Layout } from '../../../components/layout';
-import { Navigation } from '../../../components/navigation';
+import { Header } from '../../../components/header';
 import { ContentBody } from '../../../components/content-body';
 import { ContentHeader } from '../../../components/content-header';
 import { IContent } from '../../../interfaces/content';
@@ -26,7 +26,7 @@ const TheGraspPostPage: FC<IContent> = ({ mdxSource, metadata }) => {
         >
             <ScrollProgress />
             <Container>
-                <Navigation />
+                <Header />
                 <ContentHeader title={title} summary={summary} />
                 <ContentBody mdxSource={mdxSource} />
                 <Footer />

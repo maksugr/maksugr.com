@@ -16,15 +16,8 @@ export const Footer: FC = () => {
     return (
         <footer className='mt-24'>
             <span className='block mb-6 font-bold'>
-                I{`'`}d be happy to hear your thoughts.{' '}
-                <a
-                    href='https://github.com/maksugr/maksugr.com'
-                    target='_blank'
-                    rel='noreferrer'
-                >
-                    Open an issue
-                </a>{' '}
-                to discuss the post. Subscribe 🖤
+                I{`'`}d be happy to hear your thoughts. Feel free to text me.
+                Subscribe 🖤
             </span>
             <hr className='h-0 border-t-4 border-black mb-6' />
             <div className='flex'>
