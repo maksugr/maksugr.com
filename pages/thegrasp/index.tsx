@@ -1,7 +1,6 @@
 import { FC } from 'react';
 import { GetStaticProps } from 'next';
 
-import { Container } from '../../components/container';
 import { Content } from '../../components/content';
 import { Header } from '../../components/header';
 import { Layout } from '../../components/layout';
@@ -18,16 +17,14 @@ interface ITheGraspPageProps {
 const TheGraspPage: FC<ITheGraspPageProps> = ({ theGraspMetadatas }) => {
     return (
         <Layout meta={{ title: `The Grasp | ${DEFAULT_TITLE}` }}>
-            <Container>
-                <Header />
-                {theGraspMetadatas.length > 0 && (
-                    <Content
-                        type={ContentTypeEnum.THE_GRASP}
-                        metadatas={theGraspMetadatas}
-                    />
-                )}
-                <Footer />
-            </Container>
+            <Header />
+            {theGraspMetadatas.length > 0 && (
+                <Content
+                    type={ContentTypeEnum.THE_GRASP}
+                    metadatas={theGraspMetadatas}
+                />
+            )}
+            <Footer />
         </Layout>
     );
 };

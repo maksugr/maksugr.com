@@ -1,7 +1,6 @@
 import { FC } from 'react';
 import { GetStaticProps } from 'next';
 
-import { Container } from '../../components/container';
 import { Header } from '../../components/header';
 import { Layout } from '../../components/layout';
 import { generateMainFeeds } from '../../lib/feeds';
@@ -19,16 +18,14 @@ interface IDevPageProps {
 const DevPage: FC<IDevPageProps> = ({ devPostsMetadatas }) => {
     return (
         <Layout meta={{ title: `Dev | ${DEFAULT_TITLE}` }}>
-            <Container>
-                <Header />
-                {devPostsMetadatas.length > 0 && (
-                    <Content
-                        type={ContentTypeEnum.DEV}
-                        metadatas={devPostsMetadatas}
-                    />
-                )}
-                <Footer />
-            </Container>
+            <Header />
+            {devPostsMetadatas.length > 0 && (
+                <Content
+                    type={ContentTypeEnum.DEV}
+                    metadatas={devPostsMetadatas}
+                />
+            )}
+            <Footer />
         </Layout>
     );
 };

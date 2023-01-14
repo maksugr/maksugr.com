@@ -3,12 +3,12 @@ module.exports = {
     darkMode: 'class',
     theme: {
         fontFamily: {
-            'source-sans-pro': ['Georgia', 'serif']
+            georgia: ['Georgia', 'serif']
         },
         extend: {
             colors: {
                 black: 'var(--color-black)',
-                gray: 'var(--color-gray)',
+                hoar: 'var(--color-hoar)',
                 white: 'var(--color-white)',
                 red: 'var(--color-red)'
             }

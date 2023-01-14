@@ -14,7 +14,7 @@ const navigationItems: INavigrationItem[] = [
 
 export const Footer: FC = () => {
     return (
-        <footer className='mt-24'>
+        <footer className='container-bounded mt-24'>
             <span className='block mb-6 font-bold'>
                 I{`'`}d be happy to hear your thoughts. Feel free to text me.
                 Subscribe 🖤

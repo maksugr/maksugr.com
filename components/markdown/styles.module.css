@@ -48,7 +48,7 @@
 }
 
 .markdown figcaption {
-    @apply -mt-6 mb-6 text-center italic text-sm text-gray;
+    @apply -mt-6 mb-6 text-center italic text-sm text-hoar;
 }
 
 .markdown blockquote {
@@ -57,11 +57,11 @@
 }
 
 .markdown blockquote p {
-    @apply text-base text-gray;
+    @apply text-base text-hoar;
 }
 
 .markdown p code, .markdown ul code, .markdown ol code {
-    @apply bg-gray py-0.5 px-1 leading-none rounded-sm text-base;
+    @apply bg-gray-100 py-0.5 px-1 leading-none rounded-sm text-base;
 }
 
 .markdown code,
@@ -82,7 +82,7 @@
 }
 
 .markdown hr {
-    @apply border-t border-gray;
+    @apply border-t border-hoar;
 }
 
 .markdown nav {

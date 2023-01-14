@@ -10,7 +10,7 @@ interface IContentBodyProps {
 
 export const ContentBody: FC<IContentBodyProps> = ({ mdxSource }) => {
     return (
-        <article className={markdownStyles['markdown']}>
+        <article className={`${markdownStyles['markdown']} container-bounded`}>
             <MDXRemote {...mdxSource} components={MDXComponents} />
         </article>
     );

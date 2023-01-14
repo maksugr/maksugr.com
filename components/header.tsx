@@ -30,7 +30,7 @@ export const Header: FC = () => {
     }, [pathname]);
 
     return (
-        <header className='flex items-center pt-6 pb-24'>
+        <header className='container-bounded flex items-center pt-6 pb-24'>
             <nav className='flex items-center md:text-xl before:w-5 before:h-5 before:bg-black before:mr-5'>
                 {preparedNavigationItems.map(({ text, href, isActive }) => (
                     <Link href={href} key={text}>

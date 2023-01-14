@@ -12,7 +12,7 @@ interface IContentProps {
 
 export const Content: FC<IContentProps> = ({ type, metadatas }) => {
     return (
-        <section>
+        <section className='container-bounded'>
             <ul>
                 {metadatas.map((metadata) => (
                     <li

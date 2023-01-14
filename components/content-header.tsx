@@ -7,9 +7,9 @@ interface IContentHeaderProps {
 
 export const ContentHeader: FC<IContentHeaderProps> = ({ title, summary }) => {
     return (
-        <section className='mb-12'>
+        <section className='container-bounded mb-12'>
             <h1 className='text-5xl sm:text-6xl md:text-7xl'>{title}</h1>
-            <span className='text-2xl block mt-4 text-gray'>{summary}</span>
+            <span className='text-2xl block mt-4 text-hoar'>{summary}</span>
         </section>
     );
 };

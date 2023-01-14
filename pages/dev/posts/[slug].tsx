@@ -1,7 +1,6 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { FC } from 'react';
 
-import { Container } from '../../../components/container';
 import { Layout } from '../../../components/layout';
 import { Header } from '../../../components/header';
 import { ContentBody } from '../../../components/content-body';
@@ -25,12 +24,10 @@ const DevPostPage: FC<IContent> = ({ mdxSource, metadata }) => {
             }}
         >
             <ScrollProgress />
-            <Container>
-                <Header />
-                <ContentHeader title={title} summary={summary} />
-                <ContentBody mdxSource={mdxSource} />
-                <Footer />
-            </Container>
+            <Header />
+            <ContentHeader title={title} summary={summary} />
+            <ContentBody mdxSource={mdxSource} />
+            <Footer />
         </Layout>
     );
 };
