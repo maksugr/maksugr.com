@@ -25,7 +25,7 @@ export const ContentPreview: FC<IContentPreviewProps> = ({
                     {title}
                 </Link>
             </h3>
-            <p className='text-[0.6rem] text-gray-500'>
+            <p className='text-[0.6rem] text-secondary'>
                 [{publishedAt} • {readingTime}]
             </p>
         </div>

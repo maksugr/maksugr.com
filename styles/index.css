@@ -7,5 +7,5 @@ html {
 }
 
 a {
-    @apply text-red border-red border-b-[1px] md:hover:bg-red md:hover:text-white;
+    @apply text-accent border-accent border-b-[1px] md:hover:bg-accent md:hover:text-white;
 }

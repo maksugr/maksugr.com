@@ -11,7 +11,8 @@ const navItems: INavItem[] = [
         text: 'rss',
         href: '/feeds/rss.xml'
     },
-    { text: 'github', href: 'https://github.com/maksugr' }
+    { text: 'github', href: 'https://github.com/maksugr' },
+    { text: 'maksugr@gmail.com', href: 'mailto:maksugr@gmail.com' }
 ];
 
 export const Footer: FC = () => {
@@ -28,7 +29,7 @@ export const Footer: FC = () => {
                 </a>{' '}
                 to discuss the post. Subscribe 🖤
             </span>
-            <hr className='h-0 border-t-4 border-black mb-6' />
+            <hr className='h-0 border-t-4 border-primary mb-6' />
             <div className='flex'>
                 {navItems.map(({ text, href }, index) => (
                     <Fragment key={text}>
