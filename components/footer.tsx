@@ -1,11 +1,8 @@
 import { FC, Fragment } from 'react';
 
-interface INavItem {
-    readonly text: string;
-    readonly href: string;
-}
+import { INavigrationItem } from '../interfaces/navigation-item';
 
-const navItems: INavItem[] = [
+const navigationItems: INavigrationItem[] = [
     { text: 'twitter', href: 'https://twitter.com/maksugr' },
     {
         text: 'rss',
@@ -31,14 +28,14 @@ export const Footer: FC = () => {
             </span>
             <hr className='h-0 border-t-4 border-black mb-6' />
             <div className='flex'>
-                {navItems.map(({ text, href }, index) => (
+                {navigationItems.map(({ text, href }, index) => (
                     <Fragment key={text}>
                         <span className='mr-2'>
                             <a href={href} target='_blank' rel='noreferrer'>
                                 {text}
                             </a>
                         </span>
-                        {index !== navItems.length - 1 && (
+                        {index !== navigationItems.length - 1 && (
                             <span className='mr-2'>/</span>
                         )}
                     </Fragment>
