@@ -11,19 +11,19 @@ import { IContentMetadata } from '../../interfaces/content-metadata';
 import { ContentTypeEnum } from '../../enums/content-type';
 import { Footer } from '../../components/footer';
 
-interface INotesPageProps {
-    readonly notesMetadatas: IContentMetadata[];
+interface ITheGraspPageProps {
+    readonly theGraspMetadatas: IContentMetadata[];
 }
 
-const NotesPage: FC<INotesPageProps> = ({ notesMetadatas }) => {
+const TheGraspPage: FC<ITheGraspPageProps> = ({ theGraspMetadatas }) => {
     return (
-        <Layout meta={{ title: `Notes | ${DEFAULT_TITLE}` }}>
+        <Layout meta={{ title: `The Grasp | ${DEFAULT_TITLE}` }}>
             <Container>
                 <Navigation />
-                {notesMetadatas.length > 0 && (
+                {theGraspMetadatas.length > 0 && (
                     <Content
-                        type={ContentTypeEnum.NOTES}
-                        metadatas={notesMetadatas}
+                        type={ContentTypeEnum.THE_GRASP}
+                        metadatas={theGraspMetadatas}
                     />
                 )}
                 <Footer />
@@ -33,14 +33,16 @@ const NotesPage: FC<INotesPageProps> = ({ notesMetadatas }) => {
 };
 
 export const getStaticProps: GetStaticProps = async () => {
-    const notes = await getContents(ContentTypeEnum.NOTES);
-    const notesMetadatas = notes.map((note) => note.metadata);
+    const theGraspPosts = await getContents(ContentTypeEnum.THE_GRASP);
+    const theGraspMetadatas = theGraspPosts.map(
+        (theGraspPost) => theGraspPost.metadata
+    );
 
     return {
         props: {
-            notesMetadatas
+            theGraspMetadatas
         }
     };
 };
 
-export default NotesPage;
+export default TheGraspPage;

@@ -45,6 +45,7 @@ export const getContent = async (
     const { title, summary, publishedAt } = data;
 
     return {
+        type,
         mdxSource,
         metadata: {
             slug,

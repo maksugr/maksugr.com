@@ -1,4 +1,4 @@
 export enum ContentTypeEnum {
-    POSTS = 'posts',
-    NOTES = 'notes'
+    THE_GRASP = 'thegrasp',
+    DEV = 'dev'
 }

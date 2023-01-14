@@ -1,18 +1,18 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { FC } from 'react';
 
-import { Container } from '../../components/container';
-import { Layout } from '../../components/layout';
-import { Navigation } from '../../components/navigation';
-import { ContentBody } from '../../components/content-body';
-import { ContentHeader } from '../../components/content-header';
-import { IContent } from '../../interfaces/content';
-import { DEFAULT_TITLE } from '../../lib/constants';
-import { getContent, getContentFiles } from '../../lib/content';
-import { ContentTypeEnum } from '../../enums/content-type';
-import { Footer } from '../../components/footer';
+import { Container } from '../../../components/container';
+import { Layout } from '../../../components/layout';
+import { Navigation } from '../../../components/navigation';
+import { ContentBody } from '../../../components/content-body';
+import { ContentHeader } from '../../../components/content-header';
+import { IContent } from '../../../interfaces/content';
+import { DEFAULT_TITLE } from '../../../lib/constants';
+import { getContent, getContentFiles } from '../../../lib/content';
+import { ContentTypeEnum } from '../../../enums/content-type';
+import { Footer } from '../../../components/footer';
 
-const PostPage: FC<IContent> = ({ mdxSource, metadata }) => {
+const TheGraspPostPage: FC<IContent> = ({ mdxSource, metadata }) => {
     const { title, summary } = metadata;
 
     return (
@@ -35,7 +35,7 @@ const PostPage: FC<IContent> = ({ mdxSource, metadata }) => {
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
     const { mdxSource, metadata } = await getContent(
-        ContentTypeEnum.POSTS,
+        ContentTypeEnum.THE_GRASP,
         params?.slug as string
     );
     return {
@@ -47,16 +47,16 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-    const posts = getContentFiles(ContentTypeEnum.POSTS);
+    const theGraspPosts = getContentFiles(ContentTypeEnum.THE_GRASP);
 
     return {
-        paths: posts.map((post) => ({
+        paths: theGraspPosts.map((theGraspPost) => ({
             params: {
-                slug: post.slug
+                slug: theGraspPost.slug
             }
         })),
         fallback: false
     };
 };
 
-export default PostPage;
+export default TheGraspPostPage;

@@ -6,12 +6,12 @@ interface INavItem {
 }
 
 const navItems: INavItem[] = [
+    { text: 'twitter', href: 'https://twitter.com/maksugr' },
     {
         text: 'rss',
         href: '/feeds/rss.xml'
     },
-    { text: 'github', href: 'https://github.com/maksugr' },
-    { text: 'twitter', href: 'https://twitter.com/maksugr' }
+    { text: 'github', href: 'https://github.com/maksugr' }
 ];
 
 export const Footer: FC = () => {

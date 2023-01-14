@@ -32,7 +32,7 @@ const buildFeed = () => {
 };
 
 const makeFeedItem = (content: IContent) => {
-    const url = `${BASE_URL}/${ContentTypeEnum.POSTS}/${content.metadata.slug}`;
+    const url = `${BASE_URL}/${content.type}/posts/${content.metadata.slug}`;
 
     return {
         title: content.metadata.title,
@@ -45,9 +45,14 @@ const makeFeedItem = (content: IContent) => {
 
 export const generateMainFeeds = async (): Promise<void> => {
     const feed = buildFeed();
-    const posts = await getContents(ContentTypeEnum.POSTS);
+    const theGraspPosts = await getContents(ContentTypeEnum.THE_GRASP);
+    const devPosts = await getContents(ContentTypeEnum.DEV);
 
-    posts.forEach((post) => feed.item(makeFeedItem(post)));
+    const posts = [...theGraspPosts, ...devPosts].sort((a, b) =>
+        a.metadata.publishedAt < b.metadata.publishedAt ? 1 : -1
+    );
+
+    posts.forEach((theGraspPost) => feed.item(makeFeedItem(theGraspPost)));
 
     fs.mkdirSync('public/feeds/', { recursive: true });
 

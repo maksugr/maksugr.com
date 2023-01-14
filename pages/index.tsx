@@ -20,12 +20,12 @@ const IndexPage: FC<IIndexPageProps> = ({ postsMetadatas }) => {
         <Layout>
             <Container>
                 <Navigation />
-                {postsMetadatas.length > 0 && (
+                {/* {postsMetadatas.length > 0 && (
                     <Content
                         type={ContentTypeEnum.POSTS}
                         metadatas={postsMetadatas}
                     />
-                )}
+                )} */}
                 <Footer />
             </Container>
         </Layout>
@@ -35,12 +35,12 @@ const IndexPage: FC<IIndexPageProps> = ({ postsMetadatas }) => {
 export const getStaticProps: GetStaticProps = async () => {
     generateMainFeeds();
 
-    const posts = await getContents(ContentTypeEnum.POSTS);
-    const postsMetadatas = posts.map((post) => post.metadata);
+    // const posts = await getContents(ContentTypeEnum.POSTS);
+    // const postsMetadatas = posts.map((post) => post.metadata);
 
     return {
         props: {
-            postsMetadatas
+            // postsMetadatas
         }
     };
 };

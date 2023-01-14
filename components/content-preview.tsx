@@ -16,13 +16,16 @@ export const ContentPreview: FC<IContentPreviewProps> = ({
     const { title, readingTime, publishedAt, slug } = metadata;
 
     return (
-        <div className='flex items-center group'>
+        <div className='flex items-center'>
             <h3 className='text-lg mr-2'>
-                <Link as={`/${type}/${slug}`} href={`/${type}/[slug]`}>
+                <Link
+                    as={`/${type}/posts/${slug}`}
+                    href={`/${type}/posts/[slug]`}
+                >
                     {title}
                 </Link>
             </h3>
-            <p className='text-xs text-gray-500 hidden md:group-hover:block'>
+            <p className='text-[0.6rem] text-gray-500'>
                 [{publishedAt} • {readingTime}]
             </p>
         </div>
