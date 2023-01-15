@@ -40,7 +40,7 @@ const IndexPage = () => {
                         projects. In&nbsp;short, Data Journalism.
                     </p>
                     <p>
-                        You are also welcome to&nbsp;the&nbsp;{' '}
+                        You are also welcome to&nbsp;the&nbsp;
                         <Link href='/dev'>
                             <a>
                                 <b>Dev</b>
