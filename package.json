@@ -38,6 +38,7 @@
     "@next/mdx": "^12.1.5",
     "@nivo/core": "^0.80.0",
     "@nivo/line": "^0.80.0",
+    "d3-fetch": "^3.0.1",
     "date-fns": "^2.28.0",
     "gray-matter": "^4.0.3",
     "mdx-prism": "^0.3.4",
@@ -69,6 +70,7 @@
     "typographic-trademark": "^1.0.1"
   },
   "devDependencies": {
+    "@types/d3-fetch": "^3.0.2",
     "@types/node": "^15.6.0",
     "@types/react": "^17.0.6",
     "@types/react-dom": "^17.0.5",

@@ -1,0 +1,703 @@
+{
+  "bytes": 1034130,
+  "datahub": {
+    "created": "2019-08-12T08:22:12.433929",
+    "findability": "published",
+    "flowid": "643b262f147b87c1eeee59462c8377a7/world-religion-projections/1",
+    "modified": "2019-08-12T08:22:12.433929",
+    "owner": "sagargg",
+    "ownerid": "643b262f147b87c1eeee59462c8377a7"
+  },
+  "description": "This dataset contains the estimated religious composition of 198 countries and territories for 2010 ",
+  "hash": "c946c8055470182f518b7c344bf58e3e",
+  "id": "643b262f147b87c1eeee59462c8377a7/world-religion-projections",
+  "licenses": [
+    {
+      "name": "ODC-PDDL",
+      "path": "http://opendatacommons.org/licenses/pddl/",
+      "title": "Open Data Commons Public Domain Dedication and License"
+    }
+  ],
+  "name": "world-religion-projections",
+  "resources": [
+    {
+      "bytes": 78902,
+      "datahub": {
+        "type": "original"
+      },
+      "dialect": {
+        "delimiter": ",",
+        "quoteChar": "\""
+      },
+      "dpp:streamedFrom": "https://s3.amazonaws.com/rawstore.datahub.io/7a51454945b102131c5fa3b8a624251a.csv",
+      "encoding": "ISO-8859-1",
+      "format": "csv",
+      "mediatype": "text/csv",
+      "name": "by_rounded_percentage_share_original",
+      "path": "archive/by_rounded_percentage_share.csv",
+      "pathType": "local",
+      "profile": "data-resource",
+      "schema": {
+        "fields": [
+          {
+            "format": "default",
+            "name": "Year",
+            "title": "Year",
+            "type": "year"
+          },
+          {
+            "format": "default",
+            "name": "Region",
+            "title": "Region",
+            "type": "string"
+          },
+          {
+            "format": "default",
+            "name": "Country",
+            "title": "Country Name",
+            "type": "string"
+          },
+          {
+            "format": "default",
+            "name": "Buddhists",
+            "title": "Buddhists Religion",
+            "type": "number"
+          },
+          {
+            "format": "default",
+            "name": "Christians",
+            "title": "Christians Religion",
+            "type": "number"
+          },
+          {
+            "format": "default",
+            "name": "Folk Religions",
+            "title": "Folk Religion",
+            "type": "number"
+          },
+          {
+            "format": "default",
+            "name": "Hindus",
+            "title": "Hindus Religion",
+            "type": "number"
+          },
+          {
+            "format": "default",
+            "name": "Jews",
+            "title": "Jews Religion",
+            "type": "number"
+          },
+          {
+            "format": "default",
+            "name": "Muslims",
+            "title": "Muslims Religion",
+            "type": "number"
+          },
+          {
+            "format": "default",
+            "name": "Other Religions",
+            "title": "Other Religions",
+            "type": "number"
+          },
+          {
+            "format": "default",
+            "name": "Unaffiliated",
+            "title": "Unaffiliated Religion",
+            "type": "number"
+          }
+        ],
+        "missingValues": [
+          ""
+        ]
+      },
+      "title": "By rounded percentage share"
+    },
+    {
+      "bytes": 176395,
+      "datahub": {
+        "type": "original"
+      },
+      "dialect": {
+        "delimiter": ",",
+        "quoteChar": "\""
+      },
+      "dpp:streamedFrom": "https://s3.amazonaws.com/rawstore.datahub.io/5f1717e98d9a49702594601ea3a46c30.csv",
+      "encoding": "ISO-8859-1",
+      "format": "csv",
+      "mediatype": "text/csv",
+      "name": "by_number_of_population_original",
+      "path": "archive/by_number_of_population.csv",
+      "pathType": "local",
+      "profile": "data-resource",
+      "schema": {
+        "fields": [
+          {
+            "format": "default",
+            "name": "Year",
+            "title": "year",
+            "type": "year"
+          },
+          {
+            "format": "default",
+            "name": "Region",
+            "title": "Region",
+            "type": "string"
+          },
+          {
+            "format": "default",
+            "name": "Country",
+            "title": "Country Name",
+            "type": "string"
+          },
+          {
+            "format": "default",
+            "name": "Christians",
+            "title": "Christians Religion",
+            "type": "integer"
+          },
+          {
+            "format": "default",
+            "name": "Muslims",
+            "title": "Muslims Religion",
+            "type": "integer"
+          },
+          {
+            "format": "default",
+            "name": "Unaffiliated",
+            "title": "Unaffiliated Religion",
+            "type": "integer"
+          },
+          {
+            "format": "default",
+            "name": "Hindus",
+            "title": "Hindus Religion",
+            "type": "integer"
+          },
+          {
+            "format": "default",
+            "name": "Buddhists",
+            "title": "Buddhists Religion",
+            "type": "integer"
+          },
+          {
+            "format": "default",
+            "name": "Folk Religions",
+            "title": "Folk Religion",
+            "type": "integer"
+          },
+          {
+            "format": "default",
+            "name": "Other Religions",
+            "title": "Other Religion",
+            "type": "integer"
+          },
+          {
+            "format": "default",
+            "name": "Jews",
+            "title": "Jews Religion",
+            "type": "integer"
+          },
+          {
+            "format": "default",
+            "name": "All Religions",
+            "title": "All Religion",
+            "type": "integer"
+          }
+        ],
+        "missingValues": [
+          ""
+        ]
+      },
+      "title": "By number of population"
+    },
+    {
+      "bytes": 1429,
+      "datahub": {
+        "type": "derived/report"
+      },
+      "description": "Validation report for tabular data",
+      "dpp:streamedFrom": "/tmp/tmpgxpwvz1t/643b262f147b87c1eeee59462c8377a7/world-religion-projections/validation_report/data/95ab2fc0334a64250fbaa58d4bca41d1/validation_report.json",
+      "format": "json",
+      "hash": "95ab2fc0334a64250fbaa58d4bca41d1",
+      "name": "validation_report",
+      "path": "data/validation_report.json",
+      "profile": "data-resource"
+    },
+    {
+      "bytes": 80068,
+      "datahub": {
+        "derivedFrom": [
+          "by_rounded_percentage_share"
+        ],
+        "type": "derived/csv"
+      },
+      "delimiter": ",",
+      "dialect": {
+        "delimiter": ",",
+        "doubleQuote": true,
+        "lineTerminator": "\r\n",
+        "quoteChar": "\"",
+        "skipInitialSpace": false
+      },
+      "dpp:streamedFrom": "/tmp/tmpgxpwvz1t/643b262f147b87c1eeee59462c8377a7/world-religion-projections/by_rounded_percentage_share_csv/data/ba31cb9f9bedc509b0e1d086ba02d40a/by_rounded_percentage_share_csv.csv",
+      "encoding": "utf-8",
+      "format": "csv",
+      "hash": "ba31cb9f9bedc509b0e1d086ba02d40a",
+      "mediatype": "text/csv",
+      "name": "by_rounded_percentage_share_csv",
+      "path": "data/by_rounded_percentage_share_csv.csv",
+      "pathType": "local",
+      "profile": "data-resource",
+      "quotechar": "\"",
+      "rowcount": 1205,
+      "schema": {
+        "fields": [
+          {
+            "format": "default",
+            "name": "Year",
+            "title": "Year",
+            "type": "year"
+          },
+          {
+            "format": "default",
+            "name": "Region",
+            "title": "Region",
+            "type": "string"
+          },
+          {
+            "format": "default",
+            "name": "Country",
+            "title": "Country Name",
+            "type": "string"
+          },
+          {
+            "decimalChar": ".",
+            "format": "default",
+            "groupChar": "",
+            "name": "Buddhists",
+            "title": "Buddhists Religion",
+            "type": "number"
+          },
+          {
+            "decimalChar": ".",
+            "format": "default",
+            "groupChar": "",
+            "name": "Christians",
+            "title": "Christians Religion",
+            "type": "number"
+          },
+          {
+            "decimalChar": ".",
+            "format": "default",
+            "groupChar": "",
+            "name": "Folk Religions",
+            "title": "Folk Religion",
+            "type": "number"
+          },
+          {
+            "decimalChar": ".",
+            "format": "default",
+            "groupChar": "",
+            "name": "Hindus",
+            "title": "Hindus Religion",
+            "type": "number"
+          },
+          {
+            "decimalChar": ".",
+            "format": "default",
+            "groupChar": "",
+            "name": "Jews",
+            "title": "Jews Religion",
+            "type": "number"
+          },
+          {
+            "decimalChar": ".",
+            "format": "default",
+            "groupChar": "",
+            "name": "Muslims",
+            "title": "Muslims Religion",
+            "type": "number"
+          },
+          {
+            "decimalChar": ".",
+            "format": "default",
+            "groupChar": "",
+            "name": "Other Religions",
+            "title": "Other Religions",
+            "type": "number"
+          },
+          {
+            "decimalChar": ".",
+            "format": "default",
+            "groupChar": "",
+            "name": "Unaffiliated",
+            "title": "Unaffiliated Religion",
+            "type": "number"
+          }
+        ],
+        "missingValues": [
+          ""
+        ]
+      },
+      "signed": true,
+      "title": "By rounded percentage share"
+    },
+    {
+      "bytes": 113094,
+      "datahub": {
+        "derivedFrom": [
+          "by_number_of_population"
+        ],
+        "type": "derived/csv"
+      },
+      "delimiter": ",",
+      "dialect": {
+        "delimiter": ",",
+        "doubleQuote": true,
+        "lineTerminator": "\r\n",
+        "quoteChar": "\"",
+        "skipInitialSpace": false
+      },
+      "dpp:streamedFrom": "/tmp/tmpgxpwvz1t/643b262f147b87c1eeee59462c8377a7/world-religion-projections/by_number_of_population_csv/data/c18e9e99cae1b390b8fc6b93ff74f0d4/by_number_of_population_csv.csv",
+      "encoding": "utf-8",
+      "format": "csv",
+      "hash": "c18e9e99cae1b390b8fc6b93ff74f0d4",
+      "mediatype": "text/csv",
+      "name": "by_number_of_population_csv",
+      "path": "data/by_number_of_population_csv.csv",
+      "pathType": "local",
+      "profile": "data-resource",
+      "quotechar": "\"",
+      "rowcount": 1205,
+      "schema": {
+        "fields": [
+          {
+            "format": "default",
+            "name": "Year",
+            "title": "year",
+            "type": "year"
+          },
+          {
+            "format": "default",
+            "name": "Region",
+            "title": "Region",
+            "type": "string"
+          },
+          {
+            "format": "default",
+            "name": "Country",
+            "title": "Country Name",
+            "type": "string"
+          },
+          {
+            "format": "default",
+            "name": "Christians",
+            "title": "Christians Religion",
+            "type": "integer"
+          },
+          {
+            "format": "default",
+            "name": "Muslims",
+            "title": "Muslims Religion",
+            "type": "integer"
+          },
+          {
+            "format": "default",
+            "name": "Unaffiliated",
+            "title": "Unaffiliated Religion",
+            "type": "integer"
+          },
+          {
+            "format": "default",
+            "name": "Hindus",
+            "title": "Hindus Religion",
+            "type": "integer"
+          },
+          {
+            "format": "default",
+            "name": "Buddhists",
+            "title": "Buddhists Religion",
+            "type": "integer"
+          },
+          {
+            "format": "default",
+            "name": "Folk Religions",
+            "title": "Folk Religion",
+            "type": "integer"
+          },
+          {
+            "format": "default",
+            "name": "Other Religions",
+            "title": "Other Religion",
+            "type": "integer"
+          },
+          {
+            "format": "default",
+            "name": "Jews",
+            "title": "Jews Religion",
+            "type": "integer"
+          },
+          {
+            "format": "default",
+            "name": "All Religions",
+            "title": "All Religion",
+            "type": "integer"
+          }
+        ],
+        "missingValues": [
+          ""
+        ]
+      },
+      "signed": true,
+      "title": "By number of population"
+    },
+    {
+      "bytes": 264328,
+      "datahub": {
+        "derivedFrom": [
+          "by_rounded_percentage_share"
+        ],
+        "type": "derived/json"
+      },
+      "delimiter": ",",
+      "dialect": {
+        "delimiter": ",",
+        "quoteChar": "\""
+      },
+      "dpp:streamedFrom": "/tmp/tmpgxpwvz1t/643b262f147b87c1eeee59462c8377a7/world-religion-projections/by_rounded_percentage_share_json/data/c23eff51c6904015212b806b0f4febe5/by_rounded_percentage_share_json.json",
+      "encoding": "utf-8",
+      "format": "json",
+      "hash": "c23eff51c6904015212b806b0f4febe5",
+      "mediatype": "text/csv",
+      "name": "by_rounded_percentage_share_json",
+      "path": "data/by_rounded_percentage_share_json.json",
+      "pathType": "local",
+      "profile": "data-resource",
+      "quotechar": "\"",
+      "rowcount": 1205,
+      "schema": {
+        "fields": [
+          {
+            "format": "default",
+            "name": "Year",
+            "title": "Year",
+            "type": "year"
+          },
+          {
+            "format": "default",
+            "name": "Region",
+            "title": "Region",
+            "type": "string"
+          },
+          {
+            "format": "default",
+            "name": "Country",
+            "title": "Country Name",
+            "type": "string"
+          },
+          {
+            "format": "default",
+            "name": "Buddhists",
+            "title": "Buddhists Religion",
+            "type": "number"
+          },
+          {
+            "format": "default",
+            "name": "Christians",
+            "title": "Christians Religion",
+            "type": "number"
+          },
+          {
+            "format": "default",
+            "name": "Folk Religions",
+            "title": "Folk Religion",
+            "type": "number"
+          },
+          {
+            "format": "default",
+            "name": "Hindus",
+            "title": "Hindus Religion",
+            "type": "number"
+          },
+          {
+            "format": "default",
+            "name": "Jews",
+            "title": "Jews Religion",
+            "type": "number"
+          },
+          {
+            "format": "default",
+            "name": "Muslims",
+            "title": "Muslims Religion",
+            "type": "number"
+          },
+          {
+            "format": "default",
+            "name": "Other Religions",
+            "title": "Other Religions",
+            "type": "number"
+          },
+          {
+            "format": "default",
+            "name": "Unaffiliated",
+            "title": "Unaffiliated Religion",
+            "type": "number"
+          }
+        ],
+        "missingValues": [
+          ""
+        ]
+      },
+      "signed": true,
+      "title": "By rounded percentage share"
+    },
+    {
+      "bytes": 319030,
+      "datahub": {
+        "derivedFrom": [
+          "by_number_of_population"
+        ],
+        "type": "derived/json"
+      },
+      "delimiter": ",",
+      "dialect": {
+        "delimiter": ",",
+        "quoteChar": "\""
+      },
+      "dpp:streamedFrom": "/tmp/tmpgxpwvz1t/643b262f147b87c1eeee59462c8377a7/world-religion-projections/by_number_of_population_json/data/4dc345bf24ab88cc4f7f61055e355ec4/by_number_of_population_json.json",
+      "encoding": "utf-8",
+      "format": "json",
+      "hash": "4dc345bf24ab88cc4f7f61055e355ec4",
+      "mediatype": "text/csv",
+      "name": "by_number_of_population_json",
+      "path": "data/by_number_of_population_json.json",
+      "pathType": "local",
+      "profile": "data-resource",
+      "quotechar": "\"",
+      "rowcount": 1205,
+      "schema": {
+        "fields": [
+          {
+            "format": "default",
+            "name": "Year",
+            "title": "year",
+            "type": "year"
+          },
+          {
+            "format": "default",
+            "name": "Region",
+            "title": "Region",
+            "type": "string"
+          },
+          {
+            "format": "default",
+            "name": "Country",
+            "title": "Country Name",
+            "type": "string"
+          },
+          {
+            "format": "default",
+            "name": "Christians",
+            "title": "Christians Religion",
+            "type": "integer"
+          },
+          {
+            "format": "default",
+            "name": "Muslims",
+            "title": "Muslims Religion",
+            "type": "integer"
+          },
+          {
+            "format": "default",
+            "name": "Unaffiliated",
+            "title": "Unaffiliated Religion",
+            "type": "integer"
+          },
+          {
+            "format": "default",
+            "name": "Hindus",
+            "title": "Hindus Religion",
+            "type": "integer"
+          },
+          {
+            "format": "default",
+            "name": "Buddhists",
+            "title": "Buddhists Religion",
+            "type": "integer"
+          },
+          {
+            "format": "default",
+            "name": "Folk Religions",
+            "title": "Folk Religion",
+            "type": "integer"
+          },
+          {
+            "format": "default",
+            "name": "Other Religions",
+            "title": "Other Religion",
+            "type": "integer"
+          },
+          {
+            "format": "default",
+            "name": "Jews",
+            "title": "Jews Religion",
+            "type": "integer"
+          },
+          {
+            "format": "default",
+            "name": "All Religions",
+            "title": "All Religion",
+            "type": "integer"
+          }
+        ],
+        "missingValues": [
+          ""
+        ]
+      },
+      "signed": true,
+      "title": "By number of population"
+    },
+    {
+      "bytes": 884,
+      "dpp:streamedFrom": "/tmp/tmpj326jl9x/README.md",
+      "format": "md",
+      "name": "readme",
+      "path": "README.md"
+    }
+  ],
+  "sources": [
+    {
+      "name": "PEW RESEARCH CENTER",
+      "path": "https://www.pewforum.org/2015/04/02/religious-projection-table/2010/percent/all/",
+      "title": "PEW RESEARCH CENTER"
+    }
+  ],
+  "title": "World Religion Projections ",
+  "views": [
+    {
+      "name ": "comparision-of-major-3-religions",
+      "resources": [
+        {
+          "name": "by_number_of_population",
+          "transform": [
+            {
+              "expression": "data['Region'] == 'World'",
+              "type": "filter"
+            }
+          ]
+        }
+      ],
+      "spec": {
+        "group": "Year",
+        "series": [
+          "Christians",
+          "Muslims",
+          "Hindus"
+        ],
+        "type": "bar"
+      },
+      "specType": "simple",
+      "title": "comparision of major 3 religions over the years"
+    }
+  ]
+}

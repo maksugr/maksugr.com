@@ -1,9 +1,9 @@
 import { FC } from 'react';
 
-import { BILine } from '../charts/bi';
+import { ReligionGlobal } from '../charts/religion/global';
 
 enum ChartNameEnum {
-    BILine = 'biline'
+    ReligionGlobal = 'religion-global'
 }
 
 export interface IChartProps {
@@ -12,7 +12,7 @@ export interface IChartProps {
 }
 
 const chartMap = {
-    [ChartNameEnum.BILine]: <BILine />
+    [ChartNameEnum.ReligionGlobal]: <ReligionGlobal />
 };
 
 export const Chart: FC<IChartProps> = ({ name, fullWidth }) => {
