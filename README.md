@@ -24,6 +24,8 @@ npm run build
 npm run preview
 ```
 
+> **Vercel deployment note:** set Build Command to `npm run build` (not just `astro build`), because it also runs `astro check`, `pagefind`, and copies the search index to `public/`.
+
 ## Adding a new post
 
 Create a `.md` file in `src/data/blog/` with frontmatter:

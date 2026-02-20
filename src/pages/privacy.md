@@ -20,7 +20,7 @@ This website does not use cookies for tracking or analytics. A local storage ent
 
 ## Analytics
 
-This website does not use any analytics or tracking tools.
+This website uses Vercel Web Analytics, a privacy-friendly analytics tool that does not use cookies and does not collect personal data. It only tracks aggregate page views and visitors. For more details, see [Vercel's privacy policy](https://vercel.com/docs/analytics/privacy-policy).
 
 ## Your Rights
 
