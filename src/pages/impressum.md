@@ -1,6 +1,7 @@
 ---
 layout: ../layouts/AboutLayout.astro
 title: "Impressum"
+description: "Legal information for maksugr.com according to § 5 TMG."
 ---
 
 **Information according to § 5 TMG**

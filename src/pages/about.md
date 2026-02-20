@@ -1,6 +1,7 @@
 ---
 layout: ../layouts/AboutLayout.astro
 title: "About"
+description: "About Roman Ponomarev — software developer based in Munich, Germany."
 ---
 
 Hi, I'm Roman Ponomarev — a software developer based in Munich, Germany.

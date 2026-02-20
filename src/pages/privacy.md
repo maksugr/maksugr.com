@@ -1,6 +1,7 @@
 ---
 layout: ../layouts/AboutLayout.astro
 title: "Privacy Policy"
+description: "Privacy policy for maksugr.com — data processing, hosting, and your rights under GDPR."
 ---
 
 ## Responsible Party
