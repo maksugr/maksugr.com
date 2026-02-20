@@ -1,0 +1,813 @@
+---
+title: "Plantuml encoding in Rust using TDD"
+description: "Sum up the experience of building plantuml encoding crate in Rust using TDD. Could be helpful for those interested in plantuml, newcomers to Rust, and everyone who is concerned with creating crate from scratch."
+pubDatetime: 2022-06-30T00:00:00Z
+tags: [rust, plantuml]
+featured: true
+draft: false
+---
+
+Plantuml is a little bit old-fashed but a great tool to create *diagrams as code*. It needs [Java to process logic and Graphviz for drawing](https://plantuml.com/starting). If you don't want to install all this stuff, you can use [plantuml text encoding mechanism](https://plantuml.com/text-encoding). It offers you a way to encode your plantuml code either to something like [base64](https://en.wikipedia.org/wiki/Base64) with [deflate compression](https://en.wikipedia.org/wiki/Deflate) or to [hex](https://en.wikipedia.org/wiki/Hexadecimal) and send the result to the plantuml server via URL for rendering.
+
+For example, you can encode with deflate compression
+
+```bash
+@startuml
+PUML -> RUST
+@enduml
+```
+
+to `SoWkIImgAStDuGe8zVLHqBLJ20eD3k5oICrB0Ge20000` and use it as a part of the URL to the plantuml server — [quite a long link to the plantuml server](https://www.plantuml.com/plantuml/uml/SoWkIImgAStDuGe8zVLHqBLJ20eD3k5oICrB0Ge20000).
+
+There is a library for encoding/decoding plantuml in Rust — [plantuml_encoding](https://github.com/maksugr/plantuml_encoding). In this article, we will go through the development of that library from scratch with minimal omissions. We will meet library crate creation, [TDD](https://en.wikipedia.org/wiki/Test-driven_development) development approach, `AsRef`, error handling, documentation, and of cause plantuml.
+
+## Init
+
+First of all, let's create a library.
+
+```bash
+cargo new plantuml_encoding --lib
+cd plantuml_encoding
+```
+
+We can check that everything is ok and base test in `lib.rs` passes.
+
+```bash
+cargo test
+```
+
+## Hex
+
+As we decided to use TDD in the project it's a good idea to start writing tests. Our TDD plan is the same as [described in The Book](https://doc.rust-lang.org/book/ch12-04-testing-the-librarys-functionality.html):
+
+* Write a test that fails and run it to make sure it fails for the reason you expect.
+* Write or modify just enough code to make the new test pass.
+* Refactor the code you just added or changed and make sure the tests continue to pass.
+* Repeat from step 1!
+
+Let's remove boilerplate code from `lib.rs` and add the first test.
+
+```rust
+#[cfg(test)]
+mod tests {
+    #[test]
+    fn it_encodes_plantuml_hex() {
+        assert_eq!(
+            encode_plantuml_hex("@startuml\nPUML -> RUST: HELLO \n@enduml"),
+            ""
+        );
+    }
+}
+```
+
+We created module `tests` and assert that the result of the execution of the function `encode_plantuml_hex` will equal some string. Run `cargo test` and we will fail with the reason we expected:
+
+```bash
+error[E0425]: cannot find function `encode_plantuml_hex` in this scope
+ --> src/lib.rs:6:13
+  |
+6 |             encode_plantuml_hex("@startuml\nPUML -> RUST: HELLO \n@enduml"),
+  |             ^^^^^^^^^^^^^^^^^^^ not found in this scope
+
+For more information about this error, try `rustc --explain E0425`.
+error: could not compile `plantuml_encoding` due to previous error
+```
+
+Time to add `encode_plantuml_hex`! We can do it in the same file just over our `tests` module:
+
+```rust
+pub fn encode_plantuml_hex(plantuml: &str) -> String {
+    String::from("")
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn it_encodes_plantuml_hex() {
+        assert_eq!(
+            encode_plantuml_hex("@startuml\nPUML -> RUST: HELLO \n@enduml"),
+            ""
+        );
+    }
+}
+```
+
+`encode_plantuml_hex` takes `&str` and returns `String`. Notice we added `use super::*;` to `tests` module to let it *see* `encode_plantuml_hex`. `cargo test` and all (*just one for now*) tests are passed! But now we need to meet our target logic and encode plantuml to hex (not just return an empty string slice from the function).
+
+To do that we need a general encoder from string to hex. Not a joke but in Rust we have one — [hex](https://crates.io/crates/hex). To add it to the project we can just add it to the `Cargo.toml`:
+
+```toml
+[dependencies]
+hex = "0.4"
+```
+
+And now we can use `hex` in `encode_plantuml_hex`:
+
+```rust
+pub fn encode_plantuml_hex(plantuml: &str) -> String {
+    let hex = hex::encode(plantuml);
+
+    String::from("~h") + &hex
+}
+```
+
+We use `encode` method of `hex` and then add to the result `~h` to meet the plantuml server requirements for hex. `cargo test` and... we fail. But it's great!
+
+```bash
+running 1 test
+test tests::it_encodes_plantuml_hex ... FAILED
+
+failures:
+
+---- tests::it_encodes_plantuml_hex stdout ----
+thread 'tests::it_encodes_plantuml_hex' panicked at 'assertion failed: `(left == right)`
+  left: `"~h407374617274756d6c0a50554d4c202d3e20525553543a2048454c4c4f200a40656e64756d6c"`,
+ right: `""`', src/lib.rs:13:9
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    tests::it_encodes_plantuml_hex
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+```
+
+We got what we wanted. `left` and `right` parts are no longer equal and we get actual hex in the `left` part. Let's check this hex on the plantuml server. It [works](https://www.plantuml.com/plantuml/uml/~h407374617274756d6c0a50554d4c202d3e20525553543a2048454c4c4f200a40656e64756d6c)!
+
+So we can update the test to target:
+
+```rust
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn it_encodes_plantuml_hex() {
+        assert_eq!(
+            encode_plantuml_hex("@startuml\nPUML -> RUST: HELLO \n@enduml"),
+            "~h407374617274756d6c0a50554d4c202d3e20525553543a2048454c4c4f200a40656e64756d6c"
+        );
+    }
+}
+```
+
+And it won't fail again. We have our first plantuml encoding function!
+
+We start the decoding part from the same starting point — the test. Let's add `it_decodes_plantuml_hex` test to `tests` module.
+
+```rust
+#[test]
+fn it_decodes_plantuml_hex() {
+    assert_eq!(
+        decode_plantuml_hex("~h407374617274756d6c0a50554d4c202d3e20525553543a2048454c4c4f200a40656e64756d6c"),
+        "@startuml\nPUML -> RUST: HELLO \n@enduml"
+    );
+}
+```
+
+For this time we already know plantuml and hex string. `cargo test` doesn't let us forget to write the target function.
+
+```bash
+error[E0425]: cannot find function `decode_plantuml_hex` in this scope
+  --> src/lib.rs:22:13
+   |
+1  | fn encode_plantuml_hex(plantuml: &str) -> String {
+   | ------------------------------------------------ similarly named function `encode_plantuml_hex` defined here
+...
+22 |             decode_plantuml_hex("~h407374617274756d6c0a50554d4c202d3e20525553543a2048454c4c4f200a40656e64756d6c"),
+   |             ^^^^^^^^^^^^^^^^^^^ help: a function with a similar name exists: `encode_plantuml_hex`
+```
+
+And we don't mind. `decode_plantuml_hex` is a little bit complex then `encode_plantuml_hex`:
+
+```rust
+pub fn decode_plantuml_hex(hex: &str) -> String {
+    let plantuml_hex_trimmed = hex.trim_start_matches("~h");
+
+    let decoded_bytes = hex::decode(plantuml_hex_trimmed).unwrap();
+
+    String::from_utf8(decoded_bytes).unwrap()
+}
+```
+
+That time we need to use `unwrap` because `hex::decode` and `String::from_utf8` can produce errors. For now, it ok to just `unwrap`, we will properly handle errors later.
+
+In `decode_plantuml_hex` we trimmed `~h` from the beginning (actually it is not part of the hex), decode it to bytes and get a string from the bytes.
+
+`cargo test` looks happy, everything is fine!
+
+## AsRef
+
+`encode_plantuml_hex` and `decode_plantuml_hex` functions take `&str` as an arguments. It's ok but it may be inconvenient if you have, for example, `String`. The compiler won't allow you use `String` as an argument. Let's write test `it_encodes_plantuml_hex_from_string` to check it:
+
+```rust
+#[test]
+fn it_encodes_plantuml_hex_from_string() {
+    assert_eq!(
+        encode_plantuml_hex("@startuml\nPUML -> RUST: HELLO \n@enduml".to_string()),
+        "~h407374617274756d6c0a50554d4c202d3e20525553543a2048454c4c4f200a40656e64756d6c"
+    );
+}
+```
+
+Notice call `to_string` (to create `String` from `&str`) for the argument of `encode_plantuml_hex`. And there is an error:
+
+```bash
+error[E0308]: mismatched types
+  --> src/lib.rs:30:33
+   |
+30 |             encode_plantuml_hex("@startuml\nPUML -> RUST: HELLO \n@enduml".to_string()),
+   |                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |                                 |
+   |                                 expected `&str`, found struct `String`
+   |                                 help: consider borrowing here: `&"@startuml\nPUML -> RUST: HELLO \n@enduml".to_string()`
+```
+
+To fix that we can use [AsRef](https://doc.rust-lang.org/std/convert/trait.AsRef.html) trait to add type conversion and convert functions to generic functions:
+
+```rust
+pub fn encode_plantuml_hex<T: AsRef<str>>(plantuml: T) -> String {
+    let hex = hex::encode(plantuml.as_ref());
+
+    String::from("~h") + &hex
+}
+
+pub fn decode_plantuml_hex<T: AsRef<str>>(hex: T) -> String {
+    let plantuml_hex_trimmed = hex.as_ref().trim_start_matches("~h");
+
+    let decoded_bytes = hex::decode(plantuml_hex_trimmed).unwrap();
+
+    String::from_utf8(decoded_bytes).unwrap()
+}
+```
+
+> For example: By creating a generic function that takes an `AsRef<str>` we express that we want to accept all references that can be converted to &str as an argument. Since both `String` and `&str` implement `AsRef<str>` we can accept both as input argument.
+
+Nothing more, nothing less to the documentation! But notice that we not only change the signature of the functions but also add `as_ref` call to params to make a conversion in place.
+
+Now `it_encodes_plantuml_hex_from_string` test is passed and we can use either `&str` or `String` as arguments for the functions.
+
+## Error handling
+
+`unwrap` is good during prototyping but should be replaced by an error handling mechanism in the stable version of the library.
+
+`decode_plantuml_hex` function can produce errors. If we remove `unwrap` the compiler will say to us:
+
+```bash
+error[E0308]: mismatched types
+  --> src/lib.rs:16:23
+   |
+16 |     String::from_utf8(decoded_bytes)
+   |                       ^^^^^^^^^^^^^ expected struct `Vec`, found enum `Result`
+   |
+   = note: expected struct `Vec<_>`
+              found enum `Result<Vec<_>, FromHexError>`
+
+error[E0308]: mismatched types
+  --> src/lib.rs:16:5
+   |
+11 | pub fn decode_plantuml_hex<T: AsRef<str>>(hex: T) -> String {
+   |                                                      ------ expected `String` because of return type
+...
+16 |     String::from_utf8(decoded_bytes)
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expected struct `String`, found enum `Result`
+   |
+   = note: expected struct `String`
+              found enum `Result<String, FromUtf8Error>`
+```
+
+There are two `mismatched types` errors: from `hex::decode` (without `unwrap` it returns `Result<Vec<_>, FromHexError>` because we didn't *unwrap* it) and from `String::from_utf8` (without `unwrap` it returns `Result<String, FromUtf8Error>`). So we have two different types of errors but should have only one.
+
+We can fix it by starting to provide to the users of the library `Result<String, FromPlantumlError>`. `FromPlantumlError` — error type of the library that encapsulates these types of errors.
+
+But, as always, let's start with a test:
+
+```rust
+#[test]
+fn it_decode_plantuml_hex_error() {
+    assert_eq!(
+        decode_plantuml_hex("12345"),
+        Err(errors::FromPlantumlError(
+            "there is a problem during hex decoding: `Odd number of digits`".to_string()
+        ))
+    );
+}
+```
+
+Let's create file `errors.rs` and define struct as the error type of the library:
+
+```rust
+#[derive(Debug, PartialEq)]
+pub struct FromPlantumlError (pub String);
+```
+
+As you probably noticed we've also added `#[derive(Debug, PartialEq)]`: `Debug` for display and `PartialEq` for tests. We can import `FromPlantumlError` by adding these lines at the beginning of the `lib.rs`:
+
+```rust
+mod errors;
+
+pub use crate::errors::FromPlantumlError;
+```
+
+And let's add `Result<String, FromPlantumlError>` to `decode_plantuml_hex` and try to fix it:
+
+```rust
+pub fn decode_plantuml_hex<T: AsRef<str>>(hex: T) -> Result<String, FromPlantumlError> {
+    let plantuml_hex_trimmed = hex.as_ref().trim_start_matches("~h");
+
+    let decoded_bytes = hex::decode(plantuml_hex_trimmed)?;
+
+    Ok(String::from_utf8(decoded_bytes)?)
+}
+```
+
+We replaced `unwrap` with [?](https://doc.rust-lang.org/book/ch09-02-recoverable-errors-with-result.html#a-shortcut-for-propagating-errors-the--operator) to propagate error forward but with conversion to our type of error — `FromPlantumlError`. Also, we need to fix one of the tests (wrap in to `Ok()` as the result of the `decode_plantuml_hex`):
+
+```rust
+#[test]
+fn it_decodes_plantuml_hex() {
+    assert_eq!(
+        decode_plantuml_hex("~h407374617274756d6c0a50554d4c202d3e20525553543a2048454c4c4f200a40656e64756d6c"),
+        Ok("@startuml\nPUML -> RUST: HELLO \n@enduml".to_string())
+    );
+}
+```
+
+But it seems we still have the compile-time problems (in Rust it is common practice and ok, duh):
+
+```bash
+error[E0277]: `?` couldn't convert the error to `FromPlantumlError`
+  --> src/lib.rs:14:58
+   |
+11 | pub fn decode_plantuml_hex<T: AsRef<str>>(hex: T) -> Result<String, FromPlantumlError> {
+   |                                                      ----------------------------- expected `FromPlantumlError` because of this
+...
+14 |     let decoded_bytes = hex::decode(plantuml_hex_trimmed)?;
+   |                                                          ^ the trait `From<FromHexError>` is not implemented for `FromPlantumlError`
+   |
+   = note: the question mark operation (`?`) implicitly performs a conversion on the error value using the `From` trait
+   = note: required because of the requirements on the impl of `FromResidual<Result<Infallible, FromHexError>>` for `Result<String, FromPlantumlError>`
+
+error[E0277]: `?` couldn't convert the error to `FromPlantumlError`
+  --> src/lib.rs:16:40
+   |
+11 | pub fn decode_plantuml_hex<T: AsRef<str>>(hex: T) -> Result<String, FromPlantumlError> {
+   |                                                      ----------------------------- expected `FromPlantumlError` because of this
+...
+16 |     Ok(String::from_utf8(decoded_bytes)?)
+   |                                        ^ the trait `From<FromUtf8Error>` is not implemented for `FromPlantumlError`
+   |
+   = note: the question mark operation (`?`) implicitly performs a conversion on the error value using the `From` trait
+   = note: required because of the requirements on the impl of `FromResidual<Result<Infallible, FromUtf8Error>>` for `Result<String, FromPlantumlError>`
+```
+
+In short, the compiler can't convert `FromHexError` and `FromUtf8Error` to `FromPlantumlError` and advices implement traits `From<FromHexError>` and `From<FromUtf8Error>` ([trait From](https://doc.rust-lang.org/std/convert/trait.From.html)) for `FromPlantumlError`. So, let's do it in our `errors.rs` file!
+
+```rust
+use std::{convert, string};
+
+#[derive(Debug, PartialEq)]
+pub struct FromPlantumlError (pub String);
+
+impl convert::From<string::FromUtf8Error> for FromPlantumlError {
+    fn from(err: string::FromUtf8Error) -> Self {
+        FromPlantumlError(format!(
+            "there is a problem during decoding: `{}`",
+            err
+        ))
+    }
+}
+
+impl convert::From<hex::FromHexError> for FromPlantumlError {
+    fn from(err: hex::FromHexError) -> Self {
+        FromPlantumlError(format!("there is a problem during hex decoding: `{}`", err))
+    }
+}
+```
+
+We told the compiler how to convert one type to another and `cargo test` is happy once again — it compiles and tests are succeed.
+
+```bash
+running 4 tests
+test tests::it_encodes_plantuml_hex_from_string ... ok
+test tests::it_encodes_plantuml_hex ... ok
+test tests::it_decode_plantuml_hex_error ... ok
+test tests::it_decodes_plantuml_hex ... ok
+```
+
+`encode_plantuml_hex` function can't produce errors like `decode_plantuml_hex`. Although it's a matter of time before internal changes of `encode_plantuml_hex` will require to handle errors. So for consistency and backward compatibility, it is handy to add error handling to `encode_plantuml_hex` too.
+
+```rust
+pub fn encode_plantuml_hex<T: AsRef<str>>(plantuml: T) -> Result<String, FromPlantumlError> {
+    let hex = hex::encode(plantuml.as_ref());
+
+    Ok(String::from("~h") + &hex)
+}
+```
+
+And we need to make `Ok()` change for `encode_plantuml_hex` in tests:
+
+```rust
+#[test]
+fn it_encodes_plantuml_hex() {
+    assert_eq!(
+        encode_plantuml_hex("@startuml\nPUML -> RUST: HELLO \n@enduml"),
+        Ok("~h407374617274756d6c0a50554d4c202d3e20525553543a2048454c4c4f200a40656e64756d6c".to_string())
+    );
+}
+
+#[test]
+fn it_encodes_plantuml_hex_from_string() {
+    assert_eq!(
+        encode_plantuml_hex("@startuml\nPUML -> RUST: HELLO \n@enduml".to_string()),
+        Ok("~h407374617274756d6c0a50554d4c202d3e20525553543a2048454c4c4f200a40656e64756d6c".to_string())
+    );
+}
+```
+
+## Deflate
+
+It seems that we finished with the hex part. Hence we are ready to start with the deflate part. As always we start from a test:
+
+```rust
+#[test]
+fn it_encodes_plantuml_deflate() {
+    assert_eq!(
+        encode_plantuml_deflate("@startuml\nPUML -> RUST: HELLO \n@enduml"),
+        Ok("".to_string())
+    );
+}
+```
+
+And immediate add `encode_plantuml_deflate` implementation:
+
+```rust
+pub fn encode_plantuml_deflate<T: AsRef<str>>(
+    plantuml: T,
+) -> Result<String, errors::FromPlantumlError> {
+    let mut encoder = write::DeflateEncoder::new(Vec::new(), flate2::Compression::default());
+    encoder.write_all(plantuml.as_ref().as_bytes())?;
+
+    let encoded_bytes = encoder.finish()?;
+
+    Ok(utils::encode_plantuml_for_deflate(&encoded_bytes))
+}
+```
+
+That a quite big a piece of code. Let's move forward line by line. First of all, we define `encode_plantuml_deflate` function in the same way that we did with `encode_plantuml_hex` function. Then we create `DeflateEncoder` encoder from [flate2](https://crates.io/crates/flate2) crate. It helps us to make deflate compression.
+
+```toml
+[dependencies]
+hex = "0.4"
+flate2 = "1.0.24"
+```
+
+And at the top of the `lib.rs`:
+
+```rust
+use std::io::prelude::*;
+use flate2::write;
+```
+
+`DeflateEncoder` will get all bytes of the plantuml string and compress. But unlike the hex encoding for delfate encoding the plantuml server needs not just a compressed version of the plantuml string it needs a [special encoding string](https://plantuml.com/code-javascript-synchronous). That what `encode_plantuml_for_deflate` do. We won't dive into details because it doesn't matter at all. All we need to import that function from the `utils` module on the top of the `lib.rs` file:
+
+```rust
+mod utils;
+```
+
+And content for the `utils.rs` file I'll just give you as is (javascript -> rust version). You need to create the file and add this code:
+
+```rust
+fn encode_6_bit(mut b: u8) -> String {
+    if b < 10 {
+        return String::from((48 + b) as char);
+    }
+
+    b -= 10;
+
+    if b < 26 {
+        return String::from((65 + b) as char);
+    }
+
+    b -= 26;
+
+    if b < 26 {
+        return String::from((97 + b) as char);
+    }
+
+    b -= 26;
+
+    if b == 0 {
+        return String::from("-");
+    }
+
+    if b == 1 {
+        return String::from("_");
+    }
+
+    String::from("?")
+}
+
+fn append_3_bytes(b1: &u8, b2: &u8, b3: &u8) -> String {
+    let c1 = b1 >> 2;
+    let c2 = ((b1 & 0x3) << 4) | (b2 >> 4);
+    let c3 = ((b2 & 0xF) << 2) | (b3 >> 6);
+    let c4 = b3 & 0x3F;
+
+    let mut result = String::new();
+
+    result += &encode_6_bit(c1 & 0x3F);
+    result += &encode_6_bit(c2 & 0x3F);
+    result += &encode_6_bit(c3 & 0x3F);
+    result += &encode_6_bit(c4 & 0x3F);
+
+    result
+}
+
+pub fn encode_plantuml_for_deflate(encoded_bytes: &[u8]) -> String {
+    let mut result = String::new();
+
+    for (index, byte) in encoded_bytes.iter().enumerate().step_by(3) {
+        if index + 2 == encoded_bytes.len() {
+            result += &append_3_bytes(byte, &encoded_bytes[index + 1], &0);
+            continue;
+        }
+
+        if index + 1 == encoded_bytes.len() {
+            result += &append_3_bytes(byte, &0, &0);
+            continue;
+        }
+
+        result += &append_3_bytes(byte, &encoded_bytes[index + 1], &encoded_bytes[index + 2]);
+    }
+
+    result
+}
+```
+
+Let's try to run `cargo test`. There are two issues:
+
+```bash
+error[E0277]: `?` couldn't convert the error to `FromPlantumlError`
+  --> src/lib.rs:26:52
+   |
+24 | ) -> Result<String, errors::FromPlantumlError> {
+   |      ----------------------------------------- expected `FromPlantumlError` because of this
+25 |     let mut encoder = write::DeflateEncoder::new(Vec::new(), flate2::Compression::default());
+26 |     encoder.write_all(plantuml.as_ref().as_bytes())?;
+   |                                                    ^ the trait `From<std::io::Error>` is not implemented for `FromPlantumlError`
+   |
+   = note: the question mark operation (`?`) implicitly performs a conversion on the error value using the `From` trait
+   = help: the following implementations were found:
+             <FromPlantumlError as From<FromHexError>>
+             <FromPlantumlError as From<FromUtf8Error>>
+   = note: required because of the requirements on the impl of `FromResidual<Result<Infallible, std::io::Error>>` for `Result<String, FromPlantumlError>`
+
+error[E0277]: `?` couldn't convert the error to `FromPlantumlError`
+  --> src/lib.rs:28:41
+   |
+24 | ) -> Result<String, errors::FromPlantumlError> {
+   |      ----------------------------------------- expected `FromPlantumlError` because of this
+...
+28 |     let encoded_bytes = encoder.finish()?;
+   |                                         ^ the trait `From<std::io::Error>` is not implemented for `FromPlantumlError`
+   |
+   = note: the question mark operation (`?`) implicitly performs a conversion on the error value using the `From` trait
+   = help: the following implementations were found:
+             <FromPlantumlError as From<FromHexError>>
+             <FromPlantumlError as From<FromUtf8Error>>
+   = note: required because of the requirements on the impl of `FromResidual<Result<Infallible, std::io::Error>>` for `Result<String, FromPlantumlError>`
+```
+
+Both issues are about absent implementation of the trait `From<std::io::Error>` for `FromPlantumlError`. But we already know how to handle this kind of issue. Don't we? We just need to add another implementation to the `errors.rs` file:
+
+```rust
+use std::{convert, io, string};
+
+impl convert::From<io::Error> for FromPlantumlError {
+    fn from(err: io::Error) -> Self {
+        FromPlantumlError(format!(
+            "there is a problem during deflate decoding: `{}`",
+            err
+        ))
+    }
+}
+```
+
+`cargo test` and our result is:
+
+```bash
+failures:
+
+---- tests::it_encodes_plantuml_deflate stdout ----
+thread 'tests::it_encodes_plantuml_deflate' panicked at 'assertion failed: `(left == right)`
+  left: `Ok("0IO0sVz0StHXSdHrRMmAK5LDJ20jFY1ILLDKEY18HKnCJo0AG6LkP7LjR000")`,
+ right: `Ok("")`', src/lib.rs:73:9
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    tests::it_encodes_plantuml_deflate
+```
+
+So, as we know everything is fine and  we've just gotten value for comparison in our tests. Let's change the empty string slice to the `left` value:
+
+```rust
+#[test]
+fn it_encodes_plantuml_deflate() {
+    assert_eq!(
+        encode_plantuml_deflate("@startuml\nPUML -> RUST: HELLO \n@enduml"),
+        Ok("0IO0sVz0StHXSdHrRMmAK5LDJ20jFY1ILLDKEY18HKnCJo0AG6LkP7LjR000".to_string())
+    );
+}
+```
+
+All tests are passed. And the [link](https://www.plantuml.com/plantuml/uml/0IO0sVz0StHXSdHrRMmAK5LDJ20jFY1ILLDKEY18HKnCJo0AG6LkP7LjR000) to plantuml works too!
+
+It's time to move to the deflate decoding. Let's add deflate decoding test:
+
+```rust
+#[test]
+fn it_decodes_plantuml_deflate() {
+    assert_eq!(
+        decode_plantuml_deflate("0IO0sVz0StHXSdHrRMmAK5LDJ20jFY1ILLDKEY18HKnCJo0AG6LkP7LjR000"),
+        Ok("@startuml\nPUML -> RUST: HELLO \n@enduml".to_string())
+    );
+}
+```
+
+Then code for the `utils.rs`:
+
+```rust
+fn decode_6_bit(s: String) -> Option<u8> {
+    let c = s.chars().next()? as u8;
+
+    if s == "_" {
+        return Some(63);
+    };
+    if s == "-" {
+        return Some(62);
+    }
+    if c >= 97 {
+        return Some(c - 61);
+    }
+    if c >= 65 {
+        return Some(c - 55);
+    }
+    if c >= 48 {
+        return Some(c - 48);
+    }
+
+    Some(0)
+}
+
+fn extract_3_bytes(chars: &[char]) -> Option<[u8; 3]> {
+    let mut chars = chars.iter();
+
+    let c1 = decode_6_bit(String::from(*chars.next()?))?;
+    let c2 = decode_6_bit(String::from(*chars.next()?))?;
+    let c3 = decode_6_bit(String::from(*chars.next()?))?;
+    let c4 = decode_6_bit(String::from(*chars.next()?))?;
+
+    let b1 = c1 << 2 | (c2 >> 4) & 0x3F;
+    let b2 = (c2 << 4) & 0xF0 | (c3 >> 2) & 0xF;
+    let b3 = (c3 << 6) & 0xC0 | c4 & 0x3F;
+
+    Some([b1, b2, b3])
+}
+
+pub fn decode_plantuml_for_deflate(decoded_string: &str) -> Option<Vec<u8>> {
+    let mut result = vec![];
+
+    for chunk in decoded_string.chars().collect::<Vec<char>>().chunks(4) {
+        result.extend(extract_3_bytes(chunk)?);
+    }
+
+    Some(result)
+}
+```
+
+And implementation of the `decode_plantuml_deflate`:
+
+```rust
+pub fn decode_plantuml_deflate<T: AsRef<str>>(
+    plantuml_deflated: T,
+) -> Result<String, errors::FromPlantumlError> {
+    let result = match utils::decode_plantuml_for_deflate(plantuml_deflated.as_ref()) {
+        Some(r) => r,
+        None => {
+            return Err(errors::FromPlantumlError(
+                "internal decoding error (out of bounds or similar)".to_string(),
+            ));
+        }
+    };
+
+    let mut deflater = write::DeflateDecoder::new(Vec::new());
+    for item in result.into_iter() {
+        // write_all produces `failed to write whole buffer` issue with some data
+        deflater.write(&[item])?;
+    }
+    let decoded_bytes = deflater.finish()?;
+
+    Ok(String::from_utf8(decoded_bytes)?)
+}
+```
+
+`decode_plantuml_deflate` function makes a bunch of things:
+
+* decodes a string from special plantuml encoding
+* converts possible errors to `FromPlantumlError`
+* deflate decompresses `Vec<u8>`
+* creates new a string from bytes
+
+If you run `cargo test` every test should be passed.
+
+One more thing. We forgot to test the error handling of the `decode_plantuml_deflate` function. Let's fix that:
+
+```rust
+#[test]
+fn it_decode_plantuml_deflate_error() {
+    assert_eq!(
+        decode_plantuml_deflate("4444"),
+        Err(errors::FromPlantumlError(
+            "there is a problem during deflate decoding: `deflate decompression error`"
+                .to_string()
+        ))
+    );
+}
+```
+
+All functions of the library are ready!
+
+## Documentation
+
+To be the best crate in the world our library just needs good documentation. A few last ideas for the `lib.rs`:
+
+```rust
+//! Encoding and decoding text plantuml diagrams to facilitate communication of them through URL.
+//!
+//! ## Overview
+//!
+//! Consider the next plain text plantuml diagram:
+//!
+//! ```plantuml
+//! @startuml
+//! PUML -> RUST: HELLO
+//! @enduml
+//! ```
+//!
+//! It can be encoded to `0IO0sVz0StHXSdHrRMmAK5LDJ20jFY1ILLDKEY18HKnCJo0AG6LkP7LjR000` and with the help of the plantuml server (`https://www.plantuml.com/plantuml/uml/`) it can be shared [through URL](https://www.plantuml.com/plantuml/uml/0IO0sVz0StHXSdHrRMmAK5LDJ20jFY1ILLDKEY18HKnCJo0AG6LkP7LjR000).
+//!
+//! Also, it can be decoded in the opposite direction.
+```
+
+`//!` comment is the documentation for the main file of the crate. And a little example of documenting one of the public functions:
+
+```rust
+/// Encode plantuml to hex
+/// (with [additional prefix `~h`](https://plantuml.com/text-encoding))
+///
+/// ## Example
+///
+/// ```rust
+/// use plantuml_encoding::{encode_plantuml_hex, FromPlantumlError};
+///
+/// fn main() -> Result<(), FromPlantumlError> {
+///     let encoded_hex = encode_plantuml_hex("@startuml\nPUML -> RUST\n@enduml")?;
+///
+///     assert_eq!(encoded_hex, "~h407374617274756d6c0a50554d4c202d3e20525553540a40656e64756d6c");
+///
+///     Ok(())
+/// }
+/// ```
+pub fn encode_plantuml_hex<T: AsRef<str>>(
+    plantuml: T,
+) -> Result<String, errors::FromPlantumlError> {
+    let hex = hex::encode(plantuml.as_ref());
+
+    Ok(String::from("~h") + &hex)
+}
+```
+
+`///` comment for regular documentation note.
+
+Don't forget that code of the documentation is executable and runs on `cargo test`. So that is not just not up-to-date examples. All examples in Rust are alive and it's great. Run `cargo test` and you will see that one doc test is passed:
+
+```bash
+   Doc-tests plantuml_encoding
+
+running 1 test
+test src/lib.rs - encode_plantuml_hex (line 29) ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.34s
+```
+
+---
+
+That's it!
+
+We implemented a rust crate for encoding/decoding plantuml using TDD (twice!) from scratch and also on our way we discussed `AsRef`, error handling, and documentation.
+
+Thank you for your attention, will be glad to hear a word from you.

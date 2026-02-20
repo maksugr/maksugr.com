@@ -1,11 +1,60 @@
 # maksugr.com
 
-I'd be happy to hear your thoughts. [Open an issue](https://github.com/maksugr/maksugr.com) to discuss the post.
+Personal website by Roman Ponomarev. Built with [Astro](https://astro.build/), inspired by [AstroPaper](https://github.com/satnaing/astro-paper) theme.
 
-## Posts
+## Stack
 
-* [Plantuml encoding in Rust using TDD](https://github.com/maksugr/maksugr.com/blob/master/content/posts/plantuml-encoding-in-rust-using-tdd.mdx)
+- [Astro](https://astro.build/) + [TailwindCSS](https://tailwindcss.com/)
+- [Pagefind](https://pagefind.app/) for search
+- [Shiki](https://shiki.style/) for syntax highlighting
 
+## Development
+
+```bash
+npm install
+npm run dev
+```
+
+Dev server starts at `http://localhost:4321`.
+
+## Build
+
+```bash
+npm run build
+npm run preview
+```
+
+## Adding a new post
+
+Create a `.md` file in `src/data/blog/` with frontmatter:
+
+```md
+---
+title: "Post title"
+description: "Short description"
+pubDatetime: 2024-01-01T00:00:00Z
+tags: [tag1, tag2]
+featured: false
+draft: false
 ---
 
-Subscribe to be in touch 🖤
+Content goes here.
+```
+
+## Project structure
+
+```
+src/
+  config.ts        # Site metadata
+  constants.ts     # Social links
+  data/blog/       # Blog posts (.md)
+  pages/           # Routes
+  layouts/         # Page layouts
+public/
+  favicon/         # Favicons
+  og-image.png     # Default OG image
+```
+
+## License
+
+Content is licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). Code is licensed under [MIT](LICENSE).
