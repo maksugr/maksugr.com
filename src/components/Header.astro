@@ -37,14 +37,14 @@ const isActive = (path: string) => {
     id="top-nav-wrap"
     class:list={[
       "py-4 sm:py-6",
-      "border-b border-border",
+      "border-b-2 border-border",
       "relative w-full bg-background",
       "flex items-baseline justify-between sm:items-center",
     ]}
   >
     <a
       href="/"
-      class="absolute py-1 text-xl leading-8 font-semibold whitespace-nowrap sm:static sm:my-auto sm:text-2xl sm:leading-none"
+      class="absolute py-1 text-2xl font-heading leading-8 tracking-tight whitespace-nowrap sm:static sm:my-auto sm:text-3xl sm:leading-none"
     >
       {SITE.title}
     </a>
@@ -66,9 +66,9 @@ const isActive = (path: string) => {
         id="menu-items"
         class:list={[
           "mt-4 grid w-44 grid-cols-2 place-content-center gap-2",
-          "[&>li>a]:block [&>li>a]:px-4 [&>li>a]:py-3 [&>li>a]:text-center [&>li>a]:font-medium [&>li>a]:hover:text-accent sm:[&>li>a]:px-2 sm:[&>li>a]:py-1",
+          "[&>li>a]:block [&>li>a]:px-4 [&>li>a]:py-3 [&>li>a]:text-center [&>li>a]:font-heading [&>li>a]:text-lg [&>li>a]:tracking-wide [&>li>a]:hover:underline [&>li>a]:hover:decoration-2 [&>li>a]:hover:underline-offset-4 sm:[&>li>a]:px-2 sm:[&>li>a]:py-1",
           "hidden",
-          "sm:mt-0 sm:flex sm:w-auto sm:gap-x-5 sm:gap-y-0",
+          "sm:mt-0 sm:flex sm:items-center sm:w-auto sm:gap-x-5 sm:gap-y-0",
         ]}
       >
         <li class="col-span-2">
@@ -86,7 +86,7 @@ const isActive = (path: string) => {
             About
           </a>
         </li>
-        <li class="col-span-1 flex items-center justify-center">
+        <li class="col-span-3 flex items-center justify-center gap-0">
           <LinkButton
             href="/search"
             class:list={[
@@ -99,8 +99,6 @@ const isActive = (path: string) => {
             <IconSearch />
             <span class="sr-only">Search</span>
           </LinkButton>
-        </li>
-        <li class="col-span-1 flex items-center justify-center">
           <LinkButton
             href="/rss.xml"
             class="focus-outline flex p-3 sm:p-1"
@@ -112,13 +110,11 @@ const isActive = (path: string) => {
             <IconRss />
             <span class="sr-only">RSS</span>
           </LinkButton>
-        </li>
-        {
-          SITE.lightAndDarkMode && (
-            <li class="col-span-1 flex items-center justify-center">
+          {
+            SITE.lightAndDarkMode && (
               <button
                 id="theme-btn"
-                class="focus-outline relative size-12 p-4 sm:size-8 hover:[&>svg]:stroke-accent"
+                class="focus-outline relative size-12 p-4 sm:size-8 hover:opacity-60"
                 title="Toggles light & dark"
                 aria-label="auto"
                 aria-live="polite"
@@ -126,9 +122,9 @@ const isActive = (path: string) => {
                 <IconMoon class="absolute top-[50%] left-[50%] -translate-[50%] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
                 <IconSunHigh class="absolute top-[50%] left-[50%] -translate-[50%] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
               </button>
-            </li>
-          )
-        }
+            )
+          }
+        </li>
       </ul>
     </nav>
   </div>

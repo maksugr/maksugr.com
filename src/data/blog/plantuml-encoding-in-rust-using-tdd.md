@@ -804,10 +804,6 @@ test src/lib.rs - encode_plantuml_hex (line 29) ... ok
 test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.34s
 ```
 
----
-
 That's it!
 
 We implemented a rust crate for encoding/decoding plantuml using TDD (twice!) from scratch and also on our way we discussed `AsRef`, error handling, and documentation.
-
-Thank you for your attention, will be glad to hear a word from you.

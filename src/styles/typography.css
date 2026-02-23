@@ -8,13 +8,12 @@
     h1,
     h2,
     h3,
-    h4,
-    th {
-      @apply mb-3 text-foreground;
+    h4 {
+      @apply mb-3 text-foreground font-heading tracking-tight;
     }
 
-    h3 {
-      @apply italic;
+    th {
+      @apply mb-3 text-foreground font-bold;
     }
 
     p,
@@ -28,7 +27,7 @@
     }
 
     a {
-      @apply wrap-break-word text-foreground decoration-dashed underline-offset-4 hover:text-accent focus-visible:no-underline;
+      @apply wrap-break-word text-foreground underline decoration-solid decoration-2 underline-offset-4 hover:bg-foreground hover:text-background focus-visible:no-underline;
     }
 
     ul {
@@ -36,15 +35,15 @@
     }
 
     li {
-      @apply marker:text-accent;
+      @apply marker:text-foreground;
     }
 
     hr {
-      @apply border-border;
+      @apply border-border border-t-2;
     }
 
     img {
-      @apply mx-auto border border-border;
+      @apply mx-auto border-2 border-border;
     }
 
     figcaption {
@@ -54,11 +53,11 @@
     table {
       th,
       td {
-        @apply border border-border p-2;
+        @apply border-2 border-border p-2;
       }
 
       th {
-        @apply py-1.5;
+        @apply py-1.5 font-bold uppercase;
       }
 
       code {
@@ -67,7 +66,7 @@
     }
 
     code {
-      @apply rounded bg-muted/75 p-1 wrap-break-word text-foreground before:content-none after:content-none;
+      @apply bg-muted p-1 font-mono wrap-break-word text-foreground before:content-none after:content-none;
     }
 
     .astro-code code {
@@ -75,7 +74,7 @@
     }
 
     blockquote {
-      @apply border-s-accent/80 wrap-break-word opacity-80;
+      @apply border-s-4 border-s-foreground wrap-break-word opacity-80;
     }
 
     details {
@@ -83,17 +82,17 @@
     }
 
     summary {
-      @apply focus-visible:no-underline focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-accent focus-visible:outline-dashed;
+      @apply focus-visible:no-underline focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-foreground focus-visible:outline-solid;
     }
 
     pre {
-      @apply focus-visible:border-transparent focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-dashed;
+      @apply focus-visible:border-transparent focus-visible:outline-2 focus-visible:outline-foreground focus-visible:outline-solid;
     }
   }
 
   /* ===== Code Blocks & Syntax Highlighting ===== */
   .astro-code {
-    @apply flex border bg-(--shiki-light-bg) text-(--shiki-light) outline-border [&_span]:text-(--shiki-light);
+    @apply flex font-mono border-2 bg-(--shiki-light-bg) text-(--shiki-light) outline-border [&_span]:text-(--shiki-light);
   }
 
   html[data-theme="dark"] .astro-code {
@@ -113,7 +112,7 @@
       @apply inline-block w-full bg-slate-400/20;
     }
     .highlighted-word {
-      @apply rounded-sm border border-border px-0.5 py-px;
+      @apply border-2 border-border px-0.5 py-px;
     }
   }
 }
