@@ -5,6 +5,8 @@ pubDatetime: 2022-06-30T00:00:00Z
 tags: [rust, plantuml]
 featured: true
 draft: false
+discussions:
+  - https://www.reddit.com/r/rust/comments/voh9zm/plantuml_encoding_in_rust_using_tdd/
 ---
 
 Plantuml is a little bit old-fashed but a great tool to create *diagrams as code*. It needs [Java to process logic and Graphviz for drawing](https://plantuml.com/starting). If you don't want to install all this stuff, you can use [plantuml text encoding mechanism](https://plantuml.com/text-encoding). It offers you a way to encode your plantuml code either to something like [base64](https://en.wikipedia.org/wiki/Base64) with [deflate compression](https://en.wikipedia.org/wiki/Deflate) or to [hex](https://en.wikipedia.org/wiki/Hexadecimal) and send the result to the plantuml server via URL for rendering.

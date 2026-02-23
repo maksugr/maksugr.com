@@ -5,7 +5,7 @@
 
 :root,
 html[data-theme="light"] {
-  --background: #ffffff;
+  --background: #fafafa;
   --foreground: #0a0a0a;
   --accent: #0a0a0a;
   --muted: #f0f0f0;
@@ -36,7 +36,7 @@ html[data-theme="dark"] {
     @apply border-border outline-foreground;
     scrollbar-width: auto;
     scrollbar-color: var(--color-border) transparent;
-    border-radius: 0 !important;
+    border-radius: 0;
   }
   html {
     @apply overflow-y-scroll scroll-smooth;

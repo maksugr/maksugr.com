@@ -8,6 +8,8 @@ import LinkButton from "@/components/LinkButton.astro";
 import Card from "@/components/Card.astro";
 import getSortedPosts from "@/utils/getSortedPosts";
 import { Icon } from "astro-icon/components";
+import { Image } from "astro:assets";
+import avatarImg from "@/assets/images/avatar.jpg";
 import { SITE } from "@/config";
 import { SOCIALS } from "@/constants";
 
@@ -20,9 +22,23 @@ const sortedPosts = getSortedPosts(posts);
   <Header />
   <main id="main-content" data-layout="index" class="app-layout">
     <section id="hero" class:list={["pt-8 pb-6", "border-b-2 border-border"]}>
-      <h1 class="my-4 inline-block text-5xl font-heading tracking-tight sm:my-8 sm:text-7xl">
-        Roman Ponomarev
-      </h1>
+      <div class="flex flex-col items-start gap-5 sm:flex-row sm:gap-6">
+        <div class="size-24 shrink-0 overflow-hidden rounded-2xl sm:size-32">
+          <Image
+            src={avatarImg}
+            alt="Roman Ponomarev"
+            width={128}
+            height={128}
+            class="size-full object-cover"
+          />
+        </div>
+        <div>
+          <h1 class="inline-block text-5xl font-heading tracking-tight sm:text-7xl">
+            Roman Ponomarev
+          </h1>
+          <p class="mt-2 text-lg sm:text-xl">Fullstack developer with 10 years of experience, inspired by the era of AI agents.</p>
+        </div>
+      </div>
       {
         // only display if at least one social link is enabled
         SOCIALS.length > 0 && (
@@ -47,7 +63,7 @@ const sortedPosts = getSortedPosts(posts);
       )
     }
 
-    <div class="my-8 text-center">
+    <div class="my-8 sm:text-center">
       <LinkButton href="/posts/" class="font-heading text-lg tracking-wide border-2 border-foreground px-4 py-2 hover:bg-foreground hover:text-background">
         All Posts
         <Icon name="carbon:arrow-right" class="inline-block size-5" />

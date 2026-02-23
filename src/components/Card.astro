@@ -2,6 +2,8 @@
 import type { CollectionEntry } from "astro:content";
 import { slugifyStr } from "@/utils/slugify";
 import { getPath } from "@/utils/getPath";
+import { parseDiscussionUrl } from "@/utils/parseDiscussionUrl";
+import { Icon } from "astro-icon/components";
 import Datetime from "./Datetime.astro";
 
 type Props = {
@@ -10,7 +12,7 @@ type Props = {
 
 const { variant: Heading = "h2", id, data, filePath } = Astro.props;
 
-const { title, description, ...props } = data;
+const { title, description, discussions, ...props } = data;
 ---
 
 <li class="my-6 border-b-2 border-border pb-6 last:border-b-0">
@@ -31,4 +33,22 @@ const { title, description, ...props } = data;
   </a>
   <Datetime {...props} />
   <p class="mt-1">{description}</p>
+  {
+    discussions && discussions.length > 0 && (
+      <div class="mt-2 flex items-center gap-3 text-sm opacity-80">
+        <Icon name="carbon:chat" class="inline-block size-4" />
+        {discussions.map(parseDiscussionUrl).map(({ icon, label, url }) => (
+          <a
+            href={url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-1 hover:opacity-60"
+          >
+            <Icon name={icon} class="inline-block size-4" />
+            <span>{label}</span>
+          </a>
+        ))}
+      </div>
+    )
+  }
 </li>

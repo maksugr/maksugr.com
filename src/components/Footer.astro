@@ -22,7 +22,7 @@ const { noMarginTop = false, class: className, ...attrs } = Astro.props;
       "flex flex-col",
     ]}
   >
-    <div class="flex flex-col items-center justify-between sm:flex-row-reverse">
+    <div class="flex flex-col items-start justify-between sm:flex-row-reverse sm:items-center">
       <Socials />
       <div class="my-2 font-heading text-lg tracking-wide sm:my-0">
         <span>&#169; {currentYear} Roman Ponomarev</span>
@@ -30,7 +30,7 @@ const { noMarginTop = false, class: className, ...attrs } = Astro.props;
         <a href="https://github.com/maksugr/maksugr.com/blob/main/LICENSE" target="_blank" rel="noopener noreferrer" class="underline decoration-2 underline-offset-4 hover:bg-foreground hover:text-background">CC BY 4.0 · MIT</a>
       </div>
     </div>
-    <div class="font-heading tracking-wide opacity-60 text-center sm:text-left">
+    <div class="font-heading tracking-wide opacity-60 sm:text-left">
       <a href="/impressum" class="hover:opacity-100">Impressum</a>
       <span>&nbsp;·&nbsp;</span>
       <a href="/privacy" class="hover:opacity-100">Privacy</a>
