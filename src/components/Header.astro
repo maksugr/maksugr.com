@@ -1,10 +1,5 @@
 ---
-import IconX from "@/assets/icons/IconX.svg";
-import IconMoon from "@/assets/icons/IconMoon.svg";
-import IconSearch from "@/assets/icons/IconSearch.svg";
-import IconRss from "@/assets/icons/IconRss.svg";
-import IconSunHigh from "@/assets/icons/IconSunHigh.svg";
-import IconMenuDeep from "@/assets/icons/IconMenuDeep.svg";
+import { Icon } from "astro-icon/components";
 import LinkButton from "./LinkButton.astro";
 import { SITE } from "@/config";
 
@@ -59,8 +54,8 @@ const isActive = (path: string) => {
         aria-expanded="false"
         aria-controls="menu-items"
       >
-        <IconX id="close-icon" class="hidden" />
-        <IconMenuDeep id="menu-icon" />
+        <Icon name="carbon:close" id="close-icon" class="hidden size-6" />
+        <Icon name="carbon:menu" id="menu-icon" class="size-6" />
       </button>
       <ul
         id="menu-items"
@@ -91,12 +86,12 @@ const isActive = (path: string) => {
             href="/search"
             class:list={[
               "focus-outline flex p-3 sm:p-1",
-              { "[&>svg]:stroke-accent": isActive("/search") },
+              { "opacity-60": isActive("/search") },
             ]}
             title="Search"
             aria-label="search"
           >
-            <IconSearch />
+            <Icon name="carbon:search" class="size-6 sm:size-5" />
             <span class="sr-only">Search</span>
           </LinkButton>
           <LinkButton
@@ -107,20 +102,20 @@ const isActive = (path: string) => {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <IconRss />
+            <Icon name="carbon:rss" class="size-6 sm:size-5" />
             <span class="sr-only">RSS</span>
           </LinkButton>
           {
             SITE.lightAndDarkMode && (
               <button
                 id="theme-btn"
-                class="focus-outline relative size-12 p-4 sm:size-8 hover:opacity-60"
+                class="focus-outline relative size-12 p-4 sm:size-8 sm:p-1.5 hover:opacity-60"
                 title="Toggles light & dark"
                 aria-label="auto"
                 aria-live="polite"
               >
-                <IconMoon class="absolute top-[50%] left-[50%] -translate-[50%] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
-                <IconSunHigh class="absolute top-[50%] left-[50%] -translate-[50%] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
+                <Icon name="carbon:moon" class="absolute top-[50%] left-[50%] size-5 -translate-[50%] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
+                <Icon name="carbon:sun" class="absolute top-[50%] left-[50%] size-5 -translate-[50%] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
               </button>
             )
           }

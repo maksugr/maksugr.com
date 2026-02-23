@@ -6,7 +6,7 @@ export const SITE = {
   title: "maksugr",
   ogImage: "og-image.png",
   lightAndDarkMode: true,
-  postPerIndex: 4,
+  postPerIndex: 5,
   postPerPage: 4,
   scheduledPostMargin: 15 * 60 * 1000, // 15 minutes
   showArchives: false,

@@ -1,4 +1,5 @@
 ---
+import { Icon } from "astro-icon/components";
 import { SOCIALS } from "@/constants";
 import LinkButton from "./LinkButton.astro";
 ---
@@ -13,7 +14,7 @@ import LinkButton from "./LinkButton.astro";
         target="_blank"
         rel="noopener noreferrer"
       >
-        <social.icon class="inline-block size-6 scale-125 fill-transparent stroke-current stroke-2 sm:scale-110" />
+        <Icon name={social.icon} class="inline-block size-6 sm:size-5" />
         <span class="sr-only">{social.linkTitle}</span>
       </LinkButton>
     ))

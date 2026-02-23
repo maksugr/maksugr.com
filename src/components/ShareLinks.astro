@@ -1,4 +1,5 @@
 ---
+import { Icon } from "astro-icon/components";
 import { SHARE_LINKS } from "@/constants";
 import LinkButton from "./LinkButton.astro";
 
@@ -8,7 +9,7 @@ const URL = Astro.url;
 {
   SHARE_LINKS.length > 0 && (
     <div class="flex flex-none flex-col items-center justify-center gap-1 md:items-start">
-      <span class="font-heading text-lg tracking-wide">Share this post:</span>
+      <span class="font-heading text-lg tracking-wide">Share this post</span>
       <div class="text-center">
         {SHARE_LINKS.map(social => (
           <LinkButton
@@ -16,7 +17,7 @@ const URL = Astro.url;
             class="scale-90 p-2 hover:opacity-60 sm:p-1"
             title={social.linkTitle}
           >
-            <social.icon class="inline-block size-6 scale-125 fill-transparent stroke-current stroke-2 sm:scale-110" />
+            <Icon name={social.icon} class="inline-block size-6 sm:size-5" />
             <span class="sr-only">{social.linkTitle}</span>
           </LinkButton>
         ))}

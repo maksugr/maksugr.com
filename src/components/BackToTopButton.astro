@@ -1,5 +1,5 @@
 ---
-import IconArrowNarrowUp from "@/assets/icons/IconArrowNarrowUp.svg";
+import { Icon } from "astro-icon/components";
 ---
 
 <div
@@ -24,7 +24,7 @@ import IconArrowNarrowUp from "@/assets/icons/IconArrowNarrowUp.svg";
       id="progress-indicator"
       class="absolute inset-0 -z-10 block size-14 scale-110 bg-transparent md:hidden md:h-8"
     ></span>
-    <IconArrowNarrowUp class="inline-block size-6 md:size-4" />
+    <Icon name="carbon:arrow-up" class="inline-block size-6 md:size-4" />
     <span class="sr-only text-sm md:not-sr-only md:ms-1">
       Back To Top
     </span>
@@ -32,8 +32,6 @@ import IconArrowNarrowUp from "@/assets/icons/IconArrowNarrowUp.svg";
 </div>
 
 <script is:inline data-astro-rerun>
-  /** Scrolls the document to the top when
-   * the "Back to Top" button is clicked. */
   function backToTop() {
     const rootElement = document.documentElement;
     const btnContainer = document.querySelector("#btt-btn-container");
@@ -43,13 +41,11 @@ import IconArrowNarrowUp from "@/assets/icons/IconArrowNarrowUp.svg";
     if (!rootElement || !btnContainer || !backToTopBtn || !progressIndicator)
       return;
 
-    // Attach click event handler for back-to-top button
     backToTopBtn.addEventListener("click", () => {
-      document.body.scrollTop = 0; // For Safari
-      document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+      document.body.scrollTop = 0;
+      document.documentElement.scrollTop = 0;
     });
 
-    // Handle button visibility according to scroll position
     let lastVisible = null;
     function handleScroll() {
       const scrollTotal = rootElement.scrollHeight - rootElement.clientHeight;

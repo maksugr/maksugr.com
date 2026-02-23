@@ -1,6 +1,6 @@
 ---
+import { Icon } from "astro-icon/components";
 import type { CollectionEntry } from "astro:content";
-import IconEdit from "@/assets/icons/IconEdit.svg";
 import { SITE } from "@/config";
 
 type Props = {
@@ -23,11 +23,11 @@ const showEditPost =
       target="_blank"
       rel="noopener noreferrer"
       class:list={[
-        "flex justify-baseline gap-1.5 opacity-80 hover:text-accent",
+        "flex justify-baseline gap-1.5 opacity-80 hover:opacity-60",
         className,
       ]}
     >
-      <IconEdit class="inline-block" />
+      <Icon name="carbon:edit" class="inline-block size-5" />
       <span>{SITE.editPost.text}</span>
     </a>
   )
