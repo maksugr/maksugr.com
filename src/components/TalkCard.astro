@@ -1,0 +1,48 @@
+---
+import type { Talk } from "@/data/talks";
+
+type Props = Talk;
+
+const { title, videoId, url, event, lang } = Astro.props;
+const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+---
+
+<a
+  href={url}
+  target="_blank"
+  rel="noopener noreferrer"
+  class="group relative block aspect-video overflow-hidden border-2 border-border"
+>
+  <img
+    src={thumbnailUrl}
+    alt={title}
+    loading="lazy"
+    class="size-full object-cover transition-transform duration-300 group-hover:scale-105"
+  />
+  <div
+    class="absolute inset-0 flex items-center justify-center bg-black/30 transition-colors duration-300 group-hover:bg-black/50"
+  >
+    <div
+      class="flex size-14 items-center justify-center rounded-full bg-white/90 transition-transform duration-300 group-hover:scale-110"
+    >
+      <svg
+        class="ml-1 size-6 text-black"
+        viewBox="0 0 24 24"
+        fill="currentColor"
+      >
+        <path d="M8 5v14l11-7z"></path>
+      </svg>
+    </div>
+  </div>
+  <div class="absolute right-0 bottom-0 left-0 bg-gradient-to-t from-black/80 to-transparent p-3 pt-8">
+    <p class="text-xl leading-snug font-heading tracking-wide text-white sm:text-2xl">
+      {title}
+    </p>
+    <div class="mt-1 flex items-center gap-2">
+      <span class="text-xs text-white/70">{event}</span>
+      <span class="rounded-sm bg-white/20 px-1.5 py-0.5 text-[10px] leading-none text-white/90">
+        {lang.toUpperCase()}
+      </span>
+    </div>
+  </div>
+</a>

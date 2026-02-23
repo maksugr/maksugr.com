@@ -12,7 +12,7 @@ const { noMarginTop = false, class: className, ...attrs } = Astro.props;
 ---
 
 <footer
-  class:list={["app-layout", { "mt-auto": !noMarginTop }, className]}
+  class:list={["app-layout pt-12", { "mt-auto": !noMarginTop }, className]}
   {...attrs}
 >
   <div

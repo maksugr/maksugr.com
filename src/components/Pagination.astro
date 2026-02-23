@@ -1,11 +1,10 @@
 ---
 import { Icon } from "astro-icon/components";
 import type { Page } from "astro";
-import type { CollectionEntry } from "astro:content";
 import LinkButton from "./LinkButton.astro";
 
 type Props = {
-  page: Page<CollectionEntry<"blog">>;
+  page: Page<unknown>;
 };
 
 const { page } = Astro.props;

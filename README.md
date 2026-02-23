@@ -43,6 +43,20 @@ draft: false
 Content goes here.
 ```
 
+## Adding a new talk
+
+Add an entry to the `TALKS` array in `src/data/talks.ts`:
+
+```ts
+{
+  title: "Talk title",
+  videoId: "YouTube_video_ID",
+  url: "https://www.youtube.com/watch?v=YouTube_video_ID",
+  event: "Conference Name",
+  lang: "en", // "en" or "ru"
+}
+```
+
 ## Project structure
 
 ```
@@ -50,6 +64,7 @@ src/
   config.ts        # Site metadata
   constants.ts     # Social links
   data/blog/       # Blog posts (.md)
+  data/talks.ts    # Conference talks
   pages/           # Routes
   layouts/         # Page layouts
 public/
