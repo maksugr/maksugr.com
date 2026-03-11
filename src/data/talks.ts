@@ -4,6 +4,7 @@ export type Talk = {
   url: string;
   event: string;
   lang: "ru" | "en";
+  pubDatetime: Date;
 };
 
 export const TALKS: Talk[] = [
@@ -14,6 +15,7 @@ export const TALKS: Talk[] = [
     url: "https://www.youtube.com/live/RrlMOunfdHs?si=6JL507n2OwpOLnI5&t=5915",
     event: "Bridging the Gap Between Design and Development",
     lang: "en",
+    pubDatetime: new Date("2024-06-13"),
   },
   {
     title: "WebXR in Real Life",
@@ -21,6 +23,7 @@ export const TALKS: Talk[] = [
     url: "https://www.youtube.com/watch?v=6eGVk9Qi0ho",
     event: "HolyJS 2021 Piter",
     lang: "ru",
+    pubDatetime: new Date("2021-06-24"),
   },
   {
     title: "AR: The Next Big Thing",
@@ -28,6 +31,7 @@ export const TALKS: Talk[] = [
     url: "https://www.youtube.com/watch?v=6zh0A9esWLA",
     event: "RndTechConf 2020",
     lang: "ru",
+    pubDatetime: new Date("2020-10-17"),
   },
   {
     title: "Machines are learning: Don't be afraid, Lead!",
@@ -35,5 +39,6 @@ export const TALKS: Talk[] = [
     url: "https://www.youtube.com/watch?v=8OkhauJfTRI",
     event: "HolyJS 2019 Moscow",
     lang: "ru",
+    pubDatetime: new Date("2019-11-08"),
   },
 ];

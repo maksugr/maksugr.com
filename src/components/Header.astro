@@ -3,7 +3,12 @@ import { Icon } from "astro-icon/components";
 import LinkButton from "./LinkButton.astro";
 import { SITE } from "@/config";
 
+type Props = {
+  activeTab?: "all" | "articles" | "talks";
+};
+
 const { pathname } = Astro.url;
+const { activeTab } = Astro.props;
 
 // Remove trailing slash from current pathname if exists
 const currentPath =
@@ -15,6 +20,12 @@ const isActive = (path: string) => {
 
   return currentPath === path || currentPathArray[0] === pathArray[0];
 };
+
+const tabs = [
+  { id: "all" as const, label: "all", href: "/" },
+  { id: "articles" as const, label: "articles", href: "/articles/" },
+  { id: "talks" as const, label: "talks", href: "/talks/" },
+];
 ---
 
 <a
@@ -26,7 +37,7 @@ const isActive = (path: string) => {
 </a>
 
 <header
-  class="app-layout flex flex-col items-center justify-between sm:flex-row"
+  class="app-layout flex flex-col"
 >
   <div
     id="top-nav-wrap"
@@ -66,16 +77,6 @@ const isActive = (path: string) => {
           "sm:mt-0 sm:flex sm:flex-row sm:items-center sm:w-auto sm:gap-x-5",
         ]}
       >
-        <li>
-          <a href="/posts" class:list={{ "active-nav": isActive("/posts") }}>
-            Posts
-          </a>
-        </li>
-        <li>
-          <a href="/talks" class:list={{ "active-nav": isActive("/talks") }}>
-            Talks
-          </a>
-        </li>
         <li>
           <a href="/about" class:list={{ "active-nav": isActive("/about") }}>
             About
@@ -123,6 +124,26 @@ const isActive = (path: string) => {
       </ul>
     </nav>
   </div>
+  {
+    activeTab && (
+      <nav class="flex w-full gap-3 pt-2" aria-label="Content filter">
+        {tabs.map(tab => (
+          <a
+            href={tab.href}
+            class:list={[
+              "font-heading text-sm tracking-wide transition-colors",
+              tab.id === activeTab
+                ? "text-foreground"
+                : "opacity-40 hover:opacity-70",
+            ]}
+            aria-current={tab.id === activeTab ? "page" : undefined}
+          >
+            {tab.label}
+          </a>
+        ))}
+      </nav>
+    )
+  }
 </header>
 
 <script>

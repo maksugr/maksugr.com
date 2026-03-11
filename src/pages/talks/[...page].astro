@@ -1,28 +1,30 @@
 ---
 import type { GetStaticPaths } from "astro";
-import Main from "@/layouts/Main.astro";
 import Layout from "@/layouts/Layout.astro";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
-import TalkCard from "@/components/TalkCard.astro";
+import TalkListCard from "@/components/TalkListCard.astro";
 import Pagination from "@/components/Pagination.astro";
 import { SITE } from "@/config";
 import { TALKS } from "@/data/talks";
 
 export const getStaticPaths = (({ paginate }) => {
-  return paginate(TALKS, { pageSize: SITE.talkPerPage });
+  const sortedTalks = [...TALKS].sort(
+    (a, b) => b.pubDatetime.getTime() - a.pubDatetime.getTime()
+  );
+  return paginate(sortedTalks, { pageSize: SITE.postPerPage });
 }) satisfies GetStaticPaths;
 
 const { page } = Astro.props;
 ---
 
 <Layout title={`Talks | ${SITE.title}`} description="Conference talks by Roman Ponomarev.">
-  <Header />
-  <Main pageTitle="Talks">
-    <div data-pagefind-body class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-      {page.data.map(talk => <TalkCard {...talk} />)}
-    </div>
-  </Main>
+  <Header activeTab="talks" />
+  <main id="main-content" class="app-layout pb-4">
+    <ul class="pt-4">
+      {page.data.map(talk => <TalkListCard {...talk} />)}
+    </ul>
+  </main>
 
   <Pagination {page} />
 

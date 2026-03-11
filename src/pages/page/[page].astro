@@ -1,0 +1,83 @@
+---
+import type { GetStaticPaths } from "astro";
+import type { CollectionEntry } from "astro:content";
+import { getCollection } from "astro:content";
+import type { Talk } from "@/data/talks";
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import Card from "@/components/Card.astro";
+import TalkListCard from "@/components/TalkListCard.astro";
+import Pagination from "@/components/Pagination.astro";
+import getSortedPosts from "@/utils/getSortedPosts";
+import { SITE } from "@/config";
+import { TALKS } from "@/data/talks";
+
+type FeedItem =
+  | { type: "post"; post: CollectionEntry<"blog"> }
+  | { type: "talk"; talk: Talk };
+
+export const getStaticPaths = (async () => {
+  const posts = await getCollection("blog", ({ data }) => !data.draft);
+  const sortedPosts = getSortedPosts(posts);
+
+  const allItems: FeedItem[] = [
+    ...sortedPosts.map(post => ({ type: "post" as const, post })),
+    ...TALKS.map(talk => ({ type: "talk" as const, talk })),
+  ].sort((a, b) => {
+    const dateA = a.type === "post"
+      ? new Date(a.post.data.modDatetime ?? a.post.data.pubDatetime).getTime()
+      : a.talk.pubDatetime.getTime();
+    const dateB = b.type === "post"
+      ? new Date(b.post.data.modDatetime ?? b.post.data.pubDatetime).getTime()
+      : b.talk.pubDatetime.getTime();
+    return dateB - dateA;
+  });
+
+  const pageSize = SITE.postPerPage;
+  const totalPages = Math.ceil(allItems.length / pageSize);
+
+  return Array.from({ length: totalPages - 1 }, (_, i) => {
+    const pageNum = i + 2;
+    return {
+      params: { page: String(pageNum) },
+      props: {
+        page: {
+          data: allItems.slice((pageNum - 1) * pageSize, pageNum * pageSize),
+          currentPage: pageNum,
+          lastPage: totalPages,
+          url: {
+            prev: pageNum === 2 ? "/" : `/page/${pageNum - 1}`,
+            next: pageNum < totalPages ? `/page/${pageNum + 1}` : undefined,
+          },
+        },
+      },
+    };
+  });
+}) satisfies GetStaticPaths;
+
+const { page } = Astro.props;
+---
+
+<Layout>
+  <Header activeTab="all" />
+  <main id="main-content" class="app-layout">
+    <section class="pb-6 pt-4">
+      <ul>
+        {
+          page.data.map((item: FeedItem) =>
+            item.type === "post" ? (
+              <Card variant="h3" {...item.post} />
+            ) : (
+              <TalkListCard variant="h3" {...item.talk} />
+            )
+          )
+        }
+      </ul>
+    </section>
+  </main>
+
+  <Pagination {page} />
+
+  <Footer noMarginTop={page.lastPage > 1} />
+</Layout>

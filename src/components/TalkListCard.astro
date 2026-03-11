@@ -1,0 +1,61 @@
+---
+import type { Talk } from "@/data/talks";
+import { Icon } from "astro-icon/components";
+import Datetime from "./Datetime.astro";
+
+type Props = {
+  variant?: "h2" | "h3";
+} & Talk;
+
+const { variant: Heading = "h2", title, videoId, url, event, lang, pubDatetime } = Astro.props;
+const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+---
+
+<li class="my-6 border-b-2 border-border pb-6 last:border-b-0">
+  <a
+    href={url}
+    target="_blank"
+    rel="noopener noreferrer"
+    class:list={[
+      "inline text-3xl font-heading",
+      "underline decoration-2 underline-offset-4",
+      "hover:bg-foreground hover:text-background",
+      "focus-visible:no-underline focus-visible:underline-offset-0",
+    ]}
+  >
+    <Heading class="inline">
+      {title}<Icon name="carbon:launch" class="ml-1 inline-block size-4 align-top" />
+    </Heading>
+  </a>
+  <Datetime pubDatetime={pubDatetime} />
+  <a
+    href={url}
+    target="_blank"
+    rel="noopener noreferrer"
+    class="group relative mt-2 block w-full sm:w-1/2 overflow-hidden"
+  >
+    <img
+      src={thumbnailUrl}
+      alt={title}
+      loading="lazy"
+      class="w-full object-cover transition-transform duration-300 group-hover:scale-105"
+    />
+    <div class="absolute inset-0 flex items-center justify-center">
+      <div class="flex size-12 items-center justify-center rounded-full bg-black/50 transition-colors duration-300 group-hover:bg-black/70">
+        <svg
+          class="ml-0.5 size-5 text-white"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+        >
+          <path d="M8 5v14l11-7z"></path>
+        </svg>
+      </div>
+    </div>
+  </a>
+  <div class="mt-2 flex items-center gap-2 text-sm opacity-80">
+    <span>{event}</span>
+    <span class="border border-border px-1.5 py-0.5 text-xs leading-none">
+      {lang.toUpperCase()}
+    </span>
+  </div>
+</li>

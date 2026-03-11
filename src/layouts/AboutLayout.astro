@@ -1,9 +1,11 @@
 ---
 import type { MarkdownLayoutProps } from "astro";
+import { Image } from "astro:assets";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
 import Layout from "./Layout.astro";
 import { SITE } from "@/config";
+import avatarImg from "@/assets/images/avatar.jpg";
 
 type Props = MarkdownLayoutProps<{ title: string; description?: string }>;
 
@@ -15,6 +17,16 @@ const { frontmatter } = Astro.props;
   <main id="main-content" class="app-layout mt-8">
     <section id="about" class="app-prose mb-28 max-w-app prose-img:border-0">
       <h1 class="text-3xl font-heading tracking-tight sm:text-4xl">{frontmatter.title}</h1>
+      {frontmatter.title === "About" && (
+        <div class="max-w-md overflow-hidden rounded-2xl">
+          <Image
+            src={avatarImg}
+            alt="Roman Ponomarev"
+            width={448}
+            class="w-full"
+          />
+        </div>
+      )}
       <slot />
     </section>
   </main>

@@ -1,90 +1,73 @@
 ---
+import type { CollectionEntry } from "astro:content";
 import { getCollection } from "astro:content";
+import type { Talk } from "@/data/talks";
 import Layout from "@/layouts/Layout.astro";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
-import Socials from "@/components/Socials.astro";
-import LinkButton from "@/components/LinkButton.astro";
 import Card from "@/components/Card.astro";
-import TalkCard from "@/components/TalkCard.astro";
+import TalkListCard from "@/components/TalkListCard.astro";
+import Pagination from "@/components/Pagination.astro";
 import getSortedPosts from "@/utils/getSortedPosts";
-import { Icon } from "astro-icon/components";
-import { Image } from "astro:assets";
-import avatarImg from "@/assets/images/avatar.jpg";
 import { SITE } from "@/config";
-import { SOCIALS } from "@/constants";
 import { TALKS } from "@/data/talks";
 
-const posts = await getCollection("blog");
+type FeedItem =
+  | { type: "post"; post: CollectionEntry<"blog"> }
+  | { type: "talk"; talk: Talk };
 
+const posts = await getCollection("blog", ({ data }) => !data.draft);
 const sortedPosts = getSortedPosts(posts);
+
+const allItems: FeedItem[] = [
+  ...sortedPosts.map(post => ({ type: "post" as const, post })),
+  ...TALKS.map(talk => ({ type: "talk" as const, talk })),
+].sort((a, b) => {
+  const dateA = a.type === "post"
+    ? new Date(a.post.data.modDatetime ?? a.post.data.pubDatetime).getTime()
+    : a.talk.pubDatetime.getTime();
+  const dateB = b.type === "post"
+    ? new Date(b.post.data.modDatetime ?? b.post.data.pubDatetime).getTime()
+    : b.talk.pubDatetime.getTime();
+  return dateB - dateA;
+});
+
+const pageSize = SITE.postPerPage;
+const totalPages = Math.ceil(allItems.length / pageSize);
+const pageItems = allItems.slice(0, pageSize);
+
+const page = {
+  data: pageItems,
+  currentPage: 1,
+  lastPage: totalPages,
+  url: {
+    prev: undefined as string | undefined,
+    next: totalPages > 1 ? "/page/2" : undefined as string | undefined,
+  },
+};
 ---
 
 <Layout>
-  <Header />
+  <Header activeTab="all" />
   <main id="main-content" data-layout="index" class="app-layout">
-    <section id="hero" class:list={["pt-8 pb-6", "border-b-2 border-border"]}>
-      <div class="flex flex-col items-start gap-5 sm:flex-row sm:gap-6">
-        <div class="size-24 shrink-0 overflow-hidden rounded-2xl sm:size-32">
-          <Image
-            src={avatarImg}
-            alt="Roman Ponomarev"
-            width={128}
-            height={128}
-            class="size-full object-cover"
-          />
-        </div>
-        <div>
-          <h1 class="inline-block text-5xl font-heading tracking-tight sm:text-7xl">
-            Roman Ponomarev
-          </h1>
-          <p class="mt-2 text-lg sm:text-xl">Fullstack developer with 10 years of experience, inspired by the era of AI agents.</p>
-        </div>
-      </div>
-      {
-        // only display if at least one social link is enabled
-        SOCIALS.length > 0 && (
-          <div class="mt-4 flex max-sm:flex-col sm:items-center">
-            <Socials />
-          </div>
-        )
-      }
-    </section>
-
-    {
-      sortedPosts.length > 0 && (
-        <section id="recent-posts" class="pt-12 pb-6">
-          <div class="flex items-baseline justify-between">
-            <h2 class="text-3xl font-heading tracking-tight">Recent Posts</h2>
-            <LinkButton href="/posts/" class="font-heading tracking-wide hover:underline hover:decoration-2 hover:underline-offset-4">
-              All Posts
-              <Icon name="carbon:arrow-right" class="inline-block size-4" />
-            </LinkButton>
-          </div>
-          <ul>
-            {sortedPosts.map(
-              (data, index) =>
-                index < SITE.postPerIndex && <Card variant="h3" {...data} />
-            )}
-          </ul>
-        </section>
-      )
-    }
-
-    <section id="talks" class="pt-6 pb-6">
-      <div class="flex items-baseline justify-between">
-        <h2 class="text-3xl font-heading tracking-tight">Recent Talks</h2>
-        <LinkButton href="/talks/" class="font-heading tracking-wide hover:underline hover:decoration-2 hover:underline-offset-4">
-          All Talks
-          <Icon name="carbon:arrow-right" class="inline-block size-4" />
-        </LinkButton>
-      </div>
-      <div class="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
-        {TALKS.slice(0, SITE.talkPerIndex).map(talk => <TalkCard {...talk} />)}
-      </div>
+    <section class="pb-6 pt-4">
+      <ul>
+        {
+          page.data.map(item =>
+            item.type === "post" ? (
+              <Card variant="h3" {...item.post} />
+            ) : (
+              <TalkListCard variant="h3" {...item.talk} />
+            )
+          )
+        }
+      </ul>
     </section>
   </main>
-  <Footer />
+
+  <Pagination {page} />
+
+  <Footer noMarginTop={page.lastPage > 1} />
 </Layout>
 
 <script>
