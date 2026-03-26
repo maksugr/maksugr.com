@@ -92,7 +92,7 @@ const nextPost =
     data-pagefind-body
   >
     <h1
-      class="inline-block text-3xl font-heading tracking-tight sm:text-4xl"
+      class="inline-block text-4xl font-heading tracking-tight sm:text-5xl"
     >
       {title}
     </h1>
@@ -107,6 +107,9 @@ const nextPost =
       >
       <EditPost {hideEditPost} {post} class="max-sm:hidden" />
     </div>
+    <p class="mt-6 border-l-4 border-foreground/30 pl-4 text-foreground/70 italic text-base">
+      {description}
+    </p>
     <article
       id="article"
       class="app-prose mt-8 w-full max-w-app prose-pre:bg-(--shiki-light-bg) dark:prose-pre:bg-(--shiki-dark-bg)"
@@ -138,9 +141,9 @@ const nextPost =
         prevPost && (
           <a
             href={getPath(prevPost.id, prevPost.filePath)}
-            class="flex w-full gap-1 border-2 border-foreground p-3 hover:bg-foreground hover:text-background"
+            class="flex w-full gap-1 border-2 border-foreground p-3 overflow-hidden transition-colors hover:bg-foreground hover:text-background"
           >
-            <Icon name="carbon:chevron-left" class="inline-block flex-none size-5" />
+            <Icon name="carbon:chevron-left" class="inline-block flex-none size-5 mt-0.5" />
             <div>
               <span class="font-heading text-base">Previous</span>
               <div class="text-sm">{prevPost.title}</div>
@@ -152,13 +155,13 @@ const nextPost =
         nextPost && (
           <a
             href={getPath(nextPost.id, nextPost.filePath)}
-            class="flex w-full justify-end gap-1 text-end border-2 border-foreground p-3 hover:bg-foreground hover:text-background sm:col-start-2"
+            class="flex w-full justify-end gap-1 text-end border-2 border-foreground p-3 overflow-hidden transition-colors hover:bg-foreground hover:text-background sm:col-start-2"
           >
             <div>
               <span class="font-heading text-base">Next</span>
               <div class="text-sm">{nextPost.title}</div>
             </div>
-            <Icon name="carbon:chevron-right" class="inline-block flex-none size-5" />
+            <Icon name="carbon:chevron-right" class="inline-block flex-none size-5 mt-0.5" />
           </a>
         )
       }
@@ -281,6 +284,145 @@ const nextPost =
     }
   }
   attachCopyButtons();
+
+  /** Spoiler with random particles */
+  document.querySelectorAll(".spoiler").forEach(el => {
+    const canvas = document.createElement("canvas");
+    el.appendChild(canvas);
+    const ctx = canvas.getContext("2d");
+    const density = 2;
+    let particles = [];
+    let animId;
+
+    function resize() {
+      const rect = el.getBoundingClientRect();
+      canvas.width = rect.width * devicePixelRatio;
+      canvas.height = rect.height * devicePixelRatio;
+      const count = Math.max(5, Math.floor(canvas.width * canvas.height * density / 100));
+      particles = Array.from({ length: count }, () => ({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        r: (Math.random() * 0.6 + 0.3) * devicePixelRatio,
+        phase: Math.random() * Math.PI * 2,
+        freq: Math.random() * 0.067 + 0.017,
+      }));
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const fg = getComputedStyle(document.documentElement).getPropertyValue("--foreground").trim();
+      ctx.fillStyle = fg;
+      for (const p of particles) {
+        p.phase += p.freq;
+        const alpha = (Math.sin(p.phase) + 1) / 2;
+        ctx.globalAlpha = alpha * 0.7;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+      animId = requestAnimationFrame(draw);
+    }
+
+    resize();
+    draw();
+
+    el.addEventListener("click", () => {
+      el.classList.toggle("revealed");
+      if (el.classList.contains("revealed")) {
+        cancelAnimationFrame(animId);
+      } else {
+        resize();
+        draw();
+      }
+    });
+  });
+
+  /** Render mermaid code blocks */
+  async function renderMermaid() {
+    const pres = document.querySelectorAll('pre[data-language="mermaid"]');
+    if (!pres.length) return;
+
+    const sources = [];
+    for (const pre of pres) {
+      const source = pre.querySelector("code").textContent;
+      const placeholder = document.createElement("div");
+      placeholder.style.cssText = "display:flex;align-items:center;justify-content:center;min-height:12rem;opacity:0.4;font-style:italic;";
+      placeholder.textContent = "Loading diagram…";
+      pre.replaceWith(placeholder);
+      sources.push({ placeholder, source });
+    }
+
+    const { default: mermaid } = await import("https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs");
+    const isDark = document.documentElement.dataset.theme === "dark";
+    const lightTheme = {
+      theme: "base",
+      themeVariables: {
+        background: "transparent",
+        primaryColor: "#e8e8e8", secondaryColor: "#d0d0d0", tertiaryColor: "#c0c0c0",
+        mainBkg: "#f0f0f0", nodeBkg: "#f0f0f0", clusterBkg: "#f5f5f5", clusterBorder: "#0a0a0a",
+        nodeBorder: "#0a0a0a", lineColor: "#0a0a0a", textColor: "#0a0a0a", titleColor: "#0a0a0a",
+        pieStrokeColor: "#0a0a0a", pieSectionTextColor: "#0a0a0a", pieLegendTextColor: "#0a0a0a",
+        pie1: "#c0392b", pie2: "#2c3e50",
+        xyChart: { backgroundColor: "transparent", plotColorPalette: "#c0392b",
+          xAxisLabelColor: "#0a0a0a", yAxisLabelColor: "#0a0a0a", xAxisTitleColor: "#0a0a0a", yAxisTitleColor: "#0a0a0a",
+          xAxisTickColor: "#0a0a0a", yAxisTickColor: "#0a0a0a", xAxisLineColor: "#0a0a0a", yAxisLineColor: "#0a0a0a", titleColor: "#0a0a0a" },
+      },
+    };
+
+    const darkTheme = {
+      theme: "base",
+      themeVariables: {
+        background: "transparent",
+        primaryColor: "#333333", secondaryColor: "#444444", tertiaryColor: "#555555",
+        mainBkg: "#1a1a1a", nodeBkg: "#1a1a1a", clusterBkg: "#1a1a1a", clusterBorder: "#f0f0f0",
+        nodeBorder: "#f0f0f0", lineColor: "#f0f0f0", textColor: "#f0f0f0", titleColor: "#f0f0f0",
+        pieStrokeColor: "#f0f0f0", pieSectionTextColor: "#f0f0f0", pieLegendTextColor: "#f0f0f0",
+        pie1: "#e74c3c", pie2: "#3498db",
+        xyChart: { backgroundColor: "transparent", plotColorPalette: "#e74c3c",
+          xAxisLabelColor: "#f0f0f0", yAxisLabelColor: "#f0f0f0", xAxisTitleColor: "#f0f0f0", yAxisTitleColor: "#f0f0f0",
+          xAxisTickColor: "#f0f0f0", yAxisTickColor: "#f0f0f0", xAxisLineColor: "#f0f0f0", yAxisLineColor: "#f0f0f0", titleColor: "#f0f0f0" },
+      },
+    };
+
+    let renderCount = 0;
+
+    async function renderAll() {
+      const isDark = document.documentElement.dataset.theme === "dark";
+      const config = isDark ? darkTheme : lightTheme;
+      mermaid.initialize({ startOnLoad: false, ...config });
+      renderCount++;
+
+      for (const [i, { source }] of sources.entries()) {
+        const containerId = `mermaid-container-${i}`;
+        let container = document.getElementById(containerId);
+        if (!container) {
+          container = document.createElement("div");
+          container.id = containerId;
+          container.className = "mermaid-diagram";
+          sources[i].placeholder.replaceWith(container);
+          sources[i].container = container;
+        }
+        try {
+          const { svg } = await mermaid.render(`mermaid-r${renderCount}-${i}`, source);
+          container.innerHTML = svg;
+        } catch (e) {
+          container.innerHTML = `<span style="color:red">Diagram error: ${e.message}</span>`;
+          console.error("Mermaid render error:", e);
+        }
+      }
+    }
+
+    await renderAll();
+
+    const themeBtn = document.getElementById("theme-btn");
+    if (themeBtn) {
+      themeBtn.addEventListener("click", () => {
+        setTimeout(renderAll, 100);
+      });
+    }
+  }
+  renderMermaid();
 
   /* Go to page start after page swap */
   document.addEventListener("astro:after-swap", () =>

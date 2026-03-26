@@ -6,24 +6,20 @@ import { Icon } from "astro-icon/components";
   id="btt-btn-container"
   class:list={[
     "fixed end-4 bottom-8 z-50",
-    "md:sticky md:end-auto md:float-end md:me-1",
+    "md:sticky md:end-auto md:float-end",
     "translate-y-14 opacity-0 transition duration-500",
   ]}
 >
   <button
     data-button="back-to-top"
     class:list={[
-      "group relative bg-background",
+      "group bg-background",
       "flex items-center justify-center font-heading",
       "size-14 border-2 border-foreground",
       "md:h-8 md:w-fit md:px-2 md:py-1",
       "hover:bg-foreground hover:text-background",
     ]}
   >
-    <span
-      id="progress-indicator"
-      class="absolute inset-0 -z-10 block size-14 scale-110 bg-transparent md:hidden md:h-8"
-    ></span>
     <Icon name="carbon:arrow-up" class="inline-block size-6 md:size-4" />
     <span class="sr-only text-sm md:not-sr-only md:ms-1">
       Back To Top
@@ -36,9 +32,8 @@ import { Icon } from "astro-icon/components";
     const rootElement = document.documentElement;
     const btnContainer = document.querySelector("#btt-btn-container");
     const backToTopBtn = document.querySelector("[data-button='back-to-top']");
-    const progressIndicator = document.querySelector("#progress-indicator");
 
-    if (!rootElement || !btnContainer || !backToTopBtn || !progressIndicator)
+    if (!rootElement || !btnContainer || !backToTopBtn)
       return;
 
     backToTopBtn.addEventListener("click", () => {
@@ -50,12 +45,6 @@ import { Icon } from "astro-icon/components";
     function handleScroll() {
       const scrollTotal = rootElement.scrollHeight - rootElement.clientHeight;
       const scrollTop = rootElement.scrollTop;
-      const scrollPercent = Math.floor((scrollTop / scrollTotal) * 100);
-
-      progressIndicator.style.setProperty(
-        "background-image",
-        `conic-gradient(var(--foreground), var(--foreground) ${scrollPercent}%, transparent ${scrollPercent}%)`
-      );
 
       const isVisible = scrollTop / scrollTotal > 0.3;
 

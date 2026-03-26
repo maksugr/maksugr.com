@@ -35,7 +35,7 @@
     }
 
     li {
-      @apply marker:text-foreground;
+      @apply marker:text-foreground my-0;
     }
 
     hr {
@@ -44,6 +44,10 @@
 
     img {
       @apply mx-auto border-2 border-border;
+    }
+
+    .mermaid-diagram svg {
+      background: transparent !important;
     }
 
     figcaption {
@@ -73,16 +77,60 @@
       @apply flex-[1_0_100%] bg-inherit p-0;
     }
 
+    #table-of-contents + ul {
+      @apply my-2 text-sm leading-tight [&_li]:my-0.5 [&_ul]:my-0.5 [&_a]:no-underline [&_a]:hover:underline;
+    }
+
     blockquote {
       @apply border-s-4 border-s-foreground wrap-break-word opacity-80;
     }
 
     details {
-      @apply inline-block cursor-pointer text-foreground select-none [&_p]:hidden [&_ul]:my-0!;
+      @apply block cursor-pointer text-foreground select-none border-l-4 border-foreground/20 pl-4 my-4;
     }
 
     summary {
       @apply focus-visible:no-underline focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-foreground focus-visible:outline-solid;
+    }
+
+    .pain {
+      background-color: rgba(192, 57, 43, 0.1);
+    }
+
+    .pain::selection {
+      background: rgba(192, 57, 43, 0.3);
+    }
+
+    .spoiler {
+      color: transparent;
+      border-radius: 0.25rem;
+      cursor: pointer;
+      user-select: none;
+      position: relative;
+      display: inline-block;
+      background-color: transparent;
+      padding: 0 0.3em;
+      line-height: 1.2;
+      transition: all 0.5s ease;
+    }
+
+    .spoiler canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      border-radius: inherit;
+    }
+
+    .spoiler.revealed {
+      background-color: transparent;
+      color: var(--foreground);
+      user-select: auto;
+    }
+
+    .spoiler.revealed canvas {
+      display: none;
     }
 
     pre {
@@ -90,7 +138,7 @@
     }
   }
 
-  /* ===== Code Blocks & Syntax Highlighting ===== */
+/* ===== Code Blocks & Syntax Highlighting ===== */
   .astro-code {
     @apply flex font-mono border-2 bg-(--shiki-light-bg) text-(--shiki-light) outline-border [&_span]:text-(--shiki-light);
   }
