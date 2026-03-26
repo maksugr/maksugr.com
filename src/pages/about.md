@@ -4,7 +4,7 @@ title: "About"
 description: "About Roman Ponomarev — software developer based in Munich, Germany."
 ---
 
-Hi, I'm Roman Ponomarev — a software developer based in Munich, Germany.
+Hi, I'm Roman Ponomarev — a software developer based in Munich, Germany, exploring what becomes possible with AI.
 
 You can find me on [GitHub](https://github.com/maksugr), [X](https://x.com/maksugr), [LinkedIn](https://www.linkedin.com/in/maksugr/), and [Telegram](https://t.me/maksugr).
 
