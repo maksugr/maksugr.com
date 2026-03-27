@@ -3,7 +3,7 @@ export const SITE = {
   author: "Roman Ponomarev",
   profile: "https://github.com/maksugr",
   desc: "Roman Ponomarev's developer blog",
-  title: "maksugr",
+  title: "Roman Ponomarev",
   ogImage: "og-image.png",
   lightAndDarkMode: true,
   postPerPage: 10,
