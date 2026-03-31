@@ -1,6 +1,7 @@
 import type { CollectionEntry } from "astro:content";
 import { slugifyStr } from "./slugify";
 import postFilter from "./postFilter";
+import { PROJECTS } from "@/data/projects";
 
 interface Tag {
   tag: string;
@@ -8,9 +9,13 @@ interface Tag {
 }
 
 const getUniqueTags = (posts: CollectionEntry<"blog">[]) => {
-  const tags: Tag[] = posts
+  const postTags = posts
     .filter(postFilter)
-    .flatMap(post => post.data.tags)
+    .flatMap(post => post.data.tags);
+
+  const projectTags = PROJECTS.flatMap(project => project.tags);
+
+  const tags: Tag[] = [...postTags, ...projectTags]
     .map(tag => ({ tag: slugifyStr(tag), tagName: tag }))
     .filter(
       (value, index, self) =>

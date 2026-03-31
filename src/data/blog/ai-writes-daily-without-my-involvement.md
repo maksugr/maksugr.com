@@ -2,7 +2,7 @@
 title: "AI Writes Daily Without My Involvement"
 description: "A naive dive into a multi-agent system with self-critique, diversity-aware curation, and weekly self-reflection to cover local cultural events"
 pubDatetime: 2026-03-26T00:00:00Z
-tags: [ai]
+tags: ["AI agents"]
 featured: true
 draft: false
 ---

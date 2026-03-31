@@ -1,0 +1,45 @@
+---
+import type { Project } from "@/data/projects";
+import { Icon } from "astro-icon/components";
+
+type Props = Project;
+
+const { title, description, url, repo, tags } = Astro.props;
+---
+
+<li class="my-6 border-b-2 border-border pb-6 last:border-b-0">
+  <a
+    href={url}
+    target="_blank"
+    rel="noopener noreferrer"
+    class:list={[
+      "inline-flex items-baseline gap-2 text-3xl font-heading",
+      "underline decoration-2 underline-offset-4",
+      "hover:bg-foreground hover:text-background",
+      "focus-visible:no-underline focus-visible:underline-offset-0",
+    ]}
+  >
+    <h3>
+      {title}
+    </h3>
+    <Icon name="carbon:arrow-up-right" class="size-4 shrink-0 opacity-40" />
+  </a>
+  <div class="mt-1 flex items-center gap-2 text-sm opacity-60">
+    <span class="font-heading text-xs tracking-widest uppercase">Project</span>
+    {repo && (
+      <>
+        <span>·</span>
+        <a
+          href={repo}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-1 hover:opacity-60"
+        >
+          <Icon name="carbon:logo-github" class="size-3.5" />
+          <span>Source</span>
+        </a>
+      </>
+    )}
+  </div>
+  <p class="mt-1">{description}</p>
+</li>

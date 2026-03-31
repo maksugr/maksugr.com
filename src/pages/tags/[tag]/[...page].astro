@@ -6,9 +6,11 @@ import Layout from "@/layouts/Layout.astro";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
 import Card from "@/components/Card.astro";
+import ProjectCard from "@/components/ProjectCard.astro";
 import Pagination from "@/components/Pagination.astro";
 import getUniqueTags from "@/utils/getUniqueTags";
 import getPostsByTag from "@/utils/getPostsByTag";
+import getProjectsByTag from "@/utils/getProjectsByTag";
 import { SITE } from "@/config";
 
 export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
@@ -27,6 +29,8 @@ export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
 }
 
 const { page, tagName } = Astro.props;
+const { tag } = Astro.params;
+const tagProjects = getProjectsByTag(tag);
 ---
 
 <Layout title={`Tag: ${tagName} | ${SITE.title}`}>
@@ -34,6 +38,11 @@ const { page, tagName } = Astro.props;
   <Main
     pageTitle={[`Tag:`, `${tagName}`]}
   >
+    {tagProjects.length > 0 && (
+      <ul>
+        {tagProjects.map(project => <ProjectCard {...project} />)}
+      </ul>
+    )}
     <ul>
       {page.data.map(data => <Card {...data} />)}
     </ul>
