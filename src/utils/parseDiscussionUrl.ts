@@ -12,7 +12,8 @@ export function parseDiscussionUrl(url: string) {
   }
 
   if (hostname === "x.com" || hostname === "twitter.com") {
-    return { icon: "carbon:logo-x", label: "X", url };
+    const match = parsed.pathname.match(/^\/([^/]+)/);
+    return { icon: "carbon:logo-x", label: match ? match[1] : "X", url };
   }
 
   if (hostname === "bsky.app") {

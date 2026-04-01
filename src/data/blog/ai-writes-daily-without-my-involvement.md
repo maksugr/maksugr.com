@@ -5,6 +5,8 @@ pubDatetime: 2026-03-26T00:00:00Z
 tags: ["AI agents"]
 featured: true
 draft: false
+discussions:
+  - https://x.com/maksugr/status/2039357152092131783
 ---
 
 ## Table of contents
