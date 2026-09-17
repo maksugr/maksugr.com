@@ -15,6 +15,14 @@ export type Project = {
 
 export const PROJECTS: Project[] = [
   {
+    title: "acp-devtools",
+    description:
+      "Transparent ACP proxy with a live web inspector, CLI, and read-only MCP server. See exactly what your editor and your coding agent say to each other.",
+    url: "http://playground.acp-devtools.dev/",
+    repo: "https://github.com/maksugr/acp-devtools",
+    tags: ["AI agents", "devtools"],
+  },
+  {
     title: "syntsch",
     description:
       "Fully autonomous AI-driven publication that writes cultural essays about Berlin events daily. Zero human editorial intervention. Multi-agent system with Scout, Curator, Author, Critic, and Reflector roles.",
